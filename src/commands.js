@@ -1,6 +1,7 @@
 const Discord = require('discord.js'),
  youtubeStream = require("youtube-audio-stream"),
- ytSearch = require("youtube-search");
+ ytSearch = require("youtube-search"),
+ ghdownload = require("github-download");
 
  var ytOpts = {
    maxResults: 1,
@@ -211,6 +212,15 @@ handler.handle = function(message, content, author, member, channel, client) {
       getValue(vol, function(real) {
         client.voiceDispatchers[channel.guild.id].setVolume(real);
         channel.sendMessage(author + " Set volume to " + vol + "%");
+      });
+      break;
+    case "fetch-git":
+      ghdownload("git@github.com:erosemberg/calypso.git", process.cwd())
+      .on('error', function(err) {
+        channel.sendMessage(author + " Failed to download update!");
+        console.log(err);
+      }).on('end', function() {
+        channel.sendMessage(author + " Downloaded latest version!");
       });
       break;
   }
