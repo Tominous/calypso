@@ -37,6 +37,28 @@ var errorUsage = function(usage, callback) {
   callback(embed);
 }
 
+var appendMethod = function(dispatcher, channel, client) {
+  dispatcher.on("end", () => {
+    if (client.guildQueues[channel.guild.id].length > 0) {
+      var shifted = client.guildQueues[channel.guild.id].shift();
+
+      var stream = youtubeStream(shifted.link);
+      var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
+      client.voiceDispatchers[channel.guild.id] = dispatcher;
+
+      appendMethod(dispatcher, channel, client);
+
+      var embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
+      embed.addField("Description", shifted.description);
+
+      channel.sendMessage(":musical_note: **Now playing:**");
+      channel.sendEmbed(embed);
+    } else {
+      client.voiceDispatchers[channel.guild.id] = undefined;
+    }
+  });
+};
+
 var handler = {};
 
 handler.commands = ["help","join","leave","play","stop","volume","queue"];
@@ -158,24 +180,7 @@ handler.handle = function(message, content, author, member, channel, client) {
         channel.sendEmbed(embed);
 
         client.voiceDispatchers[channel.guild.id] = dispatcher;
-
-        dispatcher.on("end", () => {
-          if (client.guildQueues[channel.guild.id].length > 0) {
-            var shifted = client.guildQueues[channel.guild.id].shift();
-
-            var stream = youtubeStream(shifted.link);
-            var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
-            client.voiceDispatchers[channel.guild.id] = dispatcher;
-
-            var embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
-            embed.addField("Description", shifted.description);
-
-            channel.sendMessage(":musical_note: **Now playing:**");
-            channel.sendEmbed(embed);
-          } else {
-            client.voiceDispatchers[channel.guild.id] = undefined;
-          }
-        });
+        appendMethod(dispatcher, channel, client);
       });
 
       break;
