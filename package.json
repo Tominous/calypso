@@ -9,6 +9,7 @@
     "discord.js": "^11.0.0",
     "github-download": "^0.5.0",
     "node-opus": "^0.2.4",
+    "opusscript": "0.0.2",
     "pornhub": "0.0.5",
     "porno": "^1.0.4",
     "toobusy-js": "^0.5.1",

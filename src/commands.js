@@ -39,7 +39,7 @@ var errorUsage = function(usage, callback) {
 
 var handler = {};
 
-handler.commands = ["help","joinchannel","leavechannel","playmusic","stopmusic","setvolume"];
+handler.commands = ["help","join","leave","play","stop","volume","queue"];
 
 handler.handle = function(message, content, author, member, channel, client) {
   let cmd = content[0].replace("~", "");
@@ -52,7 +52,7 @@ handler.handle = function(message, content, author, member, channel, client) {
 
       channel.sendEmbed(embed);
       break;
-    case "joinchannel":
+    case "join":
       var finalChannel;
 
       for (var c of channel.guild.channels) {
@@ -71,14 +71,14 @@ handler.handle = function(message, content, author, member, channel, client) {
       }
 
       finalChannel.join().then(connection => {
-        channel.sendMessage(author + " Joined " + finalChannel.name);
+        channel.sendMessage(author + " Joined " + finalChannel.name + ". Now ready to play music.");
 
         client.voiceChannels[channel.guild.id] = finalChannel;
         client.voiceConnections[channel.guild.id] = connection;
         client.guildQueues[channel.guild.id] = [];
       });
       break;
-    case "leavechannel":
+    case "leave":
       var finalChannel;
 
       for (var c of channel.guild.channels) {
@@ -104,9 +104,9 @@ handler.handle = function(message, content, author, member, channel, client) {
       client.guildQueues[channel.guild.id] = undefined;
 
       break;
-    case "playmusic":
+    case "play":
       if (client.voiceChannels[channel.guild.id] === undefined) {
-        channel.sendMessage(author + " I'm not on a channel. Do ~joinchannel first!");
+        channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
         return;
       }
 
@@ -114,7 +114,7 @@ handler.handle = function(message, content, author, member, channel, client) {
 
       var search = content.slice(1);
       if (search.length <= 0) {
-        errorUsage("~playmusic <name of video>", function(embed) {
+        errorUsage("~play <name of video>", function(embed) {
           channel.sendEmbed(embed);
         });
         return;
@@ -123,12 +123,12 @@ handler.handle = function(message, content, author, member, channel, client) {
       ytSearch(realSearch, ytOpts, function(err, results) {
         if (err) {
           console.log(err);
-          channel.sendMessage(author + " There was an error!");
+          channel.sendMessage(author + " There was an error! Please tell @Erik#9933 about this issue.");
           return;
         }
 
         if (results.length <= 0) {
-          channel.sendMessage(author + " No videos found!");
+          channel.sendMessage(author + " No videos found! Try a diferent query?");
           return;
         }
 
@@ -154,7 +154,7 @@ handler.handle = function(message, content, author, member, channel, client) {
           embed.setThumbnail(result.thumbnails['high'].url);
         }
 
-        channel.sendMessage(author + " Now playing: ");
+        channel.sendMessage(":musical_note: **Now playing:** ");
         channel.sendEmbed(embed);
 
         client.voiceDispatchers[channel.guild.id] = dispatcher;
@@ -163,7 +163,7 @@ handler.handle = function(message, content, author, member, channel, client) {
           if (client.guildQueues[channel.guild.id].length > 0) {
             var shifted = client.guildQueues[channel.guild.id].shift();
 
-            var stream = youtubeStream(result.link);
+            var stream = youtubeStream(shifted.link);
             var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
             client.voiceDispatchers[channel.guild.id] = dispatcher;
 
@@ -179,9 +179,9 @@ handler.handle = function(message, content, author, member, channel, client) {
       });
 
       break;
-    case "stopmusic":
+    case "stop":
       if (client.voiceChannels[channel.guild.id] === undefined) {
-        channel.sendMessage(author + " I'm not on a channel. Do ~joinchannel first!");
+        channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
         return;
       }
 
@@ -192,9 +192,9 @@ handler.handle = function(message, content, author, member, channel, client) {
 
       client.voiceDispatchers[channel.guild.id].end();
       break;
-    case "setvolume":
+    case "volume":
       if (client.voiceChannels[channel.guild.id] === undefined) {
-        channel.sendMessage(author + " I'm not on a channel. Do ~joinchannel first!");
+        channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
         return;
       }
 
@@ -213,6 +213,22 @@ handler.handle = function(message, content, author, member, channel, client) {
         client.voiceDispatchers[channel.guild.id].setVolume(real);
         channel.sendMessage(author + " Set volume to " + vol + "%");
       });
+      break;
+    case "queue":
+      if (client.guildQueues[channel.guild.id].length > 0) {
+        var msg = "```\n";
+        var counter = 0;
+        for (var que in client.guildQueues[channel.guild.id]) {
+          counter++;
+          var m = client.guildQueues[channel.guild.id][que];
+          var actualMessage = "#" + counter + " " + m.title;
+          msg += actualMessage + "\n";
+        }
+        msg += "```";
+        channel.sendMessage(msg);
+      } else {
+        channel.sendMessage(author + " Nothing on the queue! Do ~playmusic to add some music to the queue!");
+      }
       break;
     case "fetch-git":
       ghdownload("git@github.com:erosemberg/calypso.git", process.cwd())
