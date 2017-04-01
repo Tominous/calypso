@@ -180,6 +180,7 @@ handler.handle = function(message, content, author, member, channel, client) {
           appendMethod(dispatcher, channel, client);
         } catch (exception) {
           channel.sendMessage(":crossed_swords: Failed to query. Contact @Erik#9933");
+          console.log(exception);
         }
       });
 
