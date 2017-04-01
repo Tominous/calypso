@@ -8,6 +8,8 @@ const Discord = require('discord.js'),
    key: "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE"
  };
 
+ var streamOptions = { seek: 0, volume: 1 };
+
 var dispatcherByGuild = [];
 
 String.prototype.toHHMMSS = function () {
@@ -131,8 +133,6 @@ handler.handle = function(message, content, author, member, channel, client) {
         channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
         return;
       }
-
-      var streamOptions = { seek: 0, volume: 1 };
 
       var search = content.slice(1);
       if (search.length <= 0) {
