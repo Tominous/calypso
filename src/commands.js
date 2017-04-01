@@ -165,7 +165,7 @@ handler.handle = function(message, content, author, member, channel, client) {
         }
 
         try {
-          var dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
+          var dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
 
           var embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
           embed.addField("Description", result.description);
