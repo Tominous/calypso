@@ -167,20 +167,24 @@ handler.handle = function(message, content, author, member, channel, client) {
           return;
         }
 
-        var stream = youtubeStream(result.link);
-        var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
+        try {
+          var stream = youtubeStream(result.link);
+          var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
 
-        var embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
-        embed.addField("Description", result.description);
-        if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
-          embed.setThumbnail(result.thumbnails['high'].url);
+          var embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
+          embed.addField("Description", result.description);
+          if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
+            embed.setThumbnail(result.thumbnails['high'].url);
+          }
+
+          channel.sendMessage(":musical_note: **Now playing:** ");
+          channel.sendEmbed(embed);
+
+          client.voiceDispatchers[channel.guild.id] = dispatcher;
+          appendMethod(dispatcher, channel, client);
+        } catch (exception) {
+          client.sendMessage(":crossed_swords: Failed to query. Contact @Erik#9933");
         }
-
-        channel.sendMessage(":musical_note: **Now playing:** ");
-        channel.sendEmbed(embed);
-
-        client.voiceDispatchers[channel.guild.id] = dispatcher;
-        appendMethod(dispatcher, channel, client);
       });
 
       break;
