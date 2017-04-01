@@ -170,7 +170,7 @@ handler.handle = function(message, content, author, member, channel, client) {
             var embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
             embed.addField("Description", shifted.description);
 
-            channel.sendMessage(author + " Now playing: ");
+            channel.sendMessage(":musical_note: **Now playing:**");
             channel.sendEmbed(embed);
           } else {
             client.voiceDispatchers[channel.guild.id] = undefined;
