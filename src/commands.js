@@ -179,7 +179,7 @@ handler.handle = function(message, content, author, member, channel, client) {
           client.voiceDispatchers[channel.guild.id] = dispatcher;
           appendMethod(dispatcher, channel, client);
         } catch (exception) {
-          client.sendMessage(":crossed_swords: Failed to query. Contact @Erik#9933");
+          channel.sendMessage(":crossed_swords: Failed to query. Contact @Erik#9933");
         }
       });
 
