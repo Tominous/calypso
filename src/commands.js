@@ -1,5 +1,5 @@
 const Discord = require('discord.js'),
- youtubeStream = require("youtube-audio-stream"),
+ ytdl = require("ytdl-core"),
  ytSearch = require("youtube-search"),
  ghdownload = require("github-download");
 
@@ -7,8 +7,6 @@ const Discord = require('discord.js'),
    maxResults: 1,
    key: "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE"
  };
-
- var streamOptions = { seek: 0, volume: 1 };
 
 var dispatcherByGuild = [];
 
@@ -44,8 +42,7 @@ var appendMethod = function(dispatcher, channel, client) {
     if (client.guildQueues[channel.guild.id].length > 0) {
       var shifted = client.guildQueues[channel.guild.id].shift();
 
-      var stream = youtubeStream(shifted.link);
-      var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
+      var dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
 
       var embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
       embed.addField("Description", shifted.description);
@@ -168,8 +165,7 @@ handler.handle = function(message, content, author, member, channel, client) {
         }
 
         try {
-          var stream = youtubeStream(result.link);
-          var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
+          var dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
 
           var embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
           embed.addField("Description", result.description);
