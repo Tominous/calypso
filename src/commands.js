@@ -60,7 +60,7 @@ var appendMethod = function(dispatcher, channel, client) {
 
 var handler = {};
 
-handler.commands = ["help","join","leave","play","stop","volume","queue"];
+handler.commands = ["help","join","leave","play","skip","volume","queue"];
 
 handler.handle = function(message, content, author, member, channel, client) {
   let cmd = content[0].replace("~", "");
@@ -184,7 +184,7 @@ handler.handle = function(message, content, author, member, channel, client) {
       });
 
       break;
-    case "stop":
+    case "skip":
       if (client.voiceChannels[channel.guild.id] === undefined) {
         channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
         return;
@@ -196,6 +196,7 @@ handler.handle = function(message, content, author, member, channel, client) {
       }
 
       client.voiceDispatchers[channel.guild.id].end();
+      channel.sendMessage(author + " :x: Skipped song.");
       break;
     case "volume":
       if (client.voiceChannels[channel.guild.id] === undefined) {
