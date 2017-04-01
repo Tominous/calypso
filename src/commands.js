@@ -46,15 +46,15 @@ var appendMethod = function(dispatcher, channel, client) {
 
       var stream = youtubeStream(shifted.link);
       var dispatcher = client.voiceConnections[channel.guild.id].playStream(stream, streamOptions);
-      client.voiceDispatchers[channel.guild.id] = dispatcher;
-
-      appendMethod(dispatcher, channel, client);
 
       var embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
       embed.addField("Description", shifted.description);
 
       channel.sendMessage(":musical_note: **Now playing:**");
       channel.sendEmbed(embed);
+
+      client.voiceDispatchers[channel.guild.id] = dispatcher;
+      appendMethod(dispatcher, channel, client);
     } else {
       client.voiceDispatchers[channel.guild.id] = undefined;
     }
