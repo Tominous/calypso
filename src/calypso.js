@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const cmdHandler = require("./commands");
 const yt = require("youtube-search");
 const config = require("../config.json");
+const toobusy = require("toobusy-js");
 
 var ytOpts = {
   maxResults: 1,
@@ -31,6 +32,11 @@ client.on("message", message => {
   }
 
   if (message.channel instanceof Discord.DMChannel) {
+    return;
+  }
+
+  if (toobusy()) {
+    message.channel.sendMessage(message.author + " I'm currently under too much load. Please wait a couple of minutes. :dissapointed:");
     return;
   }
 
