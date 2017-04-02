@@ -1,9 +1,10 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const cmdHandler = require("./commands");
-const yt = require("youtube-search");
-const config = require("../config.json");
-const toobusy = require("toobusy-js");
+const Discord = require('discord.js'),
+  client = new Discord.Client(),
+  cmdHandler = require("./commands"),
+  yt = require("youtube-search"),
+  config = require("../config.json"),
+  toobusy = require("toobusy-js"),
+  MongoClient = require("mongodb").MongoClient;
 
 var ytOpts = {
   maxResults: 1,
@@ -11,11 +12,22 @@ var ytOpts = {
 };
 
 const token = config.bot.token;
+let mongo = undefined;
 
 let starter = "~";
 
 client.on("ready", () => {
   console.log("[STARTUP] Calypso is now up and running!");
+
+  MongoClient.connect(config.database.url, function(err, db) {
+    if (err !== null) {
+      console.log("[ERROR] Failed to boot.");
+      process.exit(1);
+    } else {
+      mongo = db;
+      console.log("[DB] Connected to Mongo");
+    }
+  });
 
   client.user.setUsername("Calypso");
   client.user.setGame("~help");
@@ -42,11 +54,25 @@ client.on("message", message => {
 
   let content = message.content.split(" ");
   var inr = cmdHandler.commands.indexOf(content[0].replace("~", ''));
+  mongo.collection("messages").insertOne({
+    "author": message.author,
+    "authorId": message.author.id,
+    "guild": message.guild.id,
+    "timestamp": new Date().getTime(),
+    "region": message.guild.region,
+    "splitMessage": content,
+    "message": message.content
+  }, function(err, result) {
+    if (err !== null) {
+      console.log(err);
+    }
+  });
+
   if (inr == -1) {
     message.channel.sendMessage(message.author + " Command not found! Use ~help for a list of commands.");
     return;
   } else {
-    cmdHandler.handle(message, content, message.author, message.member, message.channel, client);
+    cmdHandler.handle(message, content, message.author, message.member, message.channel, client, mongo);
   }
 });
 

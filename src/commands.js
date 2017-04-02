@@ -1,34 +1,13 @@
 const Discord = require('discord.js'),
  ytdl = require("ytdl-core"),
  ytSearch = require("youtube-search"),
- ghdownload = require("github-download"),
- exec = require('child_process').exec;
+ exec = require('child_process').exec,
+ config = require("../config.json");
 
  var ytOpts = {
    maxResults: 1,
-   key: "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE"
+   key: config.apis.youtube
  };
-
-var dispatcherByGuild = [];
-
-String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10);
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours   < 10) { hours   = "0"+hours; }
-    if (minutes < 10) { minutes = "0"+minutes; }
-    if (seconds < 10) { seconds = "0"+seconds; }
-    return hours + ':' + minutes + ':' + seconds;
-}
-
-var getValue = function(percentage, callback) {
-  var max = 1;
-  var real = (percentage * max) / 100;
-
-  callback(real);
-}
 
 var errorUsage = function(usage, callback) {
   var embed = new Discord.RichEmbed().setColor("#ff3535");
@@ -65,7 +44,7 @@ let erikId = "128286074769375232";
 handler.commands = ["help","join","leave","play","skip","volume","queue","fetch-git"];
 handler.ownercommands = ["fetch-git"];
 
-handler.handle = function(message, content, author, member, channel, client) {
+handler.handle = function(message, content, author, member, channel, client, mongo) {
   let cmd = content[0].replace("~", "");
 
   switch (cmd) {
@@ -144,9 +123,9 @@ handler.handle = function(message, content, author, member, channel, client) {
       }
       var realSearch = search.join(" ");
       ytSearch(realSearch, ytOpts, function(err, results) {
-        if (err) {
+        if (err !== null) {
           console.log(err);
-          channel.sendMessage(author + " There was an error! Please tell @Erik#9933 about this issue.");
+          channel.sendMessage(author + " There was an error! Please contact @Erik#9933 about this issue.");
           return;
         }
 
@@ -178,7 +157,10 @@ handler.handle = function(message, content, author, member, channel, client) {
           }
 
           channel.sendMessage(":musical_note: **Now playing:** ");
-          channel.sendEmbed(embed);
+          channel.sendEmbed(embed).catch(function() {
+            console.log("Promise failed, sending default message");
+            channel.sendMessage(result.title);
+          });
 
           client.voiceDispatchers[channel.guild.id] = dispatcher;
           appendMethod(dispatcher, channel, client);
@@ -217,6 +199,11 @@ handler.handle = function(message, content, author, member, channel, client) {
       channel.sendMessage(author + " We removed support for the volume command. To use it just change the Discord volume for the bot!");
       break;
     case "queue":
+      if (client.voiceChannels[channel.guild.id] === undefined) {
+        channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
+        return;
+      }
+
       if (client.guildQueues[channel.guild.id].length > 0) {
         var msg = "```\n";
         var counter = 0;

@@ -4,5 +4,8 @@
   },
   "apis": {
     "youtube": ""
+  },
+  "database": {
+    "url": ""
   }
 }
