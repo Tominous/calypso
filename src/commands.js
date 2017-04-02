@@ -1,7 +1,8 @@
 const Discord = require('discord.js'),
  ytdl = require("ytdl-core"),
  ytSearch = require("youtube-search"),
- ghdownload = require("github-download");
+ ghdownload = require("github-download"),
+ exec = require('child_process').exec;
 
  var ytOpts = {
    maxResults: 1,
@@ -237,13 +238,17 @@ handler.handle = function(message, content, author, member, channel, client) {
         break;
       }
 
-      ghdownload("https://github.com/exception/calypso.git", "../").on('error', function(err) {
-        channel.sendMessage(author + " :x: Failed to download update!");
-        console.log(err);
-      }).on('end', function() {
-        channel.sendMessage(author + " :white_check_mark: Downloaded latest version!");
-        channel.sendMessage("Restarting now.");
-        process.exit(1);
+      exec("git pull", function(err, stdout, sterr) {
+        if (err !== null) {
+          channel.sendMessage(author + " :x: Failed to download update!");
+          console.log(err);
+        } else {
+          channel.sendMessage(author + " :white_check_mark: Downloaded latest version!");
+          channel.sendMessage("Restarting now.");
+          setTimeout(function() {
+            process.exit(1);
+          }, 2000);
+        }
       });
       break;
   }
