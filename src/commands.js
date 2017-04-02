@@ -237,7 +237,7 @@ handler.handle = function(message, content, author, member, channel, client) {
         break;
       }
 
-      ghdownload("https://github.com/exception/calypso.git", "../")).on('error', function(err) {
+      ghdownload("https://github.com/exception/calypso.git", "../").on('error', function(err) {
         channel.sendMessage(author + " :x: Failed to download update!");
         console.log(err);
       }).on('end', function() {
