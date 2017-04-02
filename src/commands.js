@@ -242,7 +242,8 @@ handler.handle = function(message, content, author, member, channel, client) {
         console.log(err);
       }).on('end', function() {
         channel.sendMessage(author + " :white_check_mark: Downloaded latest version!");
-        channel.sendMessage("Please restart the bot for all changes to take effect.")
+        channel.sendMessage("Restarting now.");
+        process.exit(1);
       });
       break;
   }
