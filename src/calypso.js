@@ -2,13 +2,14 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const cmdHandler = require("./commands");
 const yt = require("youtube-search");
+const config = require("../config.json");
 
 var ytOpts = {
   maxResults: 1,
-  key: "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE"
+  key: config.apis.youtube
 };
 
-const token = "Mjc1Mzk4MDk1NDQ4MTc4Njg4.C3AEBQ.oWR5i4lTrjadTUwQWgRBQN1Uq30";
+const token = config.bot.token;
 
 let starter = "~";
 
