@@ -28,7 +28,10 @@ var appendMethod = function(dispatcher, channel, client) {
       embed.addField("Description", shifted.description);
 
       channel.sendMessage(":musical_note: **Now playing:**");
-      channel.sendEmbed(embed);
+      channel.sendEmbed(embed).catch(function() {
+        console.log("Promise failed, sending default message");
+        channel.sendMessage(shifted.title);
+      });
 
       client.voiceDispatchers[channel.guild.id] = dispatcher;
       appendMethod(dispatcher, channel, client);
@@ -143,7 +146,10 @@ handler.handle = function(message, content, author, member, channel, client, mon
           embed.addField("Description", result.description);
 
           channel.sendMessage(author + " Queued (" + client.guildQueues[channel.guild.id].length +  "): ");
-          channel.sendEmbed(embed);
+          channel.sendEmbed(embed).catch(function() {
+            console.log("Promise failed, sending default queue message");
+            channel.sendMessage(result.title);
+          });
           return;
         }
 

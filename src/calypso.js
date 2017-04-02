@@ -6,11 +6,6 @@ const Discord = require('discord.js'),
   toobusy = require("toobusy-js"),
   MongoClient = require("mongodb").MongoClient;
 
-var ytOpts = {
-  maxResults: 1,
-  key: config.apis.youtube
-};
-
 const token = config.bot.token;
 let mongo = undefined;
 
