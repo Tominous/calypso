@@ -59,8 +59,10 @@ var appendMethod = function(dispatcher, channel, client) {
 };
 
 var handler = {};
+let erikId = "128286074769375232";
 
-handler.commands = ["help","join","leave","play","skip","volume","queue"];
+handler.commands = ["help","join","leave","play","skip","volume","queue","fetch-git"];
+handler.ownercommands = ["fetch-git"];
 
 handler.handle = function(message, content, author, member, channel, client) {
   let cmd = content[0].replace("~", "");
@@ -70,6 +72,7 @@ handler.handle = function(message, content, author, member, channel, client) {
       var embed = new Discord.RichEmbed().setTitle("------ > HELP < ------");
 
       embed.addField("- Commands", handler.commands.join(", "));
+      embed.addField(" - Owner Commands", handler.ownercommands.join(", "));
 
       channel.sendEmbed(embed);
       break;
@@ -196,8 +199,8 @@ handler.handle = function(message, content, author, member, channel, client) {
         return;
       }
 
-      client.voiceDispatchers[channel.guild.id].end();
       channel.sendMessage(author + " :x: Skipped song.");
+      client.voiceDispatchers[channel.guild.id].end();
       break;
     case "volume":
       if (client.voiceChannels[channel.guild.id] === undefined) {
@@ -210,16 +213,7 @@ handler.handle = function(message, content, author, member, channel, client) {
         return;
       }
 
-      var vol = parseInt(content.slice(1)[0]);
-      if (vol > 100) {
-        channel.sendMessage(author + " 100% is the max volume!");
-        return;
-      }
-
-      getValue(vol, function(real) {
-        client.voiceDispatchers[channel.guild.id].setVolume(real);
-        channel.sendMessage(author + " Set volume to " + vol + "%");
-      });
+      channel.sendMessage(author + " We removed support for the volume command. To use it just change the Discord volume for the bot!");
       break;
     case "queue":
       if (client.guildQueues[channel.guild.id].length > 0) {
@@ -238,12 +232,17 @@ handler.handle = function(message, content, author, member, channel, client) {
       }
       break;
     case "fetch-git":
-      ghdownload("git@github.com:erosemberg/calypso.git", process.cwd())
-      .on('error', function(err) {
-        channel.sendMessage(author + " Failed to download update!");
+      if (author.id != erikId) {
+        channel.sendMessage(author + " :crossed_swords: No permissions. Only bot owners can execute this command.");
+        break;
+      }
+
+      ghdownload("https://github.com/exception/calypso.git", "../")).on('error', function(err) {
+        channel.sendMessage(author + " :x: Failed to download update!");
         console.log(err);
       }).on('end', function() {
-        channel.sendMessage(author + " Downloaded latest version!");
+        channel.sendMessage(author + " :white_check_mark: Downloaded latest version!");
+        channel.sendMessage("Please restart the bot for all changes to take effect.")
       });
       break;
   }
