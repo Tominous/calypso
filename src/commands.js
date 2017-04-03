@@ -3,7 +3,8 @@ const Discord = require('discord.js'),
     ytSearch = require("youtube-search"),
     exec = require('child_process').exec,
     config = require("../config.json"),
-    shutdown = require('./shutdown');
+    shutdown = require('./shutdown'),
+    logger = require('./logger');
 
 let ytOpts = {
     maxResults: 1,
@@ -84,6 +85,12 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 client.voiceChannels[channel.guild.id] = finalChannel;
                 client.voiceConnections[channel.guild.id] = connection;
                 client.guildQueues[channel.guild.id] = [];
+
+                mongo.collection("voice_log").insertOne({
+                    "guild": message.guild.id,
+                    "region": message.guild.region,
+                    "joined_at": new Date().getTime()
+                });
             });
             break;
         case "leave":
@@ -173,7 +180,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                     client.voiceDispatchers[channel.guild.id] = dispatcher;
                     appendMethod(dispatcher, channel, client);
                 } catch (exception) {
-                    channel.sendMessage(":crossed_swords: Failed to query. Contact @Erik#9933");
+                    channel.sendMessage(":x: Failed to query. Contact @Erik#9933");
                     console.log(exception);
                 }
             });
@@ -229,7 +236,8 @@ handler.handle = function (message, content, author, member, channel, client, mo
             break;
         case "fetch-git":
             if (author.id !== erikId) {
-                channel.sendMessage(author + " :crossed_swords: No permissions. Only bot owners can execute this command.");
+                channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
+                logger.logPermissionFailed(message, author, mongo);
                 break;
             }
 
