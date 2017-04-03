@@ -2,7 +2,8 @@ const Discord = require('discord.js'),
  ytdl = require("ytdl-core"),
  ytSearch = require("youtube-search"),
  exec = require('child_process').exec,
- config = require("../config.json");
+ config = require("../config.json"),
+ shutdown = require('./shutdown');
 
  let ytOpts = {
    maxResults: 1,
@@ -233,6 +234,7 @@ handler.handle = function(message, content, author, member, channel, client, mon
         } else {
           channel.sendMessage(author + " :white_check_mark: Downloaded latest version!");
           channel.sendMessage("Restarting now.");
+          shutdown.shutdown(client);
           setTimeout(function() {
             process.exit(1);
           }, 2000);
