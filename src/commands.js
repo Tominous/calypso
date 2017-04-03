@@ -233,19 +233,21 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 break;
             }
 
-            channel.sendMessage(":satellite_orbital: Fetching latest git source").then(gitMessage => {
+            channel.sendMessage(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
                 exec("git pull", function (err, stdout, sterr) {
                     if (err !== null) {
                         gitMessage.edit(":x: Failed to download latest update!");
                         console.log(err);
                     } else {
-                        console.log(stdout.toString().indexOf("Already up-to-date."));
-
-                        gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
-                        shutdown.shutdown(client);
-                        setTimeout(function () {
-                            process.exit(1);
-                        }, 2000);
+                        if (stdout.toString().indexOf("Already up-to-date.") > -1) {
+                            gitMessage.edit(":gem: Already up to date with git source!");
+                        } else {
+                            gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
+                            shutdown.shutdown(client);
+                            setTimeout(function () {
+                                process.exit(1);
+                            }, 2000);
+                        }
                     }
                 });
             });
