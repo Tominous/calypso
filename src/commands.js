@@ -239,6 +239,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                         gitMessage.edit(":x: Failed to download latest update!");
                         console.log(err);
                     } else {
+                        console.log(stdout);
                         gitMessage.edit(":white_check_mark: Downloaded latest version!");
                         channel.sendMessage("Restarting now.");
                         shutdown.shutdown(client);
