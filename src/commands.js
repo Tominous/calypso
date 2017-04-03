@@ -47,6 +47,7 @@ handler.ownercommands = ["fetch-git"];
 
 handler.handle = function(message, content, author, member, channel, client, mongo) {
   let cmd = content[0].replace("~", "");
+  let finalChannel = undefined;
 
   switch (cmd) {
     case "help":
@@ -58,8 +59,6 @@ handler.handle = function(message, content, author, member, channel, client, mon
       channel.sendEmbed(embed);
       break;
     case "join":
-      let finalChannel;
-
       for (let c of channel.guild.channels) {
         let realC = c[1];
         if (realC instanceof Discord.VoiceChannel) {
@@ -84,8 +83,6 @@ handler.handle = function(message, content, author, member, channel, client, mon
       });
       break;
     case "leave":
-      let finalChannel;
-
       for (let c of channel.guild.channels) {
         let realC = c[1];
         if (realC instanceof Discord.VoiceChannel) {
