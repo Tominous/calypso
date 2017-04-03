@@ -240,8 +240,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                         console.log(err);
                     } else {
                         console.log(stdout);
-                        gitMessage.edit(":white_check_mark: Downloaded latest version!");
-                        channel.sendMessage("Restarting now.");
+                        gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
                         shutdown.shutdown(client);
                         setTimeout(function () {
                             process.exit(1);
