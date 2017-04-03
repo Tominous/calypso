@@ -48,8 +48,8 @@ let appendMethod = function (dispatcher, channel, client) {
 let handler = {};
 let erikId = "128286074769375232";
 
-handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions"];
-handler.ownercommands = ["fetch-git","permissions"];
+handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions", "find-id"];
+handler.ownercommands = ["fetch-git","permissions", "find-id"];
 
 handler.handle = function (message, content, author, member, channel, client, mongo) {
     let cmd = content[0].replace("~", "");
