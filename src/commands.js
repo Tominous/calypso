@@ -4,7 +4,8 @@ const Discord = require('discord.js'),
     exec = require('child_process').exec,
     config = require("../config.json"),
     shutdown = require('./shutdown'),
-    logger = require('./logger');
+    logger = require('./logger'),
+    permissions = require('./permissions');
 
 let ytOpts = {
     maxResults: 1,
@@ -47,8 +48,8 @@ let appendMethod = function (dispatcher, channel, client) {
 let handler = {};
 let erikId = "128286074769375232";
 
-handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball"];
-handler.ownercommands = ["fetch-git"];
+handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions"];
+handler.ownercommands = ["fetch-git","permissions"];
 
 handler.handle = function (message, content, author, member, channel, client, mongo) {
     let cmd = content[0].replace("~", "");
@@ -59,7 +60,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
             let embed = new Discord.RichEmbed().setTitle("------ > HELP < ------");
 
             embed.addField("- Commands", handler.commands.join(", "));
-            embed.addField(" - Owner Commands", handler.ownercommands.join(", "));
+            embed.addField("- Owner Commands", handler.ownercommands.join(", "));
 
             channel.sendEmbed(embed);
             break;
@@ -272,6 +273,34 @@ handler.handle = function (message, content, author, member, channel, client, mo
             let responses = ["Yes", "No", "My sources point to...yes", "My sources point to...no", "You f****** know it!", "No! What is wrong with you?"];
             let response = responses[Math.floor(Math.random() * responses.length)];
             channel.sendMessage(":8ball: " + author + " " + response);
+            break;
+        case "permissions":
+            let arguments = content.slice(1);
+            if (arguments.length !== 2) {
+                errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
+                    channel.sendEmbed(embed);
+                });
+                break;
+            }
+
+            let command = arguments[0];
+            let target = arguments[1];
+            switch (command) {
+                case "add":
+                    console.log(target);
+                    break;
+                case "check":
+                    channel.sendMessage("TODO");
+                    break;
+                case "remove":
+                    channel.sendMessage("TODO");
+                    break;
+                default:
+                    errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
+                        channel.sendEmbed(embed);
+                    });
+                    break;
+            }
             break;
     }
 };
