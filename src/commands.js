@@ -290,7 +290,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
             }
 
             let findTarget = findArgs[0].toString().replace("<", "").replace(">", "");
-            channel.sendMessage(author + " " + findTarget.id);
+            channel.sendMessage(author + " " + findTarget);
             break;
         case "permissions":
             if (!permissions.hasPermission(author, mongo)) {
