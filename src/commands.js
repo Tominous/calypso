@@ -236,7 +236,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
             }
             break;
         case "fetch-git":
-            if (author.id !== erikId) {
+            if (!permissions.hasPermission(author, mongo)) {
                 channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
                 logger.logPermissionFailed(message, author, mongo);
                 break;
@@ -275,7 +275,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
             channel.sendMessage(":8ball: " + author + " " + response);
             break;
         case "find-id":
-            if (author.id !== erikId) {
+            if (!permissions.hasPermission(author, mongo)) {
                 channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
                 logger.logPermissionFailed(message, author, mongo);
                 break;
@@ -290,9 +290,15 @@ handler.handle = function (message, content, author, member, channel, client, mo
             }
 
             let findTarget = findArgs[0];
-            channel.sendMessage(author + " " + findTarget);
+            channel.sendMessage(author + " " + findTarget.id);
             break;
         case "permissions":
+            if (!permissions.hasPermission(author, mongo)) {
+                channel.sendMessage(author + " :shield: No permissions! Only bot owners can execute this command.");
+                logger.logPermissionFailed(message, author, mongo);
+                break;
+            }
+
             let arguments = content.slice(1);
             if (arguments.length !== 2) {
                 errorUsage("~permissions <add|check|remove> <@user>", function(embed) {

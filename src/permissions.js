@@ -12,7 +12,7 @@ module.exports = {
                 },
                 {
                     upsert: true
-                }, function(err, object) {
+                }, function (err, object) {
                     if (err) {
                         reject(err);
                     } else {
@@ -22,6 +22,19 @@ module.exports = {
         });
     },
     hasPermission: function (user, mongo) {
-
+        if (user.id === "128286074769375232") {
+            return true;
+        } else {
+            mongo.collection("permissions").findOne(
+                {}, {
+                    owners: {
+                        $elemMatch: {
+                            id: user.id
+                        }
+                    }
+                }, function (err, object) {
+                    return !err;
+                });
+        }
     }
 };
