@@ -4,27 +4,25 @@ const Discord = require('discord.js'),
  exec = require('child_process').exec,
  config = require("../config.json");
 
- var ytOpts = {
+ let ytOpts = {
    maxResults: 1,
    key: config.apis.youtube
  };
 
-var errorUsage = function(usage, callback) {
-  var embed = new Discord.RichEmbed().setColor("#ff3535");
+let errorUsage = function(usage, callback) {
+  let embed = new Discord.RichEmbed().setColor("#ff3535");
   embed.addField("Error", "Wrong usage!", true);
   embed.addField("Correct Usage", usage, true);
 
   callback(embed);
-}
+};
 
-var appendMethod = function(dispatcher, channel, client) {
+let appendMethod = function(dispatcher, channel, client) {
   dispatcher.on("end", () => {
     if (client.guildQueues[channel.guild.id].length > 0) {
-      var shifted = client.guildQueues[channel.guild.id].shift();
-
-      var dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
-
-      var embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
+      let shifted = client.guildQueues[channel.guild.id].shift();
+      let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
+      let embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
       embed.addField("Description", shifted.description);
 
       channel.sendMessage(":musical_note: **Now playing:**");
@@ -41,7 +39,7 @@ var appendMethod = function(dispatcher, channel, client) {
   });
 };
 
-var handler = {};
+let handler = {};
 let erikId = "128286074769375232";
 
 handler.commands = ["help","join","leave","play","skip","volume","queue","fetch-git"];
@@ -52,7 +50,7 @@ handler.handle = function(message, content, author, member, channel, client, mon
 
   switch (cmd) {
     case "help":
-      var embed = new Discord.RichEmbed().setTitle("------ > HELP < ------");
+      let embed = new Discord.RichEmbed().setTitle("------ > HELP < ------");
 
       embed.addField("- Commands", handler.commands.join(", "));
       embed.addField(" - Owner Commands", handler.ownercommands.join(", "));
@@ -60,9 +58,9 @@ handler.handle = function(message, content, author, member, channel, client, mon
       channel.sendEmbed(embed);
       break;
     case "join":
-      var finalChannel;
+      let finalChannel;
 
-      for (var c of channel.guild.channels) {
+      for (let c of channel.guild.channels) {
         let realC = c[1];
         if (realC instanceof Discord.VoiceChannel) {
           if (realC.id === member.voiceChannelID) {
@@ -86,9 +84,9 @@ handler.handle = function(message, content, author, member, channel, client, mon
       });
       break;
     case "leave":
-      var finalChannel;
+      let finalChannel;
 
-      for (var c of channel.guild.channels) {
+      for (let c of channel.guild.channels) {
         let realC = c[1];
         if (realC instanceof Discord.VoiceChannel) {
           if (realC.id === client.voiceChannels[channel.guild.id].id) {
@@ -117,14 +115,14 @@ handler.handle = function(message, content, author, member, channel, client, mon
         return;
       }
 
-      var search = content.slice(1);
+      let search = content.slice(1);
       if (search.length <= 0) {
         errorUsage("~play <name of video>", function(embed) {
           channel.sendEmbed(embed);
         });
         return;
       }
-      var realSearch = search.join(" ");
+      let realSearch = search.join(" ");
       ytSearch(realSearch, ytOpts, function(err, results) {
         if (err !== null) {
           console.log(err);
@@ -137,12 +135,12 @@ handler.handle = function(message, content, author, member, channel, client, mon
           return;
         }
 
-        var result = results[0];
+        let result = results[0];
 
         if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
           client.guildQueues[channel.guild.id].push(result);
 
-          var embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
+          let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
           embed.addField("Description", result.description);
 
           channel.sendMessage(author + " Queued (" + client.guildQueues[channel.guild.id].length +  "): ");
@@ -154,9 +152,9 @@ handler.handle = function(message, content, author, member, channel, client, mon
         }
 
         try {
-          var dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
+          let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {seek: 0, volume: 1});
 
-          var embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
+          let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
           embed.addField("Description", result.description);
           if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
             embed.setThumbnail(result.thumbnails['high'].url);
@@ -211,12 +209,12 @@ handler.handle = function(message, content, author, member, channel, client, mon
       }
 
       if (client.guildQueues[channel.guild.id].length > 0) {
-        var msg = "```\n";
-        var counter = 0;
-        for (var que in client.guildQueues[channel.guild.id]) {
+        let msg = "```\n";
+        let counter = 0;
+        for (let que in client.guildQueues[channel.guild.id]) {
           counter++;
-          var m = client.guildQueues[channel.guild.id][que];
-          var actualMessage = "#" + counter + " " + m.title;
+          let m = client.guildQueues[channel.guild.id][que];
+          let actualMessage = "#" + counter + " " + m.title;
           msg += actualMessage + "\n";
         }
         msg += "```";
@@ -226,7 +224,7 @@ handler.handle = function(message, content, author, member, channel, client, mon
       }
       break;
     case "fetch-git":
-      if (author.id != erikId) {
+      if (author.id !== erikId) {
         channel.sendMessage(author + " :crossed_swords: No permissions. Only bot owners can execute this command.");
         break;
       }
