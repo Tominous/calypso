@@ -47,7 +47,7 @@ let appendMethod = function (dispatcher, channel, client) {
 let handler = {};
 let erikId = "128286074769375232";
 
-handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git"];
+handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball"];
 handler.ownercommands = ["fetch-git"];
 
 handler.handle = function (message, content, author, member, channel, client, mongo) {
@@ -259,6 +259,19 @@ handler.handle = function (message, content, author, member, channel, client, mo
                     }
                 });
             });
+            break;
+        case "8ball":
+            let question = content.slice(1);
+            if (question.length <= 0) {
+                errorUsage("~8ball <question>", function (embed) {
+                    channel.sendEmbed(embed);
+                });
+                break;
+            }
+
+            let responses = ["Yes", "No", "My sources point to...yes", "My sources point to...no", "You f****** know it!", "No! What is wrong with you?"];
+            let response = responses[Math.floor(Math.random() * responses.length)];
+            channel.sendMessage(":8ball: " + author + " " + response);
             break;
     }
 };
