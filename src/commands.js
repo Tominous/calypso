@@ -274,6 +274,24 @@ handler.handle = function (message, content, author, member, channel, client, mo
             let response = responses[Math.floor(Math.random() * responses.length)];
             channel.sendMessage(":8ball: " + author + " " + response);
             break;
+        case "find-id":
+            if (author.id !== erikId) {
+                channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
+                logger.logPermissionFailed(message, author, mongo);
+                break;
+            }
+
+            let findArgs = content.slice(1);
+            if (findArgs.length !== 1) {
+                errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
+                    channel.sendEmbed(embed);
+                });
+                break;
+            }
+
+            let findTarget = findArgs[0];
+            channel.sendMessage(author + " " + findTarget);
+            break;
         case "permissions":
             let arguments = content.slice(1);
             if (arguments.length !== 2) {
@@ -287,9 +305,12 @@ handler.handle = function (message, content, author, member, channel, client, mo
             let target = arguments[1];
             switch (command) {
                 case "add":
-                    console.log(target);
                     client.fetchUser(target).then(fetchedUser => {
-                        console.log(fetchedUser);
+                        permissions.addOwner(fetchedUser, mongo).then( => {
+                            channel.sendMessage(":gem: Gave permissions.")
+                        }).catch(function() {
+                            channel.sendMessage("Failed to give permissions!");
+                        });
                     }).catch(function() {
                         channel.sendMessage(author + " Failed to find user.");
                     });

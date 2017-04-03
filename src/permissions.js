@@ -1,17 +1,25 @@
 module.exports = {
     addOwner: function (user, mongo) {
-        mongo.collection("permissions").updateOne({
-                "_id": "permissions-object"
-            }, {
-                $addToSet: {
-                    owners: {
-                        id: user.id
+        return new Promise(function (resolve, reject) {
+            mongo.collection("permissions").updateOne({
+                    "_id": "permissions-object"
+                }, {
+                    $addToSet: {
+                        owners: {
+                            id: user.id
+                        }
                     }
-                }
-            },
-            {
-                upsert: true
-            });
+                },
+                {
+                    upsert: true
+                }, function(err, object) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(object);
+                    }
+                });
+        });
     },
     hasPermission: function (user, mongo) {
 
