@@ -306,7 +306,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
             switch (command) {
                 case "add":
                     client.fetchUser(target).then(fetchedUser => {
-                        permissions.addOwner(fetchedUser, mongo).then( => {
+                        permissions.addOwner(fetchedUser, mongo).then(() => {
                             channel.sendMessage(":gem: Gave permissions.")
                         }).catch(function() {
                             channel.sendMessage("Failed to give permissions!");
