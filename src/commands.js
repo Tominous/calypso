@@ -288,8 +288,11 @@ handler.handle = function (message, content, author, member, channel, client, mo
             switch (command) {
                 case "add":
                     console.log(target);
-                    let realTarget = client.fetchUser(target);
-                    console.log(realTarget);
+                    client.fetchUser(target).then(fetchedUser => {
+                        console.log(fetchedUser);
+                    }).catch(function() {
+                        channel.sendMessage(author + " Failed to find user.");
+                    });
                     break;
                 case "check":
                     channel.sendMessage("TODO");
