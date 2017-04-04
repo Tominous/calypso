@@ -98,23 +98,13 @@ handler.handle = function (message, content, author, member, channel, client, mo
             });
             break;
         case "leave":
-            for (let c of channel.guild.channels) {
-                let realC = c[1];
-                if (realC instanceof Discord.VoiceChannel) {
-                    if (realC.id === client.voiceChannels[channel.guild.id].id) {
-                        finalChannel = realC;
-                        break;
-                    }
-                }
-            }
-
-            if (finalChannel === undefined) {
+            if (client.voiceChannels[channel.guild.id] === undefined) {
                 channel.sendMessage(author + " I'm not connected to a voice channel!");
                 return;
             }
 
-            finalChannel.leave();
             channel.sendMessage(author + " Left " + finalChannel.name);
+            client.voiceChannels[channel.guild.id].leave();
             client.voiceChannels[channel.guild.id] = undefined;
             client.voiceDispatchers[channel.guild.id] = undefined;
             client.voiceConnections[channel.guild.id] = undefined;
