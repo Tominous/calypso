@@ -22,19 +22,29 @@ module.exports = {
         });
     },
     hasPermission: function (user, mongo) {
-        if (user.id === "128286074769375232") {
-            return true;
-        } else {
-            mongo.collection("permissions").findOne(
-                {}, {
-                    owners: {
-                        $elemMatch: {
-                            id: user.id
+        return new Promise(function(resolve, reject) {
+            if (user.id === "128286074769375232") {
+                resolve(true);
+            } else {
+                mongo.collection("permissions").findOne(
+                    {}, {
+                        owners: {
+                            $elemMatch: {
+                                id: user.id
+                            }
                         }
-                    }
-                }, function (err, object) {
-                    return object !== undefined && object !== null;
-                });
-        }
+                    }, function (err, object) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            if (object !== null && object !== undefined) {
+                                resolve(true);
+                            } else {
+                                resolve(false);
+                            }
+                        }
+                    });
+            }
+        });
     }
 };

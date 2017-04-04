@@ -275,24 +275,25 @@ handler.handle = function (message, content, author, member, channel, client, mo
             channel.sendMessage(":8ball: " + author + " " + response);
             break;
         case "find-id":
-            console.log(permissions.hasPermission(author, mongo));
+            permissions.hasPermission(author, mongo).then(res => {
+                if (!res) {
+                    channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
+                    logger.logPermissionFailed(message, author, mongo);
+                } else {
+                    let findArgs = content.slice(1);
+                    if (findArgs.length !== 1) {
+                        errorUsage("~find-id <add|check|remove> <@user>", function(embed) {
+                            channel.sendEmbed(embed);
+                        });
+                        break;
+                    }
 
-            if (!permissions.hasPermission(author, mongo)) {
-                channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
-                logger.logPermissionFailed(message, author, mongo);
-                break;
-            }
-
-            let findArgs = content.slice(1);
-            if (findArgs.length !== 1) {
-                errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
-                    channel.sendEmbed(embed);
-                });
-                break;
-            }
-
-            let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "");
-            channel.sendMessage(author + " " + findTarget);
+                    let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "");
+                    channel.sendMessage(author + " " + findTarget);
+                }
+            }).catch(function() {
+                channel.sendMessage(":x: Permission check failed, try again later");
+            });
             break;
         case "permissions":
             if (!permissions.hasPermission(author, mongo)) {
