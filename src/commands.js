@@ -236,29 +236,32 @@ handler.handle = function (message, content, author, member, channel, client, mo
             }
             break;
         case "fetch-git":
-            if (!permissions.hasPermission(author, mongo)) {
-                channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
-                logger.logPermissionFailed(message, author, mongo);
-                break;
-            }
-
-            channel.sendMessage(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
-                exec("git pull", function (err, stdout, sterr) {
-                    if (err !== null) {
-                        gitMessage.edit(":x: Failed to download latest update!");
-                        console.log(err);
-                    } else {
-                        if (stdout.toString().indexOf("Already up-to-date.") > -1) {
-                            gitMessage.edit(":gem: Already up to date with git source!");
-                        } else {
-                            gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
-                            shutdown.shutdown(client);
-                            setTimeout(function () {
-                                process.exit(1);
-                            }, 2000);
-                        }
-                    }
-                });
+            permissions.hasPermission(author, mongo).then(res => {
+                if (!res) {
+                    channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
+                    logger.logPermissionFailed(message, author, mongo);
+                } else {
+                    channel.sendMessage(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
+                        exec("git pull", function (err, stdout, sterr) {
+                            if (err !== null) {
+                                gitMessage.edit(":x: Failed to download latest update!");
+                                console.log(err);
+                            } else {
+                                if (stdout.toString().indexOf("Already up-to-date.") > -1) {
+                                    gitMessage.edit(":gem: Already up to date with git source!");
+                                } else {
+                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
+                                    shutdown.shutdown(client);
+                                    setTimeout(function () {
+                                        process.exit(1);
+                                    }, 2000);
+                                }
+                            }
+                        });
+                    });
+                }
+            }).catch(function () {
+                channel.sendMessage(":x: Permission check failed, try again later.");
             });
             break;
         case "8ball":
@@ -291,50 +294,54 @@ handler.handle = function (message, content, author, member, channel, client, mo
                     channel.sendMessage(author + " " + findTarget);
                 }
             }).catch(function() {
-                channel.sendMessage(":x: Permission check failed, try again later");
+                channel.sendMessage(":x: Permission check failed, try again later.");
             });
             break;
         case "permissions":
-            if (!permissions.hasPermission(author, mongo)) {
-                channel.sendMessage(author + " :shield: No permissions! Only bot owners can execute this command.");
-                logger.logPermissionFailed(message, author, mongo);
-                break;
-            }
-
-            let arguments = content.slice(1);
-            if (arguments.length !== 2) {
-                errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
-                    channel.sendEmbed(embed);
-                });
-                break;
-            }
-
-            let command = arguments[0];
-            let target = arguments[1];
-            switch (command) {
-                case "add":
-                    client.fetchUser(target).then(fetchedUser => {
-                        permissions.addOwner(fetchedUser, mongo).then(() => {
-                            channel.sendMessage(":gem: Gave permissions.")
-                        }).catch(function() {
-                            channel.sendMessage("Failed to give permissions!");
+            permissions.hasPermission(author, mongo).then(res => {
+                if (!res) {
+                    channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
+                    logger.logPermissionFailed(message, author, mongo);
+                } else {
+                    let arguments = content.slice(1);
+                    if (arguments.length !== 2) {
+                        errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
+                            channel.sendEmbed(embed);
                         });
-                    }).catch(function() {
-                        channel.sendMessage(author + " Failed to find user.");
-                    });
+                        return;
+                    }
+
+                    let command = arguments[0];
+                    let target = arguments[1];
+                    switch (command) {
+                        case "add":
+                            client.fetchUser(target).then(fetchedUser => {
+                                permissions.addOwner(fetchedUser, mongo).then(() => {
+                                    channel.sendMessage(":gem: Gave permissions.")
+                                }).catch(function() {
+                                    channel.sendMessage("Failed to give permissions!");
+                                });
+                            }).catch(function() {
+                                channel.sendMessage(author + " Failed to find user.");
+                            });
+                            break;
+                        case "check":
+                            channel.sendMessage("TODO");
+                            break;
+                        case "remove":
+                            channel.sendMessage("TODO");
+                            break;
+                        default:
+                            errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
+                                channel.sendEmbed(embed);
+                            });
+                            break;
+                    }
                     break;
-                case "check":
-                    channel.sendMessage("TODO");
-                    break;
-                case "remove":
-                    channel.sendMessage("TODO");
-                    break;
-                default:
-                    errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
-                        channel.sendEmbed(embed);
-                    });
-                    break;
-            }
+                }
+            }).catch(function() {
+                channel.sendMessage(":x: Permission check failed, try again later.");
+            });
             break;
     }
 };
