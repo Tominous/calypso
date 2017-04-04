@@ -289,7 +289,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 break;
             }
 
-            let findTarget = findArgs[0].toString().replace("<", "").replace(">", "");
+            let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "");
             channel.sendMessage(author + " " + findTarget);
             break;
         case "permissions":

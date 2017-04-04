@@ -33,7 +33,9 @@ module.exports = {
                         }
                     }
                 }, function (err, object) {
-                    return !err;
+                    console.log(err);
+                    console.log(object);
+                    return false;
                 });
         }
     }
