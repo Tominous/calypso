@@ -282,7 +282,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 } else {
                     let findArgs = content.slice(1);
                     if (findArgs.length !== 1) {
-                        errorUsage("~find-id <add|check|remove> <@user>", function(embed) {
+                        errorUsage("~find-id <@user>", function(embed) {
                             channel.sendEmbed(embed);
                         });
                         break;
