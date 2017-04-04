@@ -22,6 +22,10 @@ let errorUsage = function (usage, callback) {
 
 let appendMethod = function (dispatcher, channel, client) {
     dispatcher.on("end", () => {
+        if (client.voiceDispatchers[channel.guild.id] === undefined) {
+            return;
+        }
+
         if (client.guildQueues[channel.guild.id].length > 0) {
             let shifted = client.guildQueues[channel.guild.id].shift();
             let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {
@@ -46,7 +50,6 @@ let appendMethod = function (dispatcher, channel, client) {
 };
 
 let handler = {};
-let erikId = "128286074769375232";
 
 handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions", "find-id"];
 handler.ownercommands = ["fetch-git","permissions", "find-id"];
