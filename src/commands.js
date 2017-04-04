@@ -340,7 +340,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
                             });
                             break;
                     }
-                    break;
                 }
             }).catch(function() {
                 channel.sendMessage(":x: Permission check failed, try again later.");
