@@ -285,7 +285,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
                         errorUsage("~find-id <@user>", function(embed) {
                             channel.sendEmbed(embed);
                         });
-                        break;
                     }
 
                     let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "");
