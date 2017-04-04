@@ -232,7 +232,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 msg += "```";
                 channel.sendMessage(msg);
             } else {
-                channel.sendMessage(author + " Nothing on the queue! Do ~playmusic to add some music to the queue!");
+                channel.sendMessage(author + " Nothing on the queue! Do ~play to add some music to the queue!");
             }
             break;
         case "fetch-git":

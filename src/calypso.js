@@ -1,7 +1,6 @@
 const Discord = require('discord.js'),
     client = new Discord.Client(),
     cmdHandler = require("./commands"),
-    yt = require("youtube-search"),
     config = require("../config.json"),
     toobusy = require("toobusy-js"),
     MongoClient = require("mongodb").MongoClient;
