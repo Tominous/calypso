@@ -275,6 +275,8 @@ handler.handle = function (message, content, author, member, channel, client, mo
             channel.sendMessage(":8ball: " + author + " " + response);
             break;
         case "find-id":
+            console.log(permissions.hasPermission(author, mongo));
+
             if (!permissions.hasPermission(author, mongo)) {
                 channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
                 logger.logPermissionFailed(message, author, mongo);
