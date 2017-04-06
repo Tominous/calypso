@@ -103,7 +103,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 return;
             }
 
-            channel.sendMessage(author + " Left " + finalChannel.name);
+            channel.sendMessage(author + " Left " + client.voiceChannels[channel.guild.id].name);
             client.voiceChannels[channel.guild.id].leave();
             client.voiceChannels[channel.guild.id] = undefined;
             client.voiceDispatchers[channel.guild.id] = undefined;
