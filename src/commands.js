@@ -49,6 +49,17 @@ let appendMethod = function (dispatcher, channel, client) {
     });
 };
 
+let findUser = function(client, argument) {
+    return new Promise(function (resolve, reject) {
+        let id = argument.toString().replace("<", "").replace(">", "").replace("@", "");
+        client.fetchUser(id).then(user => {
+            resolve(user);
+        }).catch(function() {
+            reject(new Error("Failed query."));
+        })
+    });
+};
+
 let handler = {};
 
 handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions", "find-id"];
@@ -319,7 +330,11 @@ handler.handle = function (message, content, author, member, channel, client, mo
                             });
                             break;
                         case "check":
-                            channel.sendMessage("TODO");
+                            permissions.hasPermission(client.fetchUser(target), mongo).then(res => {
+                                channel.sendMessage("Permissions check returned " + res);
+                            }).catch(function () {
+                                channel.sendMessage(author + " Failed to find user.");
+                            });
                             break;
                         case "remove":
                             channel.sendMessage("TODO");
