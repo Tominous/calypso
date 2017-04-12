@@ -51,7 +51,7 @@ let appendMethod = function (dispatcher, channel, client) {
 
 let findUser = function(client, argument) {
     return new Promise(function (resolve, reject) {
-        let id = argument.toString().replace("<", "").replace(">", "").replace("@", "");
+        let id = argument.toString().replace("<", "").replace(">", "").replace("@", "").replace("!", "");
         client.fetchUser(id).then(user => {
             resolve(user);
         }).catch(function() {
@@ -294,7 +294,7 @@ handler.handle = function (message, content, author, member, channel, client, mo
                         });
                     }
 
-                    let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "");
+                    let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "").replace("!", "");
                     channel.sendMessage(author + " " + findTarget);
                 }
             }).catch(function() {
