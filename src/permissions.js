@@ -39,7 +39,11 @@ module.exports = {
                             reject(err);
                         } else {
                             if (object !== null && object !== undefined) {
-                                resolve(true);
+                                if (object._id !== "permissions-object") {
+                                    resolve(true);
+                                } else {
+                                    resolve(false);
+                                }
                             } else {
                                 resolve(false);
                             }
