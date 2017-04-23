@@ -371,7 +371,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 });
             }).catch(function() {
                 channel.sendMessage(author + " There was an error!");
-                break;
             });
             break;
     }
