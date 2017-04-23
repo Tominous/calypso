@@ -62,7 +62,7 @@ let findUser = function(client, argument) {
 
 let handler = {};
 
-handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions", "find-id"];
+handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions", "find-id", "slap"];
 handler.ownercommands = ["fetch-git","permissions", "find-id"];
 
 handler.handle = function (message, content, author, member, channel, client, mongo) {
@@ -348,6 +348,30 @@ handler.handle = function (message, content, author, member, channel, client, mo
                 }
             }).catch(function() {
                 channel.sendMessage(":x: Permission check failed, try again later.");
+            });
+            break;
+        case "slap":
+            let arguments = content.slice(1);
+            if (arguments.length > 1) {
+                errorUsage("~slap <@user>", function(embed) {
+                    channel.sendMessage(embed);
+                });
+                break;
+            }
+
+            findUser(client, arguments[0]).then(found => {
+                permissions.hasPermission(found, mongo).then(res => {
+                    if (res) {
+                        channel.sendMessage(author + " is slapped even harder. Can't slap that user. :grin:")
+                    } else {
+                        channel.sendMessage(author + " Slaps " + found + ". :weary: :sweat_drops: ");
+                    }
+                }).catch(function() {
+                   channel.sendMessage(author + "There was an issue slapping " + found);
+                });
+            }).catch(function() {
+                channel.sendMessage(author + " There was an error!");
+                break;
             });
             break;
     }

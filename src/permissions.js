@@ -34,7 +34,6 @@ module.exports = {
                             }
                         }
                     }, function (err, object) {
-                        console.log(object);
                         if (err) {
                             reject(err);
                         } else {
