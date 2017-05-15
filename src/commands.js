@@ -66,6 +66,7 @@ let commands = [
     {
         name: "help",
         description: "Displays this message.",
+        parameters: [],
         handle: function(message, params) {
             message.author.sendMessage("Helperoni!");
         }
