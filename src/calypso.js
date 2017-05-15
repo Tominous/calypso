@@ -47,7 +47,6 @@ client.on("message", message => {
     }
 
     let content = message.content.split(" ");
-    let inr = cmdHandler.commands.indexOf(content[0].replace("~", ''));
     mongo.collection("messages").insertOne({
         "author": message.author,
         "authorId": message.author.id,
@@ -62,11 +61,7 @@ client.on("message", message => {
         }
     });
 
-    if (inr === -1) {
-        message.channel.sendMessage(message.author + " Command not found! Use ~help for a list of commands.");
-    } else {
-        cmdHandler.handle(message, content, message.author, message.member, message.channel, client, mongo);
-    }
+    cmdHandler.handleCommand(message, message.content.substring(1));
 });
 
 client.login(token);

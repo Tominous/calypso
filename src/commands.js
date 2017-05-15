@@ -62,8 +62,41 @@ let findUser = function(client, argument) {
 
 let handler = {};
 
+let commands = [
+    {
+        name: "help",
+        description: "Displays this message.",
+        handle: function(message, params) {
+            message.author.sendMessage("Helperoni!");
+        }
+    }
+];
+
 handler.commands = ["help", "join", "leave", "play", "skip", "volume", "queue", "fetch-git", "8ball", "permissions", "find-id", "slap"];
 handler.ownercommands = ["fetch-git","permissions", "find-id"];
+
+handler.findCommand = function(command) {
+    for (let i = 0; i < commands.length; i++) {
+        if (commands[i].name === command.toLowerCase()) {
+            return commands[i];
+        }
+    }
+
+    return false;
+};
+
+handler.handleCommand = function(message, text) {
+    const params = text.split(" ");
+    const command = handler.findCommand(params[0]);
+
+    if (command) {
+        if (params.length - 1 < command.parameters.length) {
+            message.reply("Not enough arguments");
+        } else {
+            command.handle(message, params);
+        }
+    }
+};
 
 handler.handle = function (message, content, author, member, channel, client, mongo) {
     let cmd = content[0].replace("~", "");
