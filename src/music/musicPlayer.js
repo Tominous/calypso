@@ -39,6 +39,11 @@ let appendMethod = function (dispatcher, channel, client) {
 
 module.exports = {
     join: function(message, channel, client) {
+        if (channel instanceof Discord.DMChannel) {
+            message.reply("This action can ony be performed in text channels.");
+            return;
+        }
+
         let voiceChannel;
 
         for (let c of channel.guild.channels) {
@@ -53,7 +58,7 @@ module.exports = {
 
         if (voiceChannel === undefined) {
            message.reply("You're not in a voice channel!");
-            return false;
+           return false;
         }
 
         voiceChannel.join().then(connection => {
@@ -72,6 +77,11 @@ module.exports = {
         return true;
     },
     leave: function(message, channel, client) {
+        if (channel instanceof Discord.DMChannel) {
+            message.reply("This action can ony be performed in text channels.");
+            return;
+        }
+
         if (client.voiceChannels[channel.guild.id] === undefined) {
             message.reply("I'm not connected to a voice channel");
             return;
@@ -85,6 +95,11 @@ module.exports = {
         client.guildQueues[channel.guild.id] = undefined;
     },
     play: function(message, channel, client) {
+        if (channel instanceof Discord.DMChannel) {
+            message.reply("This action can ony be performed in text channels.");
+            return;
+        }
+
         if (client.voiceChannels[channel.guild.id] === undefined) {
             message.reply("I'm not on a channel. Do ~join first!");
             return;
@@ -147,6 +162,11 @@ module.exports = {
         });
     },
     skip: function(message, channel, client) {
+        if (channel instanceof Discord.DMChannel) {
+            message.reply("This action can ony be performed in text channels.");
+            return;
+        }
+
         if (client.voiceChannels[channel.guild.id] === undefined) {
             message.reply("I'm not on a channel. Do ~join first!");
             return;
@@ -161,6 +181,11 @@ module.exports = {
         client.voiceDispatchers[channel.guild.id].end();
     },
     queue: function(message, channel, client) {
+        if (channel instanceof Discord.DMChannel) {
+            message.reply("This action can ony be performed in text channels.");
+            return;
+        }
+
         if (client.voiceChannels[channel.guild.id] === undefined) {
             message.reply("I'm not on a channel. Do ~join first!");
             return;

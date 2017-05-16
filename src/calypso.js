@@ -39,10 +39,6 @@ client.on("message", message => {
         return;
     }
 
-    if (message.channel instanceof Discord.DMChannel) {
-        return;
-    }
-
     if (toobusy()) {
         message.channel.sendMessage(message.author + " I'm currently under too much load. Please wait a couple of minutes. :dissapointed:");
         return;
