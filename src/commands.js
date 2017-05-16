@@ -117,7 +117,7 @@ let commands = [
                     return;
                 }
                 let mes = "```";
-                mes += data;
+                mes += data.trim();
                 mes += "```";
                 message.channel.send(mes);
                 console.log(mes);
