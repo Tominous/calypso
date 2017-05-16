@@ -23,10 +23,10 @@ let appendMethod = function (dispatcher, channel, client) {
             let embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
             embed.addField("Description", shifted.description);
 
-            channel.sendMessage(":musical_note: **Now playing:**");
-            channel.sendEmbed(embed).catch(function () {
+            channel.send(":musical_note: **Now playing:**");
+            channel.send(embed).catch(function () {
                 console.log("Promise failed, sending default message");
-                channel.sendMessage(shifted.title);
+                channel.send(shifted.title);
             });
 
             client.voiceDispatchers[channel.guild.id] = dispatcher;
@@ -128,9 +128,9 @@ module.exports = {
                 embed.addField("Description", result.description);
 
                 message.reply("Queued (" + client.guildQueues[channel.guild.id].length + "): ");
-                channel.sendEmbed(embed).catch(function () {
+                channel.send(embed).catch(function () {
                     console.log("Promise failed, sending default queue message");
-                    channel.sendMessage(result.title);
+                    channel.send(result.title);
                 });
                 return;
             }
@@ -147,16 +147,16 @@ module.exports = {
                     embed.setThumbnail(result.thumbnails['high'].url);
                 }
 
-                channel.sendMessage(":musical_note: **Now playing:** ");
-                channel.sendEmbed(embed).catch(function () {
+                channel.send(":musical_note: **Now playing:** ");
+                channel.send(embed).catch(function () {
                     console.log("Promise failed, sending default message");
-                    channel.sendMessage(result.title);
+                    channel.send(result.title);
                 });
 
                 client.voiceDispatchers[channel.guild.id] = dispatcher;
                 appendMethod(dispatcher, channel, client);
             } catch (exception) {
-                channel.sendMessage(":x: Failed to query. Contact @Erik#9933");
+                channel.send(":x: Failed to query. Contact @Erik#9933");
                 console.log(exception);
             }
         });
@@ -201,7 +201,7 @@ module.exports = {
                 msg += actualMessage + "\n";
             }
             msg += "```";
-            channel.sendMessage(msg);
+            channel.send(msg);
         } else {
             message.reply("Nothing on the queue! Do ~play to add some music to the queue!");
         }

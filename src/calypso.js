@@ -30,6 +30,7 @@ client.on("ready", () => {
 
     client.voiceChannels = {};
     client.voiceDispatchers = {};
+    //noinspection JSAnnotator
     client.voiceConnections = {};
     client.guildQueues = {};
 });
@@ -40,7 +41,7 @@ client.on("message", message => {
     }
 
     if (toobusy()) {
-        message.channel.sendMessage(message.author + " I'm currently under too much load. Please wait a couple of minutes. :dissapointed:");
+        message.channel.send(message.author + " I'm currently under too much load. Please wait a couple of minutes. :dissapointed:");
         return;
     }
 
