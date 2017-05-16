@@ -116,8 +116,7 @@ let commands = [
                     console.dir(err);
                     return;
                 }
-                let mes = "```\n" + data + "\n";
-                message.channel.send(mes);
+                console.log(data);
             })
         }
     }
