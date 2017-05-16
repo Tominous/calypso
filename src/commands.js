@@ -32,14 +32,14 @@ let findUser = function(client, argument) {
 
 let handler = {};
 
+
 let commands = [
     {
         name: "help",
         description: "Displays this message.",
         parameters: [],
         handle: function(message, params, client) {
-            let response = "**Available Commands:**\n";
-            response += "```";
+            let response = "```asciidoc\n= Commands =\n";
 
             for (let i = 0; i < commands.length; i++) {
                 let c = commands[i];
@@ -49,7 +49,7 @@ let commands = [
                     response += " <" + c.parameters[j] + ">";
                 }
 
-                response += " : " + c.description;
+                response += " :: " + c.description;
             }
 
             response += "\n```";
