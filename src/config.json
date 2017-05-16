@@ -1,11 +1,11 @@
 {
   "bot": {
-    "token": ""
+    "token": "Mjc1Mzk4MDk1NDQ4MTc4Njg4.C_vzqw.WkKSOpRORKrlvgfFTwuW2Fl41V8"
   },
   "apis": {
-    "youtube": ""
+    "youtube": "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE"
   },
   "database": {
-    "url": ""
+    "url": "mongodb://localhost:27017/calypso"
   }
 }
