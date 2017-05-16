@@ -1,6 +1,4 @@
 const Discord = require('discord.js'),
-    ytdl = require("ytdl-core"),
-    ytSearch = require("youtube-search"),
     exec = require('child_process').exec,
     config = require("./config.json"),
     shutdown = require('./shutdown'),
@@ -19,35 +17,6 @@ let errorUsage = function (usage, callback) {
     embed.addField("Correct Usage", usage, true);
 
     callback(embed);
-};
-
-let appendMethod = function (dispatcher, channel, client) {
-    dispatcher.on("end", () => {
-        if (client.voiceDispatchers[channel.guild.id] === undefined) {
-            return;
-        }
-
-        if (client.guildQueues[channel.guild.id].length > 0) {
-            let shifted = client.guildQueues[channel.guild.id].shift();
-            let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {
-                seek: 0,
-                volume: 1
-            });
-            let embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
-            embed.addField("Description", shifted.description);
-
-            channel.sendMessage(":musical_note: **Now playing:**");
-            channel.sendEmbed(embed).catch(function () {
-                console.log("Promise failed, sending default message");
-                channel.sendMessage(shifted.title);
-            });
-
-            client.voiceDispatchers[channel.guild.id] = dispatcher;
-            appendMethod(dispatcher, channel, client);
-        } else {
-            client.voiceDispatchers[channel.guild.id] = undefined;
-        }
-    });
 };
 
 let findUser = function(client, argument) {
