@@ -7,12 +7,9 @@
   "dependencies": {
     "async": "^2.4.0",
     "discord.js": "^11.1.0",
-    "github-download": "^0.5.0",
     "mongodb": "^2.2.26",
     "node-opus": "^0.2.6",
     "opusscript": "0.0.3",
-    "pornhub": "0.0.5",
-    "porno": "^1.0.4",
     "toobusy-js": "^0.5.1",
     "youtube-search": "^1.0.9",
     "ytdl-core": "^0.14.0"
