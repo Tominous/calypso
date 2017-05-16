@@ -103,6 +103,22 @@ let commands = [
         handle: function(message, params, client) {
             player.leave(message, message.channel, client);
         }
+    },
+    {
+        name: "play",
+        description: "Searches for a video on youtube and adds it to the queue",
+        parameters: ["query"],
+        handle: function(message, params, client) {
+            player.play(message, message.channel, client);
+        }
+    },
+    {
+        name: "skip",
+        description: "Skips the current song and plays the next one on the queue",
+        parameters: [],
+        handle: function(message, params, client) {
+            player.skip(message, message.channel, client);
+        }
     }
 ];
 
@@ -134,119 +150,8 @@ handler.handleCommand = function(message, text, client) {
 
 handler.handle = function (message, content, author, member, channel, client, mongo) {
     let cmd = content[0].replace("~", "");
-    let finalChannel = undefined;
 
     switch (cmd) {
-        case "leave":
-            if (client.voiceChannels[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not connected to a voice channel!");
-                return;
-            }
-
-            channel.sendMessage(author + " Left " + client.voiceChannels[channel.guild.id].name);
-            client.voiceChannels[channel.guild.id].leave();
-            client.voiceChannels[channel.guild.id] = undefined;
-            client.voiceDispatchers[channel.guild.id] = undefined;
-            client.voiceConnections[channel.guild.id] = undefined;
-            client.guildQueues[channel.guild.id] = undefined;
-
-            break;
-        case "play":
-            if (client.voiceChannels[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
-                return;
-            }
-
-            let search = content.slice(1);
-            if (search.length <= 0) {
-                errorUsage("~play <name of video>", function (embed) {
-                    channel.sendEmbed(embed);
-                });
-                return;
-            }
-            let realSearch = search.join(" ");
-            ytSearch(realSearch, ytOpts, function (err, results) {
-                if (err !== null) {
-                    console.log(err);
-                    channel.sendMessage(author + " There was an error! Please contact @Erik#9933 about this issue.");
-                    return;
-                }
-
-                if (results.length <= 0) {
-                    channel.sendMessage(author + " No videos found! Try a diferent query?");
-                    return;
-                }
-
-                let result = results[0];
-
-                if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
-                    client.guildQueues[channel.guild.id].push(result);
-
-                    let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
-                    embed.addField("Description", result.description);
-
-                    channel.sendMessage(author + " Queued (" + client.guildQueues[channel.guild.id].length + "): ");
-                    channel.sendEmbed(embed).catch(function () {
-                        console.log("Promise failed, sending default queue message");
-                        channel.sendMessage(result.title);
-                    });
-                    return;
-                }
-
-                try {
-                    let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {
-                        seek: 0,
-                        volume: 1
-                    });
-
-                    let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
-                    embed.addField("Description", result.description);
-                    if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
-                        embed.setThumbnail(result.thumbnails['high'].url);
-                    }
-
-                    channel.sendMessage(":musical_note: **Now playing:** ");
-                    channel.sendEmbed(embed).catch(function () {
-                        console.log("Promise failed, sending default message");
-                        channel.sendMessage(result.title);
-                    });
-
-                    client.voiceDispatchers[channel.guild.id] = dispatcher;
-                    appendMethod(dispatcher, channel, client);
-                } catch (exception) {
-                    channel.sendMessage(":x: Failed to query. Contact @Erik#9933");
-                    console.log(exception);
-                }
-            });
-
-            break;
-        case "skip":
-            if (client.voiceChannels[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
-                return;
-            }
-
-            if (client.voiceDispatchers[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not playing anything!");
-                return;
-            }
-
-            channel.sendMessage(author + " :x: Skipped song.");
-            client.voiceDispatchers[channel.guild.id].end();
-            break;
-        case "volume":
-            if (client.voiceChannels[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
-                return;
-            }
-
-            if (client.voiceDispatchers[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not playing anything!");
-                return;
-            }
-
-            channel.sendMessage(author + " We removed support for the volume command. To use it just change the Discord volume for the bot!");
-            break;
         case "queue":
             if (client.voiceChannels[channel.guild.id] === undefined) {
                 channel.sendMessage(author + " I'm not on a channel. Do ~join first!");

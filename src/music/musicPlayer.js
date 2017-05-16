@@ -1,4 +1,40 @@
-const Discord = require('discord.js');
+const Discord = require('discord.js'),
+    ytdl = require("ytdl-core"),
+    ytSearch = require("youtube-search");
+
+let ytOpts = {
+    maxResults: 1,
+    key: config.apis.youtube
+};
+
+let appendMethod = function (dispatcher, channel, client) {
+    dispatcher.on("end", () => {
+        if (client.voiceDispatchers[channel.guild.id] === undefined) {
+            return;
+        }
+
+        if (client.guildQueues[channel.guild.id].length > 0) {
+            let shifted = client.guildQueues[channel.guild.id].shift();
+            let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {
+                seek: 0,
+                volume: 1
+            });
+            let embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
+            embed.addField("Description", shifted.description);
+
+            channel.sendMessage(":musical_note: **Now playing:**");
+            channel.sendEmbed(embed).catch(function () {
+                console.log("Promise failed, sending default message");
+                channel.sendMessage(shifted.title);
+            });
+
+            client.voiceDispatchers[channel.guild.id] = dispatcher;
+            appendMethod(dispatcher, channel, client);
+        } else {
+            client.voiceDispatchers[channel.guild.id] = undefined;
+        }
+    });
+};
 
 module.exports = {
     join: function(message, channel, client) {
@@ -46,5 +82,82 @@ module.exports = {
         client.voiceDispatchers[channel.guild.id] = undefined;
         client.voiceConnections[channel.guild.id] = undefined;
         client.guildQueues[channel.guild.id] = undefined;
+    },
+    play: function(message, channel, client) {
+        if (client.voiceChannels[channel.guild.id] === undefined) {
+            message.reply("I'm not on a channel. Do ~join first!");
+            return;
+        }
+
+        console.log(message);
+
+        let search = message.content.slice(1).join(" ");
+        ytSearch(search, ytOpts, function (err, results) {
+            if (err !== null) {
+                console.log(err);
+                message.reply("There was an error! Please contact @Erik#9933 about this issue.");
+                return;
+            }
+
+            if (results.length <= 0) {
+                message.reply("No videos found! Try a different query?");
+                return;
+            }
+
+            let result = results[0];
+
+            if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
+                client.guildQueues[channel.guild.id].push(result);
+
+                let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
+                embed.addField("Description", result.description);
+
+                message.reply("Queued (" + client.guildQueues[channel.guild.id].length + "): ");
+                channel.sendEmbed(embed).catch(function () {
+                    console.log("Promise failed, sending default queue message");
+                    channel.sendMessage(result.title);
+                });
+                return;
+            }
+
+            try {
+                let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {
+                    seek: 0,
+                    volume: 1
+                });
+
+                let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
+                embed.addField("Description", result.description);
+                if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
+                    embed.setThumbnail(result.thumbnails['high'].url);
+                }
+
+                channel.sendMessage(":musical_note: **Now playing:** ");
+                channel.sendEmbed(embed).catch(function () {
+                    console.log("Promise failed, sending default message");
+                    channel.sendMessage(result.title);
+                });
+
+                client.voiceDispatchers[channel.guild.id] = dispatcher;
+                appendMethod(dispatcher, channel, client);
+            } catch (exception) {
+                channel.sendMessage(":x: Failed to query. Contact @Erik#9933");
+                console.log(exception);
+            }
+        });
+    },
+    skip: function(message, channel, client) {
+        if (client.voiceChannels[channel.guild.id] === undefined) {
+            message.reply("I'm not on a channel. Do ~join first!");
+            return;
+        }
+
+        if (client.voiceDispatchers[channel.guild.id] === undefined) {
+            message.reply("I'm not playing anything!");
+            return;
+        }
+
+        message.reply(":x: Skipped song.");
+        client.voiceDispatchers[channel.guild.id].end();
     }
 };
