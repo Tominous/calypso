@@ -4,7 +4,8 @@ const Discord = require('discord.js'),
     shutdown = require('./shutdown'),
     logger = require('./logger'),
     permissions = require('./permissions'),
-    player = require('./music/musicPlayer');
+    player = require('./music/musicPlayer'),
+    figlet = require('figlet');
 
 let ytOpts = {
     maxResults: 1,
@@ -53,7 +54,7 @@ let commands = [
             }
 
             response += "\n```";
-            message.author.sendMessage(response);
+            message.author.send(response);
             if (message.channel instanceof Discord.TextChannel) {
                 message.reply("Commands have been sent to your DMs");
             }
@@ -97,6 +98,27 @@ let commands = [
         parameters: [],
         handle: function(message, params, client) {
             player.queue(message, message.channel, client);
+        }
+    },
+    {
+        name: "announce",
+        description: "Sends a very large ASCII text of the message",
+        parameters: ["text"],
+        handle: function (message, params, client) {
+            let text = params.slice(1).join(" ");
+            figlet.text(text, {
+                font: "Big",
+                horizontalLayout: 'default',
+                verticalLayout: 'default'
+            }, function(err, data) {
+                if (err) {
+                    console.log('Something went wrong...');
+                    console.dir(err);
+                    return;
+                }
+                let mes = "```\n" + data + "\n";
+                message.channel.send(mes);
+            })
         }
     }
 ];
