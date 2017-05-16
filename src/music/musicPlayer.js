@@ -90,7 +90,7 @@ module.exports = {
             return;
         }
 
-        console.log(message);
+        console.log(message.content);
 
         let search = message.content.slice(1).join(" ");
         ytSearch(search, ytOpts, function (err, results) {
