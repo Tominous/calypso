@@ -47,12 +47,13 @@ client.on("message", message => {
     let content = message.content.split(" ");
     if (message.channel instanceof Discord.DMChannel) {
         mongo.collection("messages").insertOne({
-            "author": message.author,
+            "author": message.author.username,
             "authorId": message.author.id,
             "timestamp": new Date().getTime(),
             "splitMessage": content,
             "message": message.content,
-            "dm": true
+            "dm": true,
+            "avatar": message.author.avatarURL
         }, function (err, result) {
             if (err !== null) {
                 console.log(err);
@@ -60,13 +61,14 @@ client.on("message", message => {
         });
     } else {
         mongo.collection("messages").insertOne({
-            "author": message.author,
+            "author": message.author.username,
             "authorId": message.author.id,
             "guild": message.guild.id,
             "timestamp": new Date().getTime(),
             "region": message.guild.region,
             "splitMessage": content,
-            "message": message.content
+            "message": message.content,
+            "avatar": message.author.avatarURL
         }, function (err, result) {
             if (err !== null) {
                 console.log(err);
