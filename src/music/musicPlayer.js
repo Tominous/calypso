@@ -159,5 +159,26 @@ module.exports = {
 
         message.reply(":x: Skipped song.");
         client.voiceDispatchers[channel.guild.id].end();
+    },
+    queue: function(message, channel, client) {
+        if (client.voiceChannels[channel.guild.id] === undefined) {
+            message.reply("I'm not on a channel. Do ~join first!");
+            return;
+        }
+
+        if (client.guildQueues[channel.guild.id].length > 0) {
+            let msg = "```\n";
+            let counter = 0;
+            for (let que in client.guildQueues[channel.guild.id]) {
+                counter++;
+                let m = client.guildQueues[channel.guild.id][que];
+                let actualMessage = "#" + counter + " " + m.title;
+                msg += actualMessage + "\n";
+            }
+            msg += "```";
+            channel.sendMessage(msg);
+        } else {
+            message.reply("Nothing on the queue! Do ~play to add some music to the queue!");
+        }
     }
 };

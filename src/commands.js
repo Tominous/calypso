@@ -119,6 +119,14 @@ let commands = [
         handle: function(message, params, client) {
             player.skip(message, message.channel, client);
         }
+    },
+    {
+        name: "queue",
+        description: "Sends the queue list in chat",
+        parameters: [],
+        handle: function(message, params, client) {
+            player.queue(message, message.channel, client);
+        }
     }
 ];
 
@@ -152,27 +160,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
     let cmd = content[0].replace("~", "");
 
     switch (cmd) {
-        case "queue":
-            if (client.voiceChannels[channel.guild.id] === undefined) {
-                channel.sendMessage(author + " I'm not on a channel. Do ~join first!");
-                return;
-            }
-
-            if (client.guildQueues[channel.guild.id].length > 0) {
-                let msg = "```\n";
-                let counter = 0;
-                for (let que in client.guildQueues[channel.guild.id]) {
-                    counter++;
-                    let m = client.guildQueues[channel.guild.id][que];
-                    let actualMessage = "#" + counter + " " + m.title;
-                    msg += actualMessage + "\n";
-                }
-                msg += "```";
-                channel.sendMessage(msg);
-            } else {
-                channel.sendMessage(author + " Nothing on the queue! Do ~play to add some music to the queue!");
-            }
-            break;
         case "fetch-git":
             permissions.hasPermission(author, mongo).then(res => {
                 if (!res) {
