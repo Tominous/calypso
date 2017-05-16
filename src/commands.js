@@ -39,7 +39,7 @@ let commands = [
         description: "Displays this message.",
         parameters: [],
         handle: function(message, params, client) {
-            let response = "```asciidoc\n= Commands =\n";
+            let response = "```asciidoc\n= Commands =";
 
             for (let i = 0; i < commands.length; i++) {
                 let c = commands[i];
