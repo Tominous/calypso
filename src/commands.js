@@ -54,7 +54,9 @@ let commands = [
 
             response += "\n```";
             message.author.sendMessage(response);
-            message.reply("Commands have been sent to your DMs");
+            if (message.channel instanceof Discord.TextChannel) {
+                message.reply("Commands have been sent to your DMs");
+            }
         }
     },
     {
