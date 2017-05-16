@@ -5,7 +5,8 @@ const Discord = require('discord.js'),
     config = require("../config.json"),
     shutdown = require('./shutdown'),
     logger = require('./logger'),
-    permissions = require('./permissions');
+    permissions = require('./permissions'),
+    player = require('./music/musicPlayer');
 
 let ytOpts = {
     maxResults: 1,
@@ -67,7 +68,7 @@ let commands = [
         name: "help",
         description: "Displays this message.",
         parameters: [],
-        handle: function(message, params) {
+        handle: function(message, params, client) {
             let response = "**Available Commands:**\n";
             response += "```";
 
@@ -86,6 +87,22 @@ let commands = [
             message.author.sendMessage(response);
             message.reply("Commands have been sent to your DMs");
         }
+    },
+    {
+        name: "join",
+        description: "Joins voice channel",
+        parameters: [],
+        handle: function(message, params, client) {
+            player.join(message, message.channel, client)
+        }
+    },
+    {
+        name: "leave",
+        description: "Leaves voice channel",
+        parameters: [],
+        handle: function(message, params, client) {
+            player.leave(message, message.channel, client);
+        }
     }
 ];
 
@@ -102,7 +119,7 @@ handler.findCommand = function(command) {
     return false;
 };
 
-handler.handleCommand = function(message, text) {
+handler.handleCommand = function(message, text, client) {
     const params = text.split(" ");
     const command = handler.findCommand(params[0]);
 
@@ -110,7 +127,7 @@ handler.handleCommand = function(message, text) {
         if (params.length - 1 < command.parameters.length) {
             message.reply("Not enough arguments");
         } else {
-            command.handle(message, params);
+            command.handle(message, params, client);
         }
     }
 };
@@ -120,44 +137,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
     let finalChannel = undefined;
 
     switch (cmd) {
-        case "help":
-            let embed = new Discord.RichEmbed().setTitle("------ > HELP < ------");
-
-            embed.addField("- Commands", handler.commands.join(", "));
-            embed.addField("- Owner Commands", handler.ownercommands.join(", "));
-
-            channel.sendEmbed(embed);
-            break;
-        case "join":
-            for (let c of channel.guild.channels) {
-                let realC = c[1];
-                if (realC instanceof Discord.VoiceChannel) {
-                    if (realC.id === member.voiceChannelID) {
-                        finalChannel = realC;
-                        break;
-                    }
-                }
-            }
-
-            if (finalChannel === undefined) {
-                channel.sendMessage(author + " You're not in a voice channel!");
-                return;
-            }
-
-            finalChannel.join().then(connection => {
-                channel.sendMessage(author + " Joined " + finalChannel.name + ". Now ready to play music.");
-
-                client.voiceChannels[channel.guild.id] = finalChannel;
-                client.voiceConnections[channel.guild.id] = connection;
-                client.guildQueues[channel.guild.id] = [];
-
-                mongo.collection("voice_log").insertOne({
-                    "guild": message.guild.id,
-                    "region": message.guild.region,
-                    "joined_at": new Date().getTime()
-                });
-            });
-            break;
         case "leave":
             if (client.voiceChannels[channel.guild.id] === undefined) {
                 channel.sendMessage(author + " I'm not connected to a voice channel!");

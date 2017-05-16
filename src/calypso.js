@@ -23,6 +23,8 @@ client.on("ready", () => {
         }
     });
 
+    client.mongo = mongo;
+
     client.user.setUsername("Calypso");
     client.user.setGame("~help");
 
@@ -61,7 +63,7 @@ client.on("message", message => {
         }
     });
 
-    cmdHandler.handleCommand(message, message.content.substring(1));
+    cmdHandler.handleCommand(message, message.content.substring(1), client);
 });
 
 client.login(token);
