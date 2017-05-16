@@ -90,9 +90,8 @@ module.exports = {
             return;
         }
 
-        console.log(message.content);
-
-        let search = message.content.slice(1).join(" ");
+        let text = message.content.split(" ");
+        let search = text.slice(1).join(" ");
         ytSearch(search, ytOpts, function (err, results) {
             if (err !== null) {
                 console.log(err);
