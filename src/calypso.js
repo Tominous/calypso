@@ -1,7 +1,7 @@
 const Discord = require('discord.js'),
     client = new Discord.Client(),
     cmdHandler = require("./commands"),
-    config = require("../config.json"),
+    config = require("./config.json"),
     toobusy = require("toobusy-js"),
     MongoClient = require("mongodb").MongoClient;
 
