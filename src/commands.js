@@ -7,11 +7,6 @@ const Discord = require('discord.js'),
     player = require('./music/musicPlayer'),
     figlet = require('figlet');
 
-let ytOpts = {
-    maxResults: 1,
-    key: config.apis.youtube
-};
-
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff3535");
     embed.addField("Error", "Wrong usage!", true);
@@ -121,8 +116,41 @@ let commands = [
                 mes += data;
                 mes += "```";
                 message.channel.send(mes);
-                console.log(mes);
-            })
+            });
+        }
+    },
+    {
+        name: "fetch-git",
+        description: "Pulls the latest source from git",
+        parameters: [],
+        handle: function(message, params, client) {
+            permissions.hasPermission(message.author, client.mongo).then(res => {
+                if (!res) {
+                    message.reply(":shield: No permissions. Only bot owners can execute this command.");
+                    logger.logPermissionFailed(message, message.author, client.mongo);
+                } else {
+                    message.channel.send(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
+                        exec("git pull", function (err, stdout, sterr) {
+                            if (err !== null) {
+                                gitMessage.edit(":x: Failed to download latest update!");
+                                console.log(err);
+                            } else {
+                                if (stdout.toString().indexOf("Already up-to-date.") > -1) {
+                                    gitMessage.edit(":gem: Already up to date with git source!");
+                                } else {
+                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
+                                    shutdown.shutdown(client);
+                                    setTimeout(function () {
+                                        process.exit(1);
+                                    }, 2000);
+                                }
+                            }
+                        });
+                    });
+                }
+            }).catch(function () {
+                message.reply(":x: Permission check failed, try again later.");
+            });
         }
     }
 ];
@@ -157,35 +185,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
     let cmd = content[0].replace("~", "");
 
     switch (cmd) {
-        case "fetch-git":
-            permissions.hasPermission(author, mongo).then(res => {
-                if (!res) {
-                    channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
-                    logger.logPermissionFailed(message, author, mongo);
-                } else {
-                    channel.sendMessage(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
-                        exec("git pull", function (err, stdout, sterr) {
-                            if (err !== null) {
-                                gitMessage.edit(":x: Failed to download latest update!");
-                                console.log(err);
-                            } else {
-                                if (stdout.toString().indexOf("Already up-to-date.") > -1) {
-                                    gitMessage.edit(":gem: Already up to date with git source!");
-                                } else {
-                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
-                                    shutdown.shutdown(client);
-                                    setTimeout(function () {
-                                        process.exit(1);
-                                    }, 2000);
-                                }
-                            }
-                        });
-                    });
-                }
-            }).catch(function () {
-                channel.sendMessage(":x: Permission check failed, try again later.");
-            });
-            break;
         case "8ball":
             let question = content.slice(1);
             if (question.length <= 0) {
