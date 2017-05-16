@@ -45,19 +45,34 @@ client.on("message", message => {
     }
 
     let content = message.content.split(" ");
-    mongo.collection("messages").insertOne({
-        "author": message.author,
-        "authorId": message.author.id,
-        "guild": message.guild.id,
-        "timestamp": new Date().getTime(),
-        "region": message.guild.region,
-        "splitMessage": content,
-        "message": message.content
-    }, function (err, result) {
-        if (err !== null) {
-            console.log(err);
-        }
-    });
+    if (channel instanceof Discord.DMChannel) {
+        mongo.collection("messages").insertOne({
+            "author": message.author,
+            "authorId": message.author.id,
+            "timestamp": new Date().getTime(),
+            "splitMessage": content,
+            "message": message.content,
+            "dm": true
+        }, function (err, result) {
+            if (err !== null) {
+                console.log(err);
+            }
+        });
+    } else {
+        mongo.collection("messages").insertOne({
+            "author": message.author,
+            "authorId": message.author.id,
+            "guild": message.guild.id,
+            "timestamp": new Date().getTime(),
+            "region": message.guild.region,
+            "splitMessage": content,
+            "message": message.content
+        }, function (err, result) {
+            if (err !== null) {
+                console.log(err);
+            }
+        });
+    }
 
     cmdHandler.handleCommand(message, message.content.substring(1), client);
 });
