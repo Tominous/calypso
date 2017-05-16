@@ -116,8 +116,9 @@ let commands = [
                     console.dir(err);
                     return;
                 }
+                data = data.replace(/\s*$/,"");
                 let mes = "```";
-                mes += data.trim();
+                mes += data;
                 mes += "```";
                 message.channel.send(mes);
                 console.log(mes);
