@@ -45,7 +45,7 @@ client.on("message", message => {
     }
 
     let content = message.content.split(" ");
-    if (channel instanceof Discord.DMChannel) {
+    if (message.channel instanceof Discord.DMChannel) {
         mongo.collection("messages").insertOne({
             "author": message.author,
             "authorId": message.author.id,
