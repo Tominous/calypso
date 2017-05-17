@@ -20,11 +20,13 @@ let appendMethod = function (dispatcher, channel, client) {
                 seek: 0,
                 volume: 1
             });
-            let embed = new Discord.RichEmbed().setTitle(shifted.title).setURL(shifted.link);
-            embed.addField("Description", shifted.description);
+            let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
+            embed.addField("Now Playing", shifted.title);
+            if (shifted.thumbnails['high'] !== null || shifted.thumbnails['high'] !== undefined) {
+                embed.setThumbnail(shifted.thumbnails['high'].url);
+            }
 
-            channel.send(":musical_note: **Now playing:**");
-            channel.send(embed).catch(function () {
+            channel.sendEmbed(embed).catch(function () {
                 console.log("Promise failed, sending default message");
                 channel.send(shifted.title);
             });
@@ -141,20 +143,21 @@ module.exports = {
                     volume: 1
                 });
 
-                let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
-                embed.addField("Description", result.description);
+                let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
+                embed.addField("Now Playing", result.title);
                 if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                     embed.setThumbnail(result.thumbnails['high'].url);
                 }
 
-                channel.send(":musical_note: **Now playing:** ");
-                channel.send(embed).catch(function () {
+                channel.sendEmbed(embed).catch(function () {
                     console.log("Promise failed, sending default message");
                     channel.send(result.title);
                 });
 
                 client.voiceDispatchers[channel.guild.id] = dispatcher;
                 appendMethod(dispatcher, channel, client);
+
+                console.log(result);
             } catch (exception) {
                 channel.send(":x: Failed to query. Contact @Erik#9933");
                 console.log(exception);
