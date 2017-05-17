@@ -25,9 +25,6 @@ let appendMethod = function (dispatcher, channel, client) {
             if (shifted.thumbnails['high'] !== null || shifted.thumbnails['high'] !== undefined) {
                 embed.setThumbnail(shifted.thumbnails['high'].url);
             }
-            if (shifted.channelTitle !== null || shifted.channelTitle !== undefined) {
-                embed.addField("Published by", shifted.channelTitle);
-            }
             embed.setFooter("Enjoy your music!");
 
             channel.sendEmbed(embed).catch(function () {
@@ -143,9 +140,6 @@ module.exports = {
                 embed.addField("Now Playing", result.title);
                 if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                     embed.setThumbnail(result.thumbnails['high'].url);
-                }
-                if (result.channelTitle !== null || result.channelTitle !== undefined) {
-                    embed.addField("Published by", result.channelTitle);
                 }
                 embed.setFooter("Enjoy your music!");
 
