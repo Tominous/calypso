@@ -25,10 +25,13 @@ let appendMethod = function (dispatcher, channel, client) {
             if (shifted.thumbnails['high'] !== null || shifted.thumbnails['high'] !== undefined) {
                 embed.setThumbnail(shifted.thumbnails['high'].url);
             }
+            if (shifted.channelTitle !== null || shifted.channelTitle !== undefined) {
+                embed.addField("Published by", shifted.channelTitle);
+            }
+            embed.setFooter("Enjoy your music!");
 
             channel.sendEmbed(embed).catch(function () {
-                console.log("Promise failed, sending default message");
-                channel.send(shifted.title);
+                channel.send(":musical_note: Now playing: " + shifted.title);
             });
 
             client.voiceDispatchers[channel.guild.id] = dispatcher;
@@ -148,16 +151,17 @@ module.exports = {
                 if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                     embed.setThumbnail(result.thumbnails['high'].url);
                 }
+                if (result.channelTitle !== null || result.channelTitle !== undefined) {
+                    embed.addField("Published by", result.channelTitle);
+                }
+                embed.setFooter("Enjoy your music!");
 
                 channel.sendEmbed(embed).catch(function () {
-                    console.log("Promise failed, sending default message");
-                    channel.send(result.title);
+                    channel.send(":musical_note: Now playing: " + result.title);
                 });
 
                 client.voiceDispatchers[channel.guild.id] = dispatcher;
                 appendMethod(dispatcher, channel, client);
-
-                console.log(result);
             } catch (exception) {
                 channel.send(":x: Failed to query. Contact @Erik#9933");
                 console.log(exception);
