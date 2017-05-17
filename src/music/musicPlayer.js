@@ -129,14 +129,7 @@ module.exports = {
             if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
                 client.guildQueues[channel.guild.id].push(result);
 
-                let embed = new Discord.RichEmbed().setTitle(result.title).setURL(result.link);
-                embed.addField("Description", result.description);
-
-                message.reply("Queued (" + client.guildQueues[channel.guild.id].length + "): ");
-                channel.send(embed).catch(function () {
-                    console.log("Promise failed, sending default queue message");
-                    channel.send(result.title);
-                });
+                message.reply(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): ");
                 return;
             }
 
