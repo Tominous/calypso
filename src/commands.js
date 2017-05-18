@@ -8,7 +8,7 @@ const Discord = require('discord.js'),
     figlet = require('figlet');
 
 let errorUsage = function (usage, callback) {
-    let embed = new Discord.RichEmbed().setColor("#ff3535");
+    let embed = new Discord.RichEmbed().setColor("#ff0008");
     embed.addField("Error", "Wrong usage!", true);
     embed.addField("Correct Usage", usage, true);
 

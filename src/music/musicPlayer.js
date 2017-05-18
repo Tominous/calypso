@@ -126,7 +126,7 @@ module.exports = {
             if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
                 client.guildQueues[channel.guild.id].push(result);
 
-                message.reply(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): ");
+                message.reply(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): " + result.title);
                 return;
             }
 
