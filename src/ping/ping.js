@@ -4,7 +4,7 @@ const async = require('async'),
 function getPing(server, port, callback) {
     return function(callback) {
         tcpPing.ping({address: server, port: port, attempts: 3}, function(err, res) {
-            callback(err, parseFloat(res.min).toFixed(2));
+            callback(err, parseFloat(res.min).toFixed(2) + "ms");
         });
     }
 }
@@ -15,21 +15,24 @@ function getPings(callback) {
         getPing("127.0.0.1", 27017),
         getPing("youtube.com", 80)
     ], function(err, res) {
-        console.log(res);
         callback(err, res);
     });
 }
 
 module.exports = {
     ping: function(message, channel) {
-        getPings(function(err, res) {
-            if (err) {
-                message.reply("Failed to ping servers.");
-            } else {
-                channel.send(":cloud: gCloud API Latency: " + res[0]);
-                channel.send(":gem: gCloud Compute Engine Latency: " + res[1]);
-                channel.send(":play_pause: Youtube Latency: " + res[2]);
-            }
+        channel.send(":satellite_orbital: Pinging services...").then(pingMessage => {
+            getPings(function(err, res) {
+                if (err) {
+                    pingMessage.edit(message.author + ", Failed to ping servers.");
+                } else {
+                    let mes = "`Pinged Services`\n";
+                    mes += ":cloud: gCloud API Latency: " + res[0] + "\n";
+                    mes += ":gem: MongoDB Latency: " + res[1] + "\n";
+                    mes += ":play_pause: Youtube Latency: " + res[2];
+                    pingMessage.edit(mes);
+                }
+            });
         });
     }
 };
