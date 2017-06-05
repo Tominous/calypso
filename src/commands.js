@@ -5,7 +5,8 @@ const Discord = require('discord.js'),
     logger = require('./logger'),
     permissions = require('./permissions'),
     player = require('./music/musicPlayer'),
-    figlet = require('figlet');
+    figlet = require('figlet'),
+    ping = require("./ping/ping");
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
@@ -121,7 +122,7 @@ let commands = [
     },
     {
         name: "fetch-git",
-        description: "Pulls the latest source from git",
+        description: "Pulls the latest source from git (Admin only)",
         parameters: [],
         handle: function(message, params, client) {
             permissions.hasPermission(message.author, client.mongo).then(res => {
@@ -152,6 +153,14 @@ let commands = [
                 message.reply(":x: Permission check failed, try again later.");
             });
         }
+    },
+    {
+        name: "ping",
+        description: "Pings the servers that calypso depends on",
+        parameters: [],
+        handle: function(message, params, client) {
+            ping.ping(message, message.channel);
+        }
     }
 ];
 
@@ -178,6 +187,8 @@ handler.handleCommand = function(message, text, client) {
         } else {
             command.handle(message, params, client);
         }
+    } else {
+        message.reply("Unknown command. Try ~help.");
     }
 };
 
