@@ -33,6 +33,22 @@ client.on("ready", () => {
     //noinspection JSAnnotator
     client.voiceConnections = {};
     client.guildQueues = {};
+
+    for (let k in client.guilds) {
+        let guild = client.guilds[k];
+        mongo.collection("guilds").updateOne({
+                "guild": guild.id
+            }, {
+                "guild": guild.id,
+                "region": guild.region,
+                "joinedAt": guild.joinedAt
+            },
+            {
+                upsert: true
+            }, function (err, object) {
+
+            });
+    }
 });
 
 client.on("message", message => {
@@ -78,6 +94,21 @@ client.on("message", message => {
     }
 
     cmdHandler.handleCommand(message, message.content.substring(1), client);
+});
+
+client.on("guildCreate", guild => {
+    mongo.collection("guilds").updateOne({
+            "guild": guild.id
+        }, {
+            "guild": guild.id,
+            "region": guild.region,
+            "joinedAt": guild.joinedAt
+        },
+        {
+            upsert: true
+        }, function (err, object) {
+
+        });
 });
 
 client.login(token);
