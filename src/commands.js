@@ -234,6 +234,17 @@ let commands = [
                 }
             })
         }
+    },
+    {
+        name: "stats",
+        description: "Shows the statistics for Calypso.",
+        parameters: [],
+        handle: function(message, params, client) {
+            let embed = new Discord.RichEmbed();
+            embed.setTitle("Statistics").setColor("#259c28");
+            embed.addField("Active Guilds", client.guilds.length, true);
+            message.channel.sendEmbed(embed);
+        }
     }
 ];
 
