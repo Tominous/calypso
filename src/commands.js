@@ -59,7 +59,7 @@ let commands = [
     },
     {
         name: "join",
-        description: "Joins voice channel",
+        description: "Joins voice channel.",
         parameters: [],
         handle: function(message, params, client) {
             player.join(message, message.channel, client)
@@ -67,7 +67,7 @@ let commands = [
     },
     {
         name: "leave",
-        description: "Leaves voice channel",
+        description: "Leaves voice channel.",
         parameters: [],
         handle: function(message, params, client) {
             player.leave(message, message.channel, client);
@@ -75,7 +75,7 @@ let commands = [
     },
     {
         name: "play",
-        description: "Searches for a video on youtube and adds it to the queue",
+        description: "Searches for a video on youtube and adds it to the queue.",
         parameters: ["query"],
         handle: function(message, params, client) {
             player.play(message, message.channel, client);
@@ -83,7 +83,7 @@ let commands = [
     },
     {
         name: "skip",
-        description: "Skips the current song and plays the next one on the queue",
+        description: "Skips the current song and plays the next one on the queue.",
         parameters: [],
         handle: function(message, params, client) {
             player.skip(message, message.channel, client);
@@ -91,7 +91,7 @@ let commands = [
     },
     {
         name: "queue",
-        description: "Sends the queue list in chat",
+        description: "Sends the queue list in chat.",
         parameters: [],
         handle: function(message, params, client) {
             player.queue(message, message.channel, client);
@@ -99,7 +99,7 @@ let commands = [
     },
     {
         name: "announce",
-        description: "Sends a very large ASCII text of the message",
+        description: "Sends a very large ASCII text of the message.",
         parameters: ["text"],
         handle: function (message, params, client) {
             let text = params.slice(1).join(" ");
@@ -123,7 +123,7 @@ let commands = [
     },
     {
         name: "fetch-git",
-        description: "Pulls the latest source from git (Admin only)",
+        description: "Pulls the latest source from git (Admin only).",
         parameters: [],
         handle: function(message, params, client) {
             permissions.hasPermission(message.author, client.mongo).then(res => {
@@ -157,7 +157,7 @@ let commands = [
     },
     {
         name: "ping",
-        description: "Pings the servers that calypso depends on",
+        description: "Pings the servers that calypso depends on.",
         parameters: [],
         handle: function(message, params, client) {
             ping.ping(message, message.channel);
@@ -175,7 +175,7 @@ let commands = [
     },
     {
         name: "permissions",
-        description: "Permissions manager. (Admin only)",
+        description: "Permissions manager. (Admin only).",
         parameters: ["option", "target"],
         handle: function (message, params, client) {
             permissions.hasPermission(author, mongo).then(res => {
@@ -209,7 +209,7 @@ let commands = [
                             break;
                         default:
                             errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
-                                message.reply(embed);
+                                message.channel.send(embed);
                             });
                             break;
                     }
@@ -221,7 +221,7 @@ let commands = [
     },
     {
         name: "dog",
-        description: "Sends a picture of a random dog",
+        description: "Sends a picture of a random dog.",
         parameters: [],
         handle: function(message, params, client) {
             request('https://random.dog/woof.json', function(error, response, body) {
@@ -264,7 +264,7 @@ handler.handleCommand = function(message, text, client) {
             }
 
             errorUsage(usage, function(embed) {
-                message.reply(embed);
+                message.channel.send(embed);
             });
         } else {
             command.handle(message, params, client);
