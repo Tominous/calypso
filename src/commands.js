@@ -6,7 +6,8 @@ const Discord = require('discord.js'),
     permissions = require('./permissions'),
     player = require('./music/musicPlayer'),
     figlet = require('figlet'),
-    ping = require("./ping/ping");
+    ping = require("./ping/ping"),
+    request = require('request');
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
@@ -216,6 +217,22 @@ let commands = [
             }).catch(function() {
                 message.reply(":x: Permissions check failed, try again later.");
             });
+        }
+    },
+    {
+        name: "dog",
+        description: "Sends a picture of a random dog",
+        parameters: [],
+        handle: function(message, params, client) {
+            request('https://random.dog/woof.json', function(error, response, body) {
+                if (error) {
+                    message.reply(":dog: Failed to find doggy :(");
+                } else {
+                    let json = JSON.parse(body);
+                    let url = json.url;
+                    message.reply(":dog: " + url);
+                }
+            })
         }
     }
 ];
