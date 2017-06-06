@@ -263,11 +263,8 @@ handler.handleCommand = function(message, text, client) {
                 usage += param + " ";
             }
 
-            console.log("hi yes hello");
-
             errorUsage(usage, function(embed) {
-                console.log(embed);
-                message.channel.send(embed);
+                message.channel.sendEmbed(embed);
             });
         } else {
             command.handle(message, params, client);
