@@ -178,7 +178,7 @@ let commands = [
         description: "Permissions manager. (Admin only).",
         parameters: ["option", "target"],
         handle: function (message, params, client) {
-            permissions.hasPermission(author, mongo).then(res => {
+            permissions.hasPermission(message.author, mongo).then(res => {
                 if (!res) {
                     message.reply(":shield: No permissions. Only bot owners can execute this command.");
                     logger.logPermissionFailed(message, author, mongo);
