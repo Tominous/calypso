@@ -49,7 +49,7 @@ let commands = [
                 response += " :: " + c.description;
             }
 
-            response += "\n```";
+            response += "\n```\nFor more head to https://calypsobot.com/";
             message.author.send(response);
             if (message.channel instanceof Discord.TextChannel) {
                 message.reply("Commands have been sent to your DMs");
@@ -161,6 +161,62 @@ let commands = [
         handle: function(message, params, client) {
             ping.ping(message, message.channel);
         }
+    },
+    {
+        name: "8ball",
+        description: "It's a magic ball, what do you expect it to do?",
+        parameters: ["question"],
+        handle: function(message, params, client) {
+            let responses = ["Yes", "No", "My sources point to...yes", "My sources point to...no", "You f****** know it!", "No! What is wrong with you?"];
+            let response = responses[Math.floor(Math.random() * responses.length)];
+            message.reply(":8ball: " + response);
+        }
+    },
+    {
+        name: "permissions",
+        description: "Permissions manager. (Admin only)",
+        parameters: ["option", "target"],
+        handle: function (message, params, client) {
+            permissions.hasPermission(author, mongo).then(res => {
+                if (!res) {
+                    message.reply(":shield: No permissions. Only bot owners can execute this command.");
+                    logger.logPermissionFailed(message, author, mongo);
+                } else {
+                    let command = params[0];
+                    let target = params[1];
+                    switch (command) {
+                        case "add":
+                            client.fetchUser(target).then(fetchedUser => {
+                                permissions.addOwner(fetchedUser, mongo).then(() => {
+                                    message.reply(":gem: Gave permissions.");
+                                }).catch(function() {
+                                    message.reply(":x: Failed to give permissions!");
+                                });
+                            }).catch(function() {
+                                message.reply("Failed to find user.");
+                            });
+                            break;
+                        case "check":
+                            permissions.hasPermission(client.fetchUser(target), mongo).then(res => {
+                                message.reply("Permissions check returned " + res);
+                            }).catch(function () {
+                                message.reply("Failed to find user.");
+                            });
+                            break;
+                        case "remove":
+                            message.reply("TODO");
+                            break;
+                        default:
+                            errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
+                                message.reply(embed);
+                            });
+                            break;
+                    }
+                }
+            }).catch(function() {
+                message.reply(":x: Permissions check failed, try again later.");
+            });
+        }
     }
 ];
 
@@ -183,7 +239,16 @@ handler.handleCommand = function(message, text, client) {
 
     if (command) {
         if (params.length - 1 < command.parameters.length) {
-            message.reply("Not enough arguments");
+            let usage = "~" + command.name + " ";
+            for (let i = 0; i < command.parameters.length; i++) {
+                let param = command.parameters[i];
+                param = "<" + param + ">";
+                usage += param + " ";
+            }
+
+            errorUsage(usage, function(embed) {
+                message.reply(embed);
+            });
         } else {
             command.handle(message, params, client);
         }
@@ -196,88 +261,6 @@ handler.handle = function (message, content, author, member, channel, client, mo
     let cmd = content[0].replace("~", "");
 
     switch (cmd) {
-        case "8ball":
-            let question = content.slice(1);
-            if (question.length <= 0) {
-                errorUsage("~8ball <question>", function (embed) {
-                    channel.sendEmbed(embed);
-                });
-                break;
-            }
-
-            let responses = ["Yes", "No", "My sources point to...yes", "My sources point to...no", "You f****** know it!", "No! What is wrong with you?"];
-            let response = responses[Math.floor(Math.random() * responses.length)];
-            channel.sendMessage(":8ball: " + author + " " + response);
-            break;
-        case "find-id":
-            permissions.hasPermission(author, mongo).then(res => {
-                if (!res) {
-                    channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
-                    logger.logPermissionFailed(message, author, mongo);
-                } else {
-                    let findArgs = content.slice(1);
-                    if (findArgs.length !== 1) {
-                        errorUsage("~find-id <@user>", function(embed) {
-                            channel.sendEmbed(embed);
-                        });
-                    }
-
-                    let findTarget = findArgs[0].toString().replace("<", "").replace(">", "").replace("@", "").replace("!", "");
-                    channel.sendMessage(author + " " + findTarget);
-                }
-            }).catch(function() {
-                channel.sendMessage(":x: Permission check failed, try again later.");
-            });
-            break;
-        case "permissions":
-            permissions.hasPermission(author, mongo).then(res => {
-                if (!res) {
-                    channel.sendMessage(author + " :shield: No permissions. Only bot owners can execute this command.");
-                    logger.logPermissionFailed(message, author, mongo);
-                } else {
-                    let arguments = content.slice(1);
-                    if (arguments.length !== 2) {
-                        errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
-                            channel.sendEmbed(embed);
-                        });
-                        return;
-                    }
-
-                    let command = arguments[0];
-                    let target = arguments[1];
-                    switch (command) {
-                        case "add":
-                            client.fetchUser(target).then(fetchedUser => {
-                                permissions.addOwner(fetchedUser, mongo).then(() => {
-                                    channel.sendMessage(":gem: Gave permissions.")
-                                }).catch(function() {
-                                    channel.sendMessage("Failed to give permissions!");
-                                });
-                            }).catch(function() {
-                                channel.sendMessage(author + " Failed to find user.");
-                            });
-                            break;
-                        case "check":
-                            permissions.hasPermission(client.fetchUser(target), mongo).then(res => {
-                                channel.sendMessage("Permissions check returned " + res);
-                            }).catch(function () {
-                                channel.sendMessage(author + " Failed to find user.");
-                            });
-                            break;
-                        case "remove":
-                            channel.sendMessage("TODO");
-                            break;
-                        default:
-                            errorUsage("~permissions <add|check|remove> <@user>", function(embed) {
-                                channel.sendEmbed(embed);
-                            });
-                            break;
-                    }
-                }
-            }).catch(function() {
-                channel.sendMessage(":x: Permission check failed, try again later.");
-            });
-            break;
         case "slap":
             let arguments = content.slice(1);
             if (arguments.length > 1) {
