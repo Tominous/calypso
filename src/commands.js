@@ -242,9 +242,11 @@ let commands = [
         parameters: [],
         handle: function(message, params, client) {
             let embed = new Discord.RichEmbed();
+            let count = stats.fetchUserCount(client);
+            console.log(count);
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
             embed.addField("Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
-            embed.addField("General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + stats.fetchUserCount(client), true);
+            embed.addField("General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + count, true);
             embed.addField("Other Data", "• Node Version: v7.8.0\n• Discord.JS: v11.1.0\n• Calypso: 1.1");
             embed.setTimestamp();
             message.channel.sendEmbed(embed);
