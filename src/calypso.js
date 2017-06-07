@@ -20,37 +20,39 @@ client.on("ready", () => {
         } else {
             mongo = db;
             console.log("[DB] Connected to Mongo");
+
+            client.mongo = mongo;
+
+            client.user.setUsername("Calypso");
+            client.user.setGame("~help");
+
+            client.voiceChannels = {};
+            client.voiceDispatchers = {};
+            //noinspection JSAnnotator
+            client.voiceConnections = {};
+            client.guildQueues = {};
+
+            console.log(client.guilds);
+
+            for (let k in client.guilds) {
+                console.log(k);
+                let guild = client.guilds[k];
+                console.log(guild);
+                mongo.collection("guilds").updateOne({
+                        "guild": guild.id
+                    }, {
+                        "guild": guild.id,
+                        "region": guild.region,
+                        "joinedAt": guild.joinedAt
+                    },
+                    {
+                        upsert: true
+                    }, function (err, object) {
+
+                    });
+            }
         }
     });
-
-    client.mongo = mongo;
-
-    client.user.setUsername("Calypso");
-    client.user.setGame("~help");
-
-    client.voiceChannels = {};
-    client.voiceDispatchers = {};
-    //noinspection JSAnnotator
-    client.voiceConnections = {};
-    client.guildQueues = {};
-
-    for (let k in client.guilds) {
-        console.log(k);
-        let guild = client.guilds[k];
-        console.log(guild);
-        mongo.collection("guilds").updateOne({
-                "guild": guild.id
-            }, {
-                "guild": guild.id,
-                "region": guild.region,
-                "joinedAt": guild.joinedAt
-            },
-            {
-                upsert: true
-            }, function (err, object) {
-
-            });
-    }
 });
 
 client.on("message", message => {

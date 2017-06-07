@@ -245,7 +245,7 @@ let commands = [
             embed.addField("Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
             embed.addField("General Stats", "• Guild Count: Unknown\n• Users: Unknown", true);
             embed.addField("Other Data", "• Node Version: v7.8.0\n• Discord.JS: v11.1.0\n• Calypso: 1.1");
-            embed.setFooter(new Date().toUTCString());
+            embed.setTimestamp();
             message.channel.sendEmbed(embed);
         }
     }
