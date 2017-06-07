@@ -51,7 +51,6 @@ client.on("ready", () => {
                     });
 
                 permissions.updateGuild(client, guild).then(object => {
-                    console.log("Updated guild")
                 }).catch(err => {
                     console.log(err);
                 });
@@ -119,7 +118,6 @@ client.on("guildCreate", guild => {
 
         });
     permissions.updateGuild(client, guild).then(object => {
-        console.log("Updated guild")
     }).catch(err => {
         console.log(err);
     });
