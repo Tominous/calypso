@@ -198,9 +198,9 @@ let commands = [
             let embed = new Discord.RichEmbed();
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
             embed.addField("Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
-            embed.addField("General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + client.users.array().length, true);
-            embed.addField("Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: 1.2", false);
-            embed.addField("Usage", "• Ram Usage: " +  (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + "MB", true);
+            embed.addField("General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + client.users.array().length, false);
+            embed.addField("Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: 1.2", true);
+            embed.addField("Usage", "• Ram Usage: " +  (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + "MB");
             embed.setTimestamp();
             message.channel.sendEmbed(embed);
         }
