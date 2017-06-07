@@ -2,13 +2,13 @@ module.exports = {
     addPermissionNode: function(client, guild, role, permission) {
         return new Promise(function(resolve, reject) {
             let mongo = client.mongo;
-            let name = "roles." + role.name + ".permissions";
+            let name = "roles." + role.name;
             let update = {};
             update[name] = permission;
             mongo.collection("guild_permissions").updateOne({
                 "guildId": guild.id
             }, {
-                $push: update
+                $addToSet: update
             }, {
                 upsert: true
             }, function(err, object) {
