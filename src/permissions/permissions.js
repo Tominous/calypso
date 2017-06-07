@@ -28,7 +28,6 @@ module.exports = {
                 let role = guild.roles.array()[r];
                 roles[role.name] = [];
             }
-            console.log(roles);
             mongo.collection("guild_permissions").updateOne({
                 "guildId": guild.id
             }, {
