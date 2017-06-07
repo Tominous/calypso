@@ -57,12 +57,6 @@ client.on("ready", () => {
                 });
             }
         }
-
-        setInterval(function() {
-            let game = client.shard.id + "/" + client.shard.count + " Shards";
-            game = "~help | " + game;
-            client.user.setGame(game);
-        }, 5000);
     });
 });
 
