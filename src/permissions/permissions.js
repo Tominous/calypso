@@ -21,7 +21,6 @@ module.exports = {
         });
     },
     updateGuild: function(client, guild) {
-        console.log("WOOO");
         return new Promise(function(resolve, reject) {
             let mongo = client.mongo;
             let roles = {};
@@ -37,15 +36,21 @@ module.exports = {
             }, {
                 upsert: true
             }, function(err, object) {
-                console.log(err);
-                console.log(object);
-
                 if (err) {
                     reject(err);
                 } else {
                     resolve(object);
                 }
             });
+        });
+    },
+    isGlobalOwner: function(author) {
+        return new Promise(function(resolve, reject) {
+            if (author.id === "145231371118313472" || author.id === "128286074769375232") {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
         });
     }
 };
