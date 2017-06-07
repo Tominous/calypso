@@ -212,6 +212,26 @@ let commands = [
         handle: function(message, params, client) {
             coin.flip(message);
         }
+    },
+    {
+        name: "permissions",
+        description: "Permissions module, can only be used by administrators.",
+        parameters: ["node","role"],
+        handle: function(message, params, client) {
+            let node = params[0];
+            let role = params.slice(0).join(" ");
+            if (message.author.id === message.guild.ownerID) {
+                let actualRole = message.guild.roles.array().filter(rol => {
+                    return rol.name.toLowerCase() === role.toLowerCase();
+                })[0];
+                permissions.addPermissionNode(client, message.guild, actualRole, node).then(obj => {
+                    message.reply(":ok_hand: Permission node `" + node + "` given to user group `" + actualRole.name + "`");
+                }).catch(err => {
+                    message.reply(":x: Failed to give permissions, please contact a developer.");
+                    console.log(err);
+                });
+            }
+        }
     }
 ];
 
