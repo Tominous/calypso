@@ -7,7 +7,8 @@ const Discord = require('discord.js'),
     player = require('./music/musicPlayer'),
     figlet = require('figlet'),
     ping = require("./ping/ping"),
-    request = require('request');
+    request = require('request'),
+    stats = require('./stats/stats');
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
@@ -243,7 +244,7 @@ let commands = [
             let embed = new Discord.RichEmbed();
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
             embed.addField("Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
-            embed.addField("General Stats", "• Guild Count: Unknown\n• Users: Unknown", true);
+            embed.addField("General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + stats.fetchUserCount(client), true);
             embed.addField("Other Data", "• Node Version: v7.8.0\n• Discord.JS: v11.1.0\n• Calypso: 1.1");
             embed.setTimestamp();
             message.channel.sendEmbed(embed);
