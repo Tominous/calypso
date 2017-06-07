@@ -35,8 +35,8 @@ client.on("ready", () => {
 
             console.log("Bot is currently in " + client.guilds.array().length + " guilds!");
 
-            for (let k in client.guilds) {
-                let guild = client.guilds[k];
+            for (let k in client.guilds.array()) {
+                let guild = client.guilds.array()[k];
                 mongo.collection("guilds").updateOne({
                         "guild": guild.id
                     }, {
