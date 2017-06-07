@@ -138,9 +138,9 @@ String.prototype.toHHMMSS = function () {
     let remainder = sec_num % 86400;
 
     let days = Math.floor(sec_num / 86400);
-    let hours = remainder / 3600;
-    let minutes = (remainder / 60) - (hours * 60);
-    let seconds = (remainder % 3600) - (minutes * 60);
+    let hours = Math.floor(remainder / 3600);
+    let minutes = Math.floor((remainder / 60) - (hours * 60));
+    let seconds = Math.floor((remainder % 3600) - (minutes * 60));
 
     if (days > 0) {
         return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
