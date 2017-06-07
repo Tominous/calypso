@@ -21,6 +21,7 @@ module.exports = {
         });
     },
     updateGuild: function(client, guild) {
+        console.log("WOOO");
         return new Promise(function(resolve, reject) {
             let mongo = client.mongo;
             let roles = {};
