@@ -221,7 +221,6 @@ let commands = [
             let node = params[0];
             let role = params.slice(0).join(" ");
             if (message.author.id === message.guild.ownerID) {
-                console.log(message.guild.roles.array());
                 let actualRole = message.guild.roles.array().filter(rol => {
                     console.log(rol);
                     return rol.name.toLowerCase() === role.toLowerCase();
