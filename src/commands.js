@@ -4,11 +4,12 @@ const Discord = require('discord.js'),
     shutdown = require('./shutdown'),
     logger = require('./logger'),
     permissions = require('./permissions/permissions'),
-    player = require('./music/musicPlayer'),
+    player = require('./commands/music/musicPlayer'),
     figlet = require('figlet'),
-    ping = require("./ping/ping"),
+    ping = require("./commands/misc/ping"),
     request = require('request'),
-    stats = require('./stats/stats');
+    stats = require('./commands/misc/stats'),
+    coin = require('./commands/fun/flipcoin');
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
@@ -207,6 +208,14 @@ let commands = [
             embed.addField("Other Data", "• Node Version: v7.8.0\n• Discord.JS: v11.1.0\n• Calypso: 1.1");
             embed.setTimestamp();
             message.channel.sendEmbed(embed);
+        }
+    },
+    {
+        name: "coin",
+        description: "Flips a coin, this is usually used to break a tie.",
+        parameters: [],
+        handle: function(message, params, client) {
+            coin.flip(message);
         }
     }
 ];
