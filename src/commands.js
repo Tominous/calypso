@@ -223,7 +223,7 @@ let commands = [
             if (message.author.id === message.guild.ownerID) {
                 let actualRole = message.guild.roles.array().filter(rol => {
                     return rol.name.toLowerCase() === role.toLowerCase();
-                }).values();
+                });
                 console.log(actualRole);
                 permissions.addPermissionNode(client, message.guild, actualRole, node).then(obj => {
                     message.reply(":ok_hand: Permission node `" + node + "` given to user group `" + actualRole.name + "`");
