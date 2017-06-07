@@ -8,7 +8,7 @@ module.exports = {
             mongo.collection("guild_permissions").updateOne({
                 "guildId": guild.id
             }, {
-                $addToSet: update
+                $push: update
             }, {
                 upsert: true
             }, function(err, object) {
