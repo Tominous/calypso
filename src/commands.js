@@ -8,7 +8,6 @@ const Discord = require('discord.js'),
     figlet = require('figlet'),
     ping = require("./commands/misc/ping"),
     request = require('request'),
-    stats = require('./commands/misc/stats'),
     coin = require('./commands/fun/flipcoin');
 
 let errorUsage = function (usage, callback) {
