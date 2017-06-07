@@ -219,7 +219,7 @@ let commands = [
         parameters: ["node","role"],
         handle: function(message, params, client) {
             let node = params[1];
-            let role = params.slice(1).join(" ");
+            let role = params.slice(2).join(" ");
             console.log(role);
             if (message.author.id === message.guild.ownerID) {
                 let actualRole = message.guild.roles.array().filter(rol => {
