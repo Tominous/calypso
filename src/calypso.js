@@ -32,12 +32,10 @@ client.on("ready", () => {
             client.voiceConnections = {};
             client.guildQueues = {};
 
-            console.log(client.guilds);
+            console.log("Bot is currently in " + client.guilds.array().length + " guilds!");
 
             for (let k in client.guilds) {
-                console.log(k);
                 let guild = client.guilds[k];
-                console.log(guild);
                 mongo.collection("guilds").updateOne({
                         "guild": guild.id
                     }, {
