@@ -220,12 +220,10 @@ let commands = [
         handle: function(message, params, client) {
             let node = params[1];
             let role = params.slice(2).join(" ");
-            console.log(role);
             if (message.author.id === message.guild.ownerID) {
                 let actualRole = message.guild.roles.array().filter(rol => {
                     return rol.name.toLowerCase() === role.toLowerCase();
-                });
-                console.log(actualRole);
+                })[0];
                 permissions.addPermissionNode(client, message.guild, actualRole, node).then(obj => {
                     message.reply(":ok_hand: Permission node `" + node + "` given to user group `" + actualRole.name + "`");
                 }).catch(err => {
