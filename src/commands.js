@@ -242,7 +242,12 @@ let commands = [
         parameters: [],
         handle: function(message, params, client) {
             let embed = new Discord.RichEmbed();
-            let count = stats.fetchUserCount(client);
+            let count = 0;
+            for (let k in client.guilds) {
+                let guild = client.guilds[k];
+                count += guild.memberCount;
+                console.log(guild);
+            }
             console.log(count);
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
             embed.addField("Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
