@@ -218,8 +218,9 @@ let commands = [
         description: "Permissions module, can only be used by administrators.",
         parameters: ["node","role"],
         handle: function(message, params, client) {
-            let node = params[0];
-            let role = params.slice(0).join(" ");
+            let node = params[1];
+            let role = params.slice(1).join(" ");
+            console.log(role);
             if (message.author.id === message.guild.ownerID) {
                 let actualRole = message.guild.roles.array().filter(rol => {
                     return rol.name.toLowerCase() === role.toLowerCase();
