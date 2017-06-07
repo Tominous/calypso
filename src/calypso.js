@@ -49,7 +49,11 @@ client.on("ready", () => {
                     }, function (err, object) {
 
                     });
-                permissions.updateGuild(client, guild);
+                permissions.updateGuild(client, guild).then(object => {
+                    console.log("Updated guild")
+                }).catch(err => {
+                    console.log(err);
+                });
             }
         }
     });
@@ -113,11 +117,19 @@ client.on("guildCreate", guild => {
         }, function (err, object) {
 
         });
-    permissions.updateGuild(client, guild);
+    permissions.updateGuild(client, guild).then(object => {
+        console.log("Updated guild")
+    }).catch(err => {
+        console.log(err);
+    });
 });
 
 client.on("guildUpdate", (oldGuild, newGuild) => {
-    permissions.updateGuild(client, newGuild);
+    permissions.updateGuild(client, newGuild).then(object => {
+        console.log("Updated guild")
+    }).catch(err => {
+        console.log(err);
+    });
 });
 
 String.prototype.toHHMMSS = function () {
