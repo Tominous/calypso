@@ -3,7 +3,8 @@ const Discord = require('discord.js'),
     cmdHandler = require("./commands"),
     config = require("./config.json"),
     toobusy = require("toobusy-js"),
-    MongoClient = require("mongodb").MongoClient;
+    MongoClient = require("mongodb").MongoClient,
+    permissions = require("./permissions/permissions");
 
 const token = config.bot.token;
 let mongo = undefined;
@@ -48,6 +49,7 @@ client.on("ready", () => {
                     }, function (err, object) {
 
                     });
+                permissions.updateGuild(client, guild);
             }
         }
     });
@@ -111,6 +113,11 @@ client.on("guildCreate", guild => {
         }, function (err, object) {
 
         });
+    permissions.updateGuild(client, guild);
+});
+
+client.on("guildUpdate", (oldGuild, newGuild) => {
+    permissions.updateGuild(client, newGuild);
 });
 
 String.prototype.toHHMMSS = function () {

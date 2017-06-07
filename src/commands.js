@@ -247,7 +247,6 @@ let commands = [
                 let guild = client.guilds.array()[g];
                 count += guild.memberCount;
             }
-            console.log(count);
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
             embed.addField("Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
             embed.addField("General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + count, true);
