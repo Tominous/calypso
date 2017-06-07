@@ -28,6 +28,7 @@ module.exports = {
                 let role = guild.roles.array()[r];
                 roles[role.name] = [];
             }
+            console.log(roles);
             mongo.collection("guild_permissions").updateOne({
                 "guildId": guild.id
             }, {
@@ -35,6 +36,9 @@ module.exports = {
             }, {
                 upsert: true
             }, function(err, object) {
+                console.log(err);
+                console.log(object);
+
                 if (err) {
                     reject(err);
                 } else {

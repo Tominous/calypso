@@ -49,6 +49,7 @@ client.on("ready", () => {
                     }, function (err, object) {
 
                     });
+
                 permissions.updateGuild(client, guild).then(object => {
                     console.log("Updated guild")
                 }).catch(err => {
