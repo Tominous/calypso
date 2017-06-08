@@ -69,11 +69,13 @@ module.exports = {
                         mongo.collection("guild_permissions").findOne(query, function(err, object) {
                             if (err) {
                                 reject(false);
+                                console.log(err);
                             } else {
                                 if (object !== null && object !== undefined) {
                                     console.log("Object: " + object.toString());
                                     resolve(true);
                                 } else {
+                                    console.log("rip");
                                     resolve(false);
                                 }
                             }
