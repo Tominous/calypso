@@ -44,7 +44,7 @@ client.on("ready", () => {
                         "region": guild.region,
                         "joinedAt": guild.joinedAt,
                         "guildName": guild.name,
-                        "owner": guild.owner
+                        "owner": guild.ownerID
                     },
                     {
                         upsert: true
@@ -118,7 +118,7 @@ client.on("guildCreate", guild => {
             "region": guild.region,
             "joinedAt": guild.joinedAt,
             "guildName": guild.name,
-            "owner": guild.owner
+            "owner": guild.ownerId
         },
         {
             upsert: true
@@ -139,7 +139,7 @@ client.on("guildUpdate", (oldGuild, newGuild) => {
             "region": newGuild.region,
             "joinedAt": newGuild.joinedAt,
             "guildName": newGuild.name,
-            "owner": newGuild.owner
+            "owner": newGuild.ownerId
         },
         {
             upsert: true
