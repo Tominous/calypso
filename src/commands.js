@@ -127,6 +127,12 @@ let commands = [
         description: "Pulls the latest source from git (Admin only).",
         parameters: [],
         handle: function(message, params, client) {
+            permissions.hasPermission(message.author, "fetch.git", message, client).then(response => {
+                console.log(response);
+            }).catch(err => {
+                console.log(err);
+            });
+
             permissions.isGlobalOwner(message.author).then(res => {
                 if (!res) {
                     message.reply(":shield: No permissions. Only bot owners can execute this command.");
@@ -199,7 +205,7 @@ let commands = [
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
             embed.addField("> Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
             embed.addField("> General Stats", "• Guild Count: " + client.guilds.array().length + "\n• Users: " + client.users.array().length, true);
-            embed.addField("> Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: 1.2", false);
+            embed.addField("> Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: 1.2", true);
             embed.addField("> Usage", "• Ram Usage: " +  (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + "MB", true);
             embed.setTimestamp();
             message.channel.sendEmbed(embed);

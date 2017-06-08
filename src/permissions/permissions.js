@@ -52,5 +52,32 @@ module.exports = {
                 resolve(false);
             }
         });
+    },
+    hasPermission: function(author, node, message, client) {
+        return new Promise(function(resolve, reject) {
+            if (message.guild.ownerId === author.id) {
+                resolve(true);
+            } else {
+                let mongo = client.mongo;
+                for (var k in author.roles.array()) {
+                    let role = author.roles.array()[k];
+                    let name = "roles." + role.name;
+                    let query = {"guildId": message.guild.id};
+                    query[name] = node;
+                    mongo.collection("guild_permissions").findOne(query, function(err, document) {
+                        if (err) {
+                            reject(false);
+                        } else {
+                            if (object !== null && object !== undefined) {
+                                console.log(document);
+                                resolve(document);
+                            } else {
+                                resolve(false);
+                            }
+                        }
+                    })
+                }
+            }
+        });
     }
 };
