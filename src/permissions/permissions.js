@@ -61,7 +61,10 @@ module.exports = {
                 let mongo = client.mongo;
                 message.guild.fetchMember(author).then(user => {
                     let found = false;
-                    for (var k in user.roles.array()) {
+                    for (let k in user.roles.array()) {
+                        if (found) {
+                            break;
+                        }
                         let role = user.roles.array()[k];
                         let name = "roles." + role.name;
                         let query = {"guildId": message.guild.id};
@@ -75,7 +78,6 @@ module.exports = {
                                 if (object !== null && object !== undefined) {
                                     console.log("Object: " + object.toString());
                                     found = true;
-                                    break;
                                 } else {
                                     console.log("rip");
                                 }
