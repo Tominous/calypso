@@ -38,11 +38,12 @@ client.on("ready", () => {
             for (let k in client.guilds.array()) {
                 let guild = client.guilds.array()[k];
                 mongo.collection("guilds").updateOne({
-                        "guild": guild.id
+                        "guildId": guild.id
                     }, {
-                        "guild": guild.id,
+                        "guildId": guild.id,
                         "region": guild.region,
-                        "joinedAt": guild.joinedAt
+                        "joinedAt": guild.joinedAt,
+                        "guild": guild
                     },
                     {
                         upsert: true

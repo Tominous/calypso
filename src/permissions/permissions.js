@@ -21,6 +21,9 @@ module.exports = {
         });
     },
     updateGuild: function(client, guild) {
+
+        //TODO: Fix issue where upon each restart, the permissions are reset for every single discord.
+
         return new Promise(function(resolve, reject) {
             let mongo = client.mongo;
             let roles = {};
