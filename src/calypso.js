@@ -43,7 +43,8 @@ client.on("ready", () => {
                         "guildId": guild.id,
                         "region": guild.region,
                         "joinedAt": guild.joinedAt,
-                        "guild": guild
+                        "guildName": guild.name,
+                        "owner": guild.owner
                     },
                     {
                         upsert: true
@@ -111,11 +112,13 @@ client.on("message", message => {
 
 client.on("guildCreate", guild => {
     mongo.collection("guilds").updateOne({
-            "guild": guild.id
+            "guildId": guild.id
         }, {
-            "guild": guild.id,
+            "guildId": guild.id,
             "region": guild.region,
-            "joinedAt": guild.joinedAt
+            "joinedAt": guild.joinedAt,
+            "guildName": guild.name,
+            "owner": guild.owner
         },
         {
             upsert: true
@@ -129,6 +132,21 @@ client.on("guildCreate", guild => {
 });
 
 client.on("guildUpdate", (oldGuild, newGuild) => {
+    mongo.collection("guilds").updateOne({
+            "guildId": oldGuild.id
+        }, {
+            "guildId": newGuild.id,
+            "region": newGuild.region,
+            "joinedAt": newGuild.joinedAt,
+            "guildName": newGuild.name,
+            "owner": newGuild.owner
+        },
+        {
+            upsert: true
+        }, function (err, object) {
+
+        });
+
     permissions.updateGuild(client, newGuild).then(object => {
         console.log("Updated guild")
     }).catch(err => {
