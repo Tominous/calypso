@@ -60,7 +60,6 @@ module.exports = {
             } else {
                 let mongo = client.mongo;
                 message.guild.fetchMember(author).then(user => {
-                    let found = false;
                     for (let k in user.roles.array()) {
                         if (found) {
                             break;
@@ -77,14 +76,13 @@ module.exports = {
                             } else {
                                 if (object !== null && object !== undefined) {
                                     console.log("Object: " + object.toString());
-                                    found = true;
+                                    resolve(true);
                                 } else {
                                     console.log("rip");
                                 }
                             }
                         })
                     }
-                    resolve(found);
                 });
             }
         });
