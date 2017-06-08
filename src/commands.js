@@ -127,12 +127,6 @@ let commands = [
         description: "Pulls the latest source from git (Admin only).",
         parameters: [],
         handle: function(message, params, client) {
-            permissions.hasPermission(message.author, "fetch.git", message, client).then(response => {
-                console.log(response);
-            }).catch(err => {
-                console.log(err);
-            });
-
             permissions.isGlobalOwner(message.author).then(res => {
                 if (!res) {
                     message.reply(":shield: No permissions. Only bot owners can execute this command.");

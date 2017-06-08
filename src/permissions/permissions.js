@@ -72,10 +72,7 @@ module.exports = {
                                 console.log(err);
                             } else {
                                 if (object !== null && object !== undefined) {
-                                    console.log("Object: " + object.toString());
                                     resolve(true);
-                                } else {
-                                    console.log("rip");
                                 }
                             }
                         })
