@@ -31,8 +31,10 @@ module.exports = {
             mongo.collection("guild_permissions").updateOne({
                 "guildId": guild.id
             }, {
-                "guildId": guild.id,
-                roles: roles
+                $set: {
+                    "guildId": guild.id,
+                    roles: roles
+                }
             }, {
                 upsert: true
             }, function(err, object) {
