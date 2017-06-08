@@ -61,9 +61,6 @@ module.exports = {
                 let mongo = client.mongo;
                 message.guild.fetchMember(author).then(user => {
                     for (let k in user.roles.array()) {
-                        if (found) {
-                            break;
-                        }
                         let role = user.roles.array()[k];
                         let name = "roles." + role.name;
                         let query = {"guildId": message.guild.id};
