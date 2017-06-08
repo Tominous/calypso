@@ -71,8 +71,8 @@ module.exports = {
                                 reject(false);
                             } else {
                                 if (object !== null && object !== undefined) {
-                                    console.log("Object: " + object);
-                                    resolve(object);
+                                    console.log("Object: " + object.toString());
+                                    resolve(true);
                                 } else {
                                     resolve(false);
                                 }
