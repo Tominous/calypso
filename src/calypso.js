@@ -48,7 +48,11 @@ client.on("ready", () => {
                     {
                         upsert: true
                     }, function (err, object) {
-
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("Registered guild");
+                        }
                     });
 
                 permissions.updateGuild(client, guild).then(object => {
