@@ -51,8 +51,6 @@ client.on("ready", () => {
                     }, function (err, object) {
                         if (err) {
                             console.log(err);
-                        } else {
-                            console.log("Registered guild");
                         }
                     });
 
