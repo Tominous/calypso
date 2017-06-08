@@ -65,12 +65,13 @@ module.exports = {
                         let name = "roles." + role.name;
                         let query = {"guildId": message.guild.id};
                         query[name] = node;
+                        console.log(query);
                         mongo.collection("guild_permissions").findOne(query, function(err, object) {
                             if (err) {
                                 reject(false);
                             } else {
                                 if (object !== null && object !== undefined) {
-                                    console.log(object);
+                                    console.log("Object: " + object);
                                     resolve(object);
                                 } else {
                                     resolve(false);
