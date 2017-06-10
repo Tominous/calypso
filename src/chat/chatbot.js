@@ -1,5 +1,5 @@
-const Brain = require('node-brain'),
-    brain = new Brain();
+const Brain = require('./src/Brain');
+const brain = new Brain();
 
 module.exports = {
     getBrain: function() {
