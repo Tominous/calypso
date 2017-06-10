@@ -4,8 +4,7 @@ const Discord = require('discord.js'),
     config = require("./config.json"),
     toobusy = require("toobusy-js"),
     MongoClient = require("mongodb").MongoClient,
-    permissions = require("./permissions/permissions"),
-    chatbot = require('./chat/chatbot');
+    permissions = require("./permissions/permissions");
 
 const token = config.bot.token;
 let mongo = undefined;
@@ -60,11 +59,6 @@ client.on("ready", () => {
                     console.log(err);
                 });
             }
-
-            mongo.collection("received_messages").find({}).each(function(err, object) {
-                let message = object.message;
-                chatbot.trainBrain(message);
-            });
         }
     });
 });
@@ -81,7 +75,6 @@ client.on("message", message => {
                 console.log(err);
             }
         });
-        chatbot.trainBrain(message);
         return;
     }
 
