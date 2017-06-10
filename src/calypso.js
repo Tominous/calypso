@@ -4,7 +4,8 @@ const Discord = require('discord.js'),
     config = require("./config.json"),
     toobusy = require("toobusy-js"),
     MongoClient = require("mongodb").MongoClient,
-    permissions = require("./permissions/permissions");
+    permissions = require("./permissions/permissions"),
+    chatbot = require('./chat/chatbot');
 
 const token = config.bot.token;
 let mongo = undefined;
@@ -59,12 +60,28 @@ client.on("ready", () => {
                     console.log(err);
                 });
             }
+
+            mongo.collection("received_messages").find({}).each(function(err, object) {
+                let message = object.message;
+                chatbot.trainBrain(message);
+            });
         }
     });
 });
 
 client.on("message", message => {
     if (!message.content.startsWith(starter)) {
+        mongo.collection("received_messages").insertOne({
+            "author": message.author.username,
+            "authorId": message.author.id,
+            "timetamp": new Date().getTime(),
+            "message": message.content
+        }, function(err, result) {
+            if (err) {
+                console.log(err);
+            }
+        });
+        chatbot.trainBrain(message);
         return;
     }
 
