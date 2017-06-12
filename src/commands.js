@@ -202,7 +202,7 @@ let commands = [
             let users = await client.shard.broadcastEval('this.users.size');
             users = users.reduce((prev, val) => prev + val, 0);
             let mem = await client.shard.broadcastEval('process.memoryUsage().heapUsed');
-            mem = mem.reduce((prev, next) => prev + next / 1024 / 1024, 0);
+            mem = mem.reduce((prev, next) => prev + next / 1024 / 1024, 0).toFixed(2);
 
             let embed = new Discord.RichEmbed();
             embed.setTitle(":pencil: Statistics").setColor("#259c28");
