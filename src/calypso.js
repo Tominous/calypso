@@ -22,7 +22,6 @@ client.on("ready", () => {
             client.mongo = mongo;
 
             client.user.setUsername("Calypso");
-            client.user.setGame("~help | " + client.shard.id + "/" + client.shard.count);
 
             client.voiceChannels = {};
             client.voiceDispatchers = {};
@@ -31,6 +30,7 @@ client.on("ready", () => {
             client.guildQueues = {};
 
             console.log("Bot started on Shard #" + client.shard.id + "/" + client.shard.count + " with " + client.guilds.size + " guilds.");
+            client.user.setGame("~help | " + client.shard.id + "/" + client.shard.count);
 
             client.on("message", message => {
                 if (!message.content.startsWith(starter)) {
