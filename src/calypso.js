@@ -55,6 +55,10 @@ client.on("ready", () => {
                     return;
                 }
 
+                if (!message.channel.permissionsFor(message.guild.member(client.user)).hasPermission("SEND_MESSAGES")) {
+                    return;
+                }
+
                 let content = message.content.split(" ");
                 if (message.channel instanceof Discord.DMChannel) {
                     mongo.collection("messages").insertOne({
