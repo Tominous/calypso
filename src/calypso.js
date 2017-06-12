@@ -55,7 +55,7 @@ client.on("ready", () => {
                     return;
                 }
 
-                if (!message.channel.permissionsFor(message.guild.member(client.user)).hasPermission("SEND_MESSAGES")) {
+                if (message.channel.type === "text" && !message.channel.permissionsFor(message.guild.member(client.user)).hasPermission("SEND_MESSAGES")) {
                     return;
                 }
 
