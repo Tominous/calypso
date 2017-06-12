@@ -12,15 +12,12 @@ let mongo = undefined;
 let starter = "~";
 
 client.on("ready", () => {
-    console.log("[STARTUP] Calypso is now up and running!");
-
     MongoClient.connect(config.database.url, function (err, db) {
         if (err !== null) {
             console.log("[ERROR] Failed to boot.");
             process.exit(1);
         } else {
             mongo = db;
-            console.log("[DB] Connected to Mongo");
 
             client.mongo = mongo;
 
@@ -55,7 +52,7 @@ client.on("ready", () => {
                     return;
                 }
 
-                if (message.channel.type === "text" && !message.channel.permissionsFor(message.guild.member(client.user)).hasPermission("SEND_MESSAGES")) {
+                if (message.channel.type === "text" && !message.channel.permissionsFor(message.guild.member(client.user)).has("SEND_MESSAGES")) {
                     return;
                 }
 
