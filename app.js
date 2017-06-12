@@ -1,5 +1,5 @@
 const {ShardingManager} = require('discord.js');
-const Manager = new ShardingManager('./src/calypso.js');
+const Manager = new ShardingManager('../src/calypso.js');
 
 Manager.spawn(2).then(col => {
     console.log(col)
