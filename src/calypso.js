@@ -22,7 +22,7 @@ client.on("ready", () => {
             client.mongo = mongo;
 
             client.user.setUsername("Calypso");
-            client.user.setGame("~help");
+            client.user.setGame("~help | " + client.shard.id + "/" + client.shard.count);
 
             client.voiceChannels = {};
             client.voiceDispatchers = {};
