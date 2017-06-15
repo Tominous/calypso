@@ -106,7 +106,7 @@ client.on("ready", () => {
                     }, function (err, object) {
 
                     });
-                permissions.updateGuild(client, guild).then(object => {
+                permissions.insertGuild(client, guild).then(object => {
                 }).catch(err => {
                     console.log(err);
                 });
@@ -127,38 +127,7 @@ client.on("ready", () => {
                     }, function (err, object) {
 
                     });
-
-                permissions.updateGuild(client, newGuild).then(object => {
-                    console.log("Updated guild")
-                }).catch(err => {
-                    console.log(err);
-                });
             });
-
-            for (let k in client.guilds.array()) {
-                let guild = client.guilds.array()[k];
-                mongo.collection("guilds").updateOne({
-                        "guildId": guild.id
-                    }, {
-                        "guildId": guild.id,
-                        "region": guild.region,
-                        "joinedAt": guild.joinedAt,
-                        "guildName": guild.name,
-                        "owner": guild.ownerID
-                    },
-                    {
-                        upsert: true
-                    }, function (err, object) {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-
-                permissions.updateGuild(client, guild).then(object => {
-                }).catch(err => {
-                    console.log(err);
-                });
-            }
         }
     });
 });
