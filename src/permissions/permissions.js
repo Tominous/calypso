@@ -118,7 +118,7 @@ module.exports = {
                     if (object !== null && object !== undefined) {
                         resolve(true);
                     } else {
-                        resovle(false);
+                        resolve(false);
                     }
                 }
             });
