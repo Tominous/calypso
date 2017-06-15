@@ -225,20 +225,49 @@ let commands = [
     {
         name: "permissions",
         description: "Permissions module, can only be used by administrators.",
-        parameters: ["node","role"],
+        parameters: ["action [add/remove/check]", "node","role"],
         handle: function(message, params, client) {
-            let node = params[1];
-            let role = params.slice(2).join(" ");
+            if (message.channel instanceof Discord.DMChannel) {
+                message.reply("This action can ony be performed in text channels.");
+                return;
+            }
+
+            let action = params[1];
+            let node = params[2];
+            let role = params.slice(3).join(" ");
             if (message.author.id === message.guild.ownerID) {
                 let actualRole = message.guild.roles.array().filter(rol => {
                     return rol.name.toLowerCase() === role.toLowerCase();
                 })[0];
-                permissions.addPermissionNode(client, message.guild, actualRole, node).then(obj => {
-                    message.reply(":ok_hand: Permission node `" + node + "` given to user group `" + actualRole.name + "`");
-                }).catch(err => {
-                    message.reply(":x: Failed to give permissions, please contact a developer.");
-                    console.log(err);
-                });
+                switch (action.toLowerCase()) {
+                    case "add":
+                        permissions.addPermissionNode(client, message.guild, actualRole, node).then(obj => {
+                            message.reply(":ok_hand: Permission node `" + node + "` given to user group `" + actualRole.name + "`");
+                        }).catch(err => {
+                            message.reply(":x: Failed to give permissions, please contact a developer.");
+                            console.log(err);
+                        });
+                        break;
+                    case "remove":
+                        permissions.removePermissionNode(client, message.guild, actualRole, node).then(obj => {
+                            message.reply(":ok_hand: Permission node `" + node + "` removed from user group `" + actualRole.name + "`");
+                        }).catch(err => {
+                            message.reply(":x: Failed to remove permissions, please contact a developer.");
+                            console.log(err);
+                        });
+                        break;
+                    case "check":
+                        permissions.roleHasPermission(node, actualRole, message, client).then(response => {
+                            message.reply(":shield: The role `" + actualRole.name + "` " + (response ? "does" : "does not") + " have the `" + node + "` permission node.");
+                        }).catch(err => {
+                            message.reply(":x: Failed to check permissions, please contact a developer.");
+                            console.log(err);
+                        });
+                        break;
+                    default:
+                        message.reply("Wrong action. Please try one of the following: add,remove,check.");
+                        break;
+                }
             }
         }
     }

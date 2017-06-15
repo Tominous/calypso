@@ -20,6 +20,27 @@ module.exports = {
             });
         });
     },
+    removePermissionNode: function(client, guild, role, permission) {
+        return new Promise(function(resolve, reject) {
+            let mongo = client.mongo;
+            let name = "roles." + role.name;
+            let update = {};
+            update[name] = permission;
+            mongo.collection("guild_permissions").updateOne({
+                "guildId": guild.id
+            }, {
+                $pull: update
+            }, {
+                upsert: true
+            }, function(err, object) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(object);
+                }
+            });
+        });
+    },
     insertGuild: function(client, guild) {
         return new Promise(function(resolve, reject) {
             let mongo = client.mongo;
@@ -74,9 +95,34 @@ module.exports = {
                             } else {
                                 if (object !== null && object !== undefined) {
                                     resolve(true);
+                                } else {
+                                    resolve(false);
                                 }
                             }
                         })
+                    }
+                });
+            }
+        });
+    },
+    roleHasPermission: function(node, role, message, client) {
+        return new Promise(function(resolve, reject) {
+            if (message.guild.ownerId === author.id) {
+                resolve(true);
+            } else {
+                let mongo = client.mongo;
+                let name = "roles." + role.name;
+                let query = {"guildId": message.guild.id};
+                query[name] = node;
+                mongo.collection("guild_permissions").findOne(query, function(err, object) {
+                    if (err) {
+                        reject(false);
+                    } else {
+                        if (object !== null && object !== undefined) {
+                            resolve(true);
+                        } else {
+                            resovle(false);
+                        }
                     }
                 });
             }
