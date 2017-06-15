@@ -29,8 +29,8 @@ client.on("ready", () => {
             client.voiceConnections = {};
             client.guildQueues = {};
 
-            console.log("Bot started on Shard #" + client.shard.id + "/" + client.shard.count + " with " + client.guilds.size + " guilds.");
-            client.user.setGame("~help | " + client.shard.id + "/" + client.shard.count);
+            console.log("Bot started on Shard #" + (client.shard.id + 1) + "/" + client.shard.count + " with " + client.guilds.size + " guilds.");
+            client.user.setGame("~help | " + (client.shard.id + 1) + "/" + client.shard.count);
 
             client.on("message", message => {
                 if (!message.content.startsWith(starter)) {
