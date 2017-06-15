@@ -1,6 +1,6 @@
 module.exports = {
-    addPermissionNode: function(client, guild, role, permission) {
-        return new Promise(function(resolve, reject) {
+    addPermissionNode: function (client, guild, role, permission) {
+        return new Promise(function (resolve, reject) {
             let mongo = client.mongo;
             let name = "roles." + role.name;
             let update = {};
@@ -11,7 +11,7 @@ module.exports = {
                 $addToSet: update
             }, {
                 upsert: true
-            }, function(err, object) {
+            }, function (err, object) {
                 if (err) {
                     reject(err);
                 } else {
@@ -20,8 +20,8 @@ module.exports = {
             });
         });
     },
-    removePermissionNode: function(client, guild, role, permission) {
-        return new Promise(function(resolve, reject) {
+    removePermissionNode: function (client, guild, role, permission) {
+        return new Promise(function (resolve, reject) {
             let mongo = client.mongo;
             let name = "roles." + role.name;
             let update = {};
@@ -32,7 +32,7 @@ module.exports = {
                 $pull: update
             }, {
                 upsert: true
-            }, function(err, object) {
+            }, function (err, object) {
                 if (err) {
                     reject(err);
                 } else {
@@ -41,8 +41,8 @@ module.exports = {
             });
         });
     },
-    insertGuild: function(client, guild) {
-        return new Promise(function(resolve, reject) {
+    insertGuild: function (client, guild) {
+        return new Promise(function (resolve, reject) {
             let mongo = client.mongo;
             let roles = {};
             for (let r in guild.roles.array()) {
@@ -58,7 +58,7 @@ module.exports = {
                 }
             }, {
                 upsert: true
-            }, function(err, object) {
+            }, function (err, object) {
                 if (err) {
                     reject(err);
                 } else {
@@ -67,8 +67,8 @@ module.exports = {
             });
         });
     },
-    isGlobalOwner: function(author) {
-        return new Promise(function(resolve, reject) {
+    isGlobalOwner: function (author) {
+        return new Promise(function (resolve, reject) {
             if (author.id === "145231371118313472" || author.id === "128286074769375232") {
                 resolve(true);
             } else {
@@ -76,8 +76,8 @@ module.exports = {
             }
         });
     },
-    hasPermission: function(author, node, message, client) {
-        return new Promise(function(resolve, reject) {
+    hasPermission: function (author, node, message, client) {
+        return new Promise(function (resolve, reject) {
             if (message.guild.ownerId === author.id) {
                 resolve(true);
             } else {
@@ -89,7 +89,7 @@ module.exports = {
                         let query = {"guildId": message.guild.id};
                         query[name] = node;
                         console.log(query);
-                        mongo.collection("guild_permissions").findOne(query, function(err, object) {
+                        mongo.collection("guild_permissions").findOne(query, function (err, object) {
                             if (err) {
                                 reject(false);
                             } else {
@@ -105,27 +105,23 @@ module.exports = {
             }
         });
     },
-    roleHasPermission: function(node, role, message, client) {
-        return new Promise(function(resolve, reject) {
-            if (message.guild.ownerId === author.id) {
-                resolve(true);
-            } else {
-                let mongo = client.mongo;
-                let name = "roles." + role.name;
-                let query = {"guildId": message.guild.id};
-                query[name] = node;
-                mongo.collection("guild_permissions").findOne(query, function(err, object) {
-                    if (err) {
-                        reject(false);
+    roleHasPermission: function (node, role, message, client) {
+        return new Promise(function (resolve, reject) {
+            let mongo = client.mongo;
+            let name = "roles." + role.name;
+            let query = {"guildId": message.guild.id};
+            query[name] = node;
+            mongo.collection("guild_permissions").findOne(query, function (err, object) {
+                if (err) {
+                    reject(false);
+                } else {
+                    if (object !== null && object !== undefined) {
+                        resolve(true);
                     } else {
-                        if (object !== null && object !== undefined) {
-                            resolve(true);
-                        } else {
-                            resovle(false);
-                        }
+                        resovle(false);
                     }
-                });
-            }
+                }
+            });
         });
     }
 };
