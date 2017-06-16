@@ -235,7 +235,7 @@ let commands = [
             let action = params[1];
             let node = params[2];
             let role = params.slice(3).join(" ");
-            if (message.author.id === message.guild.ownerID) {
+            if (message.author.id === message.guild.ownerID || permissions.isGlobalOwner(message.author)) {
                 let actualRole = message.guild.roles.array().filter(rol => {
                     return rol.name.toLowerCase() === role.toLowerCase();
                 })[0];
@@ -268,6 +268,8 @@ let commands = [
                         message.reply("Wrong action. Please try one of the following: add,remove,check.");
                         break;
                 }
+            } else {
+                message.reply(":x: Access denied, only guild owner can use this command.");
             }
         }
     }
