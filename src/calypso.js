@@ -46,7 +46,7 @@ client.on("ready", () => {
                     });
 
                     if (message.channel.type === "text" && message.guild.id === "310104725078933525") {
-                        if (message.content.contains("ckamps")) {
+                        if (message.content.indexOf("ckamps") >= 0) {
                             message.delete().then(() => {
                                 message.channel.send("_You have mentioned he who must not be named_.")
                                 message.channel.send("https://media.giphy.com/media/IyvPPs3A5c96U/giphy.gif")
