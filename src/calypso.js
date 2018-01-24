@@ -51,7 +51,7 @@ client.on("ready", () => {
                             message.delete().then(() => {
                                 message.channel.send("_You have mentioned he who must not be named_. \nhttps://media.giphy.com/media/IyvPPs3A5c96U/giphy.gif")
                             })
-                        } else if (message.content.indexOf("turq") >= 0) {
+                        } else if (ct.indexOf("turq") >= 0) {
                             message.delete().then(() => {
                                 message.channel.send("Cross eyed people are **not** allowed in this Discord. \nhttps://media.giphy.com/media/26xBG9lQdU5YTRnJS/giphy.gif")
                             })
