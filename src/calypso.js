@@ -49,11 +49,11 @@ client.on("ready", () => {
                         let ct = message.content.toLowerCase()
                         if (ct.indexOf("ckamps") >= 0) {
                             message.delete().then(() => {
-                                message.channel.send("_You have mentioned he who must not be named_. \nhttps://media.giphy.com/media/IyvPPs3A5c96U/giphy.gif")
+                                message.channel.send("_You have mentioned he who must not be named_. " + message.author + "\nhttps://media.giphy.com/media/IyvPPs3A5c96U/giphy.gif")
                             })
                         } else if (ct.indexOf("turq") >= 0) {
                             message.delete().then(() => {
-                                message.channel.send("Cross eyed people are **not** allowed in this Discord. \nhttps://media.giphy.com/media/26xBG9lQdU5YTRnJS/giphy.gif")
+                                message.channel.send("Cross eyed people are **not** allowed in this Discord. " + message.author + "\nhttps://media.giphy.com/media/26xBG9lQdU5YTRnJS/giphy.gif")
                             })
                         }
                     }
