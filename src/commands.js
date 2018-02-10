@@ -31,7 +31,6 @@ let findUser = function(client, argument) {
 
 let handler = {};
 
-
 let commands = [
     {
         name: "help",

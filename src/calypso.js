@@ -56,6 +56,15 @@ client.on("ready", () => {
                                 message.channel.send("Cross eyed people are **not** allowed in this Discord. " + message.author + "\nhttps://media.giphy.com/media/26xBG9lQdU5YTRnJS/giphy.gif")
                             })
                         }
+
+                        if (message.author.id === "119266175782879235") {
+                            if (message.embeds && message.embeds.length > 0) {
+                                message.delete().then(() => {
+                                    message.author.send("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWI8C4i2fg83UoEFXuRS1WDrqrDSKSs5n7xStvEgrrMs-Y0MWiQ")
+                                    message.channel.send("Enjoy your dicks, " + message.author)
+                                })
+                            }
+                        }
                     }
                     return;
                 }
