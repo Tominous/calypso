@@ -48,7 +48,8 @@ client.on("ready", () => {
                     if (message.channel.type === "text" && message.guild.id === "310104725078933525") {
                         if (message.author.id === "119266175782879235") {
                             console.log("a")
-                            if (message.embeds && message.embeds.length > 0) {
+                            console.log(message)
+                            if (message.embeds.length > 0) {
                                 console.log("b")
                                 message.delete().then(() => {
                                     message.author.send("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWI8C4i2fg83UoEFXuRS1WDrqrDSKSs5n7xStvEgrrMs-Y0MWiQ")
