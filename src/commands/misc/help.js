@@ -1,5 +1,7 @@
 const {commands} = require('../../commands')
 
+console.log(commands)
+
 module.exports = {
     name: "help",
     description: "Displays this message.",
