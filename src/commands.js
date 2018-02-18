@@ -21,8 +21,6 @@ Object.keys(com).forEach(function(key) {
         let cmd = value[k]
         newCommands[cmd.name.toLowerCase()] = cmd
     })
-    //let cmd = value[Object.keys(value)[0]]
-    //newCommands[cmd.name.toLowerCase()] = cmd
 })
 
 let errorUsage = function (usage, callback) {
@@ -146,7 +144,5 @@ handler.handleCommand = function(message, text, client) {
         message.reply("Unknown command. Try ~help.");
     }
 };
-
-handler.commands = newCommands;
 
 module.exports = handler;
