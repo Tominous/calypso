@@ -3,6 +3,7 @@ module.exports = {
     description: "Evaluate JavaScript and run it",
     parameters: ["script"],
     handle: function(message, params, client) {
+        params.shift()
         let script = params.join(" ")
         console.log(script)
         message.reply(":satellite_orbital: Evaluating `" + script + "`").then((reply) => {
