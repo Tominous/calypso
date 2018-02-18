@@ -156,6 +156,7 @@ handler.handleCommand = function(message, text, client) {
     if (params[0].toLowerCase() === "help") {
         let response = "```asciidoc\n= Commands =";
 
+        console.log(newCommands)
         for (let i = 0; i < newCommands.length; i++) {
             let c = newCommands[i];
             response += "\n~" + c.name;
