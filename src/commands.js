@@ -19,9 +19,11 @@ Object.keys(com).forEach(function(key) {
     //console.log(Object.keys(value))
     //console.log(value)
     //console.log(typeof value)
-    newCommands[value.name] = value
+    let cmd = value[Object.keys(value)[0]]
+    newCommands[cmd.name] = cmd
 
-    console.log(value[Object.keys(value)[0]])
+    //console.log(value[Object.keys(value)[0]])
+    console.log(newCommands)
 })
 
 //console.log(newCommands)
