@@ -132,7 +132,8 @@ let commands = [
                     logger.logPermissionFailed(message, message.author, client.mongo);
                 } else {
                     message.channel.send(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
-                        exec("git pull", function (err, stdout, sterr) {
+                        exec("git pull", (err, stdout, sterr) => {
+                            console.log(stdout)
                             if (err !== null) {
                                 gitMessage.edit(":x: Failed to download latest update!");
                                 console.log(err);
@@ -140,11 +141,14 @@ let commands = [
                                 if (stdout.toString().indexOf("Already up-to-date.") > -1) {
                                     gitMessage.edit(":gem: Already up to date with git source!");
                                 } else {
-                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Restarting now.");
-                                    shutdown.shutdown(client);
-                                    setTimeout(function () {
-                                        process.exit(1);
-                                    }, 2000);
+                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Updating npm packages...").then(() => {
+                                        //exec("npm update", (err, out, ster) => {
+                                        //})
+                                        shutdown.shutdown(client)
+                                        setTimeout(function () {
+                                            process.exit(1)
+                                        }, 2000)
+                                    })
                                 }
                             }
                         });
