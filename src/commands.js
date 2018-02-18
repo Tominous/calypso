@@ -16,7 +16,7 @@ let com = requireDir(module, './commands')
 console.log(com)
 for (var c in com) {
     for (var cmd in com[c]) {
-        
+        console.log(cmd)
     }
 }
 
