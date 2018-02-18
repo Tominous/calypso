@@ -21,6 +21,8 @@ Object.keys(com).forEach(function(key) {
     newCommands[cmd.name.toLowerCase()] = cmd
 })
 
+console.log(newCommands)
+
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
     embed.addField("Error", "Wrong usage!", true);
@@ -291,16 +293,6 @@ let commands = [
         }
     }
 ];
-
-handler.findCommand = function(command) {
-    for (let i = 0; i < newCommands.length; i++) {
-        if (newCommands[i] !== undefined && newCommands[i].name === command.toLowerCase()) {
-            return newCommands[i];
-        }
-    }
-
-    return false;
-};
 
 handler.handleCommand = function(message, text, client) {
     const params = text.split(" ")
