@@ -17,7 +17,7 @@ console.log(com)
 for (var c in com) {
     for (var cmd in com[c]) {
         newCommands[cmd] = com[c]
-        console.log(JSON.stringify(cmd))
+        console.log(typeof cmd)
     }
 }
 
