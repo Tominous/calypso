@@ -128,7 +128,7 @@ let commands = [
         handle: function(message, params, client) {
             permissions.isGlobalOwner(message.author).then(res => {
                 if (!res) {
-                    message.reply(":shield: No permissions. Only bot owners can execute this command.");
+                    message.reply(":shield: No permissions. Only bot owners can execute this command..");
                     logger.logPermissionFailed(message, message.author, client.mongo);
                 } else {
                     message.channel.send(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
