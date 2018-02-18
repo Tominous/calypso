@@ -175,4 +175,6 @@ handler.handleCommand = function(message, text, client) {
     }
 };
 
+handler.commands = newCommands;
+
 module.exports = handler;
