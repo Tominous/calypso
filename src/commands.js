@@ -156,9 +156,8 @@ handler.handleCommand = function(message, text, client) {
     if (params[0].toLowerCase() === "help") {
         let response = "```asciidoc\n= Commands =";
 
-        console.log(newCommands)
-        for (let i = 0; i < newCommands.length; i++) {
-            let c = newCommands[i];
+        Object.keys(newCommands).forEach(k => {
+            let c = newCommands[k];
             response += "\n~" + c.name;
 
             for (let j = 0; j < c.parameters.length; j++) {
@@ -166,7 +165,7 @@ handler.handleCommand = function(message, text, client) {
             }
 
             response += " :: " + c.description;
-        }
+        })
 
         response += "\n```\nFor more head to http://calypsobot.com/";
         message.author.send(response);
