@@ -293,8 +293,9 @@ let commands = [
 ];
 
 handler.findCommand = function(command) {
-    for (let i = 0; i < commands.length; i++) {
+    for (let i = 0; i < newCommands.length; i++) {
         if (newCommands[i] !== undefined && newCommands[i].name === command.toLowerCase()) {
+            console.log(newCommands[i])
             return newCommands[i];
         }
     }
