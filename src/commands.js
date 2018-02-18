@@ -18,7 +18,7 @@ let com = requireDir(module, './commands')
 Object.keys(com).forEach(function(key) {
     let value = com[key]
     let cmd = value[Object.keys(value)[0]]
-    newCommands[cmd.name] = cmd
+    newCommands[cmd.name.toLowerCase()] = cmd
 })
 
 let errorUsage = function (usage, callback) {
@@ -295,7 +295,6 @@ let commands = [
 handler.findCommand = function(command) {
     for (let i = 0; i < newCommands.length; i++) {
         if (newCommands[i] !== undefined && newCommands[i].name === command.toLowerCase()) {
-            console.log(newCommands[i])
             return newCommands[i];
         }
     }
@@ -305,7 +304,7 @@ handler.findCommand = function(command) {
 
 handler.handleCommand = function(message, text, client) {
     const params = text.split(" ");
-    const command = handler.findCommand(params[0]);
+    const command = newCommands[params[0].toLowerCase()]
 
     if (command) {
         if (command.parameters && params.length - 1 < command.parameters.length) {
