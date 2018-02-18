@@ -1,4 +1,6 @@
 module.exports = {
+    name: "flipcoin",
+    description: "Flips a coin",
     handle: function(message, client) {
         message.reply("Flipping coin...").then(flip => {
             let bool = Math.random() >= 0.5;

@@ -15,7 +15,9 @@ const Discord = require('discord.js'),
 let com = requireDir(module, './commands')
 console.log(com)
 for (var c in com) {
-    console.log(c)
+    for (var cmd in com[c]) {
+        
+    }
 }
 
 let errorUsage = function (usage, callback) {
