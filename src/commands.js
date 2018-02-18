@@ -14,15 +14,12 @@ const Discord = require('discord.js'),
 let newCommands = []
 let com = requireDir(module, './commands')
 
-console.log(com)
-
 // register commands
 Object.keys(com).forEach(function(key) {
     let value = com[key]
     Object.keys(value).forEach(function(k) {
         let cmd = value[k]
         newCommands[cmd.name.toLowerCase()] = cmd
-        console.log(cmd)
     })
     //let cmd = value[Object.keys(value)[0]]
     //newCommands[cmd.name.toLowerCase()] = cmd
