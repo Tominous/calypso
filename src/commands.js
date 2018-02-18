@@ -48,57 +48,6 @@ let handler = {}
 
 let commands = [
     {
-        name: "help",
-        description: "Displays this message.",
-        parameters: [],
-        handle: function(message, params, client) {
-            let response = "```asciidoc\n= Commands =";
-
-            for (let i = 0; i < commands.length; i++) {
-                let c = commands[i];
-                response += "\n~" + c.name;
-
-                for (let j = 0; j < c.parameters.length; j++) {
-                    response += " <" + c.parameters[j] + ">";
-                }
-
-                response += " :: " + c.description;
-            }
-
-            response += "\n```\nFor more head to http://calypsobot.com/";
-            message.author.send(response);
-            if (message.channel instanceof Discord.TextChannel) {
-                message.reply("Commands have been sent to your DMs");
-            }
-        }
-    },
-    {
-        name: "8ball",
-        description: "It's a magic ball, what do you expect it to do?",
-        parameters: ["question"],
-        handle: function(message, params, client) {
-            let responses = ["Yes", "No", "My sources point to...yes", "My sources point to...no", "You f****** know it!", "No! What is wrong with you?"];
-            let response = responses[Math.floor(Math.random() * responses.length)];
-            message.reply(":8ball: " + response);
-        }
-    },
-    {
-        name: "dog",
-        description: "Sends a picture of a random dog.",
-        parameters: [],
-        handle: function(message, params, client) {
-            request('https://random.dog/woof.json', function(error, response, body) {
-                if (error) {
-                    message.reply(":dog: Failed to find doggy :(");
-                } else {
-                    let json = JSON.parse(body);
-                    let url = json.url;
-                    message.reply(":dog: " + url);
-                }
-            })
-        }
-    },
-    {
         name: "permissions",
         description: "Permissions module, can only be used by administrators.",
         parameters: ["action [add/remove/check]", "node","role"],
