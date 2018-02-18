@@ -14,27 +14,12 @@ const Discord = require('discord.js'),
 let newCommands = []
 let com = requireDir(module, './commands')
 
+// register commands
 Object.keys(com).forEach(function(key) {
     let value = com[key]
-    //console.log(Object.keys(value))
-    //console.log(value)
-    //console.log(typeof value)
     let cmd = value[Object.keys(value)[0]]
     newCommands[cmd.name] = cmd
-
-    //console.log(value[Object.keys(value)[0]])
-    console.log(newCommands)
 })
-
-//console.log(newCommands)
-
-//for (var c in com) {
-
-   // for (var cmd in com[c]) {
-     //   newCommands[cmd] = com[c]
-      //  console.log(typeof cmd)
-  //  }
-//}
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
@@ -309,8 +294,8 @@ let commands = [
 
 handler.findCommand = function(command) {
     for (let i = 0; i < commands.length; i++) {
-        if (commands[i].name === command.toLowerCase()) {
-            return commands[i];
+        if (newCommands[i].name === command.toLowerCase()) {
+            return newCommands[i];
         }
     }
 
