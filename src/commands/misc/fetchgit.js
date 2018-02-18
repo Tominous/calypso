@@ -1,6 +1,7 @@
 const exec = require('child_process').exec,
     logger = require('../../logger'),
-    permissions = require('../../permissions/permissions');
+    permissions = require('../../permissions/permissions'),
+    shutdown = require('../../shutdown');
 
 module.exports = {
     name: "fetch-git",
