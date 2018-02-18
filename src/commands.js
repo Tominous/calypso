@@ -133,7 +133,6 @@ let commands = [
                 } else {
                     message.channel.send(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
                         exec("git pull", (err, stdout, sterr) => {
-                            console.log(stdout)
                             if (err !== null) {
                                 gitMessage.edit(":x: Failed to download latest update!");
                                 console.log(err);
@@ -141,7 +140,8 @@ let commands = [
                                 if (stdout.toString().indexOf("Already up-to-date.") > -1) {
                                     gitMessage.edit(":gem: Already up to date with git source!");
                                 } else {
-                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Updating npm packages...").then(() => {
+                                    let realMsg = ":white_check_mark: Downloaded latest version! Updating npm packages...\n```" + stdout + "\n```"
+                                    gitMessage.edit(realMsg).then(() => {
                                         //exec("npm update", (err, out, ster) => {
                                         //})
                                         shutdown.shutdown(client)
