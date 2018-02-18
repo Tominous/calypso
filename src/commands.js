@@ -13,7 +13,7 @@ const Discord = require('discord.js'),
 
 //let commands = []
 let com = requireDir(module, './commands')
-
+console.log(com)
 for (var c in com) {
     console.log(c)
 }
