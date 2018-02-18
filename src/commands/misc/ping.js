@@ -23,7 +23,7 @@ module.exports = {
     name: "ping",
     description: "Pings all services",
     handle: function(message, params, client) {
-        channel.send(":satellite_orbital: Pinging services...").then(pingMessage => {
+        message.channel.send(":satellite_orbital: Pinging services...").then(pingMessage => {
             getPings(function(err, res) {
                 if (err) {
                     pingMessage.edit(message.author + ", Failed to ping servers.");

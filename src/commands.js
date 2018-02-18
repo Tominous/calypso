@@ -304,8 +304,6 @@ handler.findCommand = function(command) {
 
 handler.handleCommand = function(message, text, client) {
     const params = text.split(" ")
-    console.log(newCommands)
-    console.log(params[0].toLowerCase())
     const command = newCommands[params[0].toLowerCase()]
 
     if (command) {

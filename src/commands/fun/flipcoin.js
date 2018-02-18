@@ -10,7 +10,7 @@ module.exports = {
                 } else {
                     flip.edit("The coin landed on tails!");
                 }
-            }, 1000);
+            }, 1500);
         });
     }
 }
