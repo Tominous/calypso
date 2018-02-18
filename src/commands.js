@@ -25,8 +25,6 @@ Object.keys(com).forEach(function(key) {
     //newCommands[cmd.name.toLowerCase()] = cmd
 })
 
-console.log(newCommands)
-
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
     embed.addField("Error", "Wrong usage!", true);
@@ -72,70 +70,6 @@ let commands = [
             if (message.channel instanceof Discord.TextChannel) {
                 message.reply("Commands have been sent to your DMs");
             }
-        }
-    },
-    {
-        name: "join",
-        description: "Joins voice channel.",
-        parameters: [],
-        handle: function(message, params, client) {
-            player.join(message, message.channel, client)
-        }
-    },
-    {
-        name: "leave",
-        description: "Leaves voice channel.",
-        parameters: [],
-        handle: function(message, params, client) {
-            player.leave(message, message.channel, client);
-        }
-    },
-    {
-        name: "play",
-        description: "Searches for a video on youtube and adds it to the queue.",
-        parameters: ["query"],
-        handle: function(message, params, client) {
-            player.play(message, message.channel, client);
-        }
-    },
-    {
-        name: "skip",
-        description: "Skips the current song and plays the next one on the queue.",
-        parameters: [],
-        handle: function(message, params, client) {
-            player.skip(message, message.channel, client);
-        }
-    },
-    {
-        name: "queue",
-        description: "Sends the queue list in chat.",
-        parameters: [],
-        handle: function(message, params, client) {
-            player.queue(message, message.channel, client);
-        }
-    },
-    {
-        name: "announce",
-        description: "Sends a very large ASCII text of the message.",
-        parameters: ["text"],
-        handle: function (message, params, client) {
-            let text = params.slice(1).join(" ");
-            figlet.text(text, {
-                font: "Big",
-                horizontalLayout: 'default',
-                verticalLayout: 'default'
-            }, function(err, data) {
-                if (err) {
-                    console.log('Something went wrong...');
-                    console.dir(err);
-                    return;
-                }
-                data = data.replace(/\s*$/,"");
-                let mes = "```";
-                mes += data;
-                mes += "```";
-                message.channel.send(mes);
-            });
         }
     },
     {
