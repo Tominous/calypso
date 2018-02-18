@@ -4,6 +4,7 @@ module.exports = {
     parameters: ["script"],
     handle: function(message, params, client) {
         let script = params.join(" ")
+        console.log(script)
         message.reply(":satellite_orbital: Evaluating `" + script + "`").then((reply) => {
             try {
                 let ran = eval(script)
