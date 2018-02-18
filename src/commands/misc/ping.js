@@ -22,7 +22,7 @@ function getPings(callback) {
 module.exports = {
     name: "ping",
     description: "Pings all services",
-    handle: function(message, client) {
+    handle: function(message, params, client) {
         channel.send(":satellite_orbital: Pinging services...").then(pingMessage => {
             getPings(function(err, res) {
                 if (err) {

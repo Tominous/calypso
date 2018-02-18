@@ -307,7 +307,7 @@ handler.handleCommand = function(message, text, client) {
     const command = handler.findCommand(params[0]);
 
     if (command) {
-        if (params.length - 1 < command.parameters.length) {
+        if (command.parameters && params.length - 1 < command.parameters.length) {
             let usage = "~" + command.name + " ";
             for (let i = 0; i < command.parameters.length; i++) {
                 let param = command.parameters[i];
