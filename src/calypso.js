@@ -25,12 +25,11 @@ client.on("ready", () => {
 
             client.voiceChannels = {};
             client.voiceDispatchers = {};
-            //noinspection JSAnnotator
             client.voiceConnections = {};
             client.guildQueues = {};
 
             console.log("Bot started on Shard #" + (client.shard.id + 1) + "/" + client.shard.count + " with " + client.guilds.size + " guilds.");
-            client.user.setGame("~help | Shard " + (client.shard.id + 1) + "/" + client.shard.count);
+            client.user.setActivity("~help | Shard " + (client.shard.id + 1) + "/" + client.shard.count);
 
             client.on("message", message => {
                 if (!message.content.startsWith(starter)) {
