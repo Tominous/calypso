@@ -8,7 +8,11 @@ const Discord = require('discord.js'),
     figlet = require('figlet'),
     ping = require("./commands/misc/ping"),
     request = require('request'),
-    coin = require('./commands/fun/flipcoin');
+    coin = require('./commands/fun/flipcoin'),
+    requireDir = require('require-directory');
+
+let com = requireDir(module, './src/commands')
+console.log(com)
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
@@ -16,20 +20,20 @@ let errorUsage = function (usage, callback) {
     embed.addField("Correct Usage", usage, true);
 
     callback(embed);
-};
+}
 
 let findUser = function(client, argument) {
     return new Promise(function (resolve, reject) {
-        let id = argument.toString().replace("<", "").replace(">", "").replace("@", "").replace("!", "");
+        let id = argument.toString().replace("<", "").replace(">", "").replace("@", "").replace("!", "")
         client.fetchUser(id).then(user => {
-            resolve(user);
+            resolve(user)
         }).catch(function() {
-            reject(new Error("Failed query."));
+            reject(new Error("Failed query."))
         })
-    });
-};
+    })
+}
 
-let handler = {};
+let handler = {}
 
 let commands = [
     {

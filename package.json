@@ -13,6 +13,7 @@
     "node-opus": "^0.2.6",
     "opusscript": "0.0.3",
     "request": "^2.81.0",
+    "require-directory": "^2.1.1",
     "tcp-ping": "^0.1.1",
     "toobusy-js": "^0.5.1",
     "youtube-search": "^1.0.9",
