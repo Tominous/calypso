@@ -11,7 +11,7 @@ const Discord = require('discord.js'),
     coin = require('./commands/fun/flipcoin'),
     requireDir = require('require-directory');
 
-let com = requireDir(module, './src/commands')
+let com = requireDir(module, './commands')
 console.log(com)
 
 let errorUsage = function (usage, callback) {
