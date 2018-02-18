@@ -139,55 +139,6 @@ let commands = [
         }
     },
     {
-        name: "fetch-git",
-        description: "Pulls the latest source from git (Admin only).",
-        parameters: [],
-        handle: function(message, params, client) {
-            permissions.isGlobalOwner(message.author).then(res => {
-                if (!res) {
-                    message.reply(":shield: No permissions. Only bot owners can execute this command.");
-                    logger.logPermissionFailed(message, message.author, client.mongo);
-                } else {
-                    message.channel.send(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
-                        exec("git pull", (err, stdout, sterr) => {
-                            if (err !== null) {
-                                gitMessage.edit(":x: Failed to download latest update!");
-                                console.log(err);
-                            } else {
-                                if (stdout.toString().indexOf("Already up-to-date.") > -1) {
-                                    gitMessage.edit(":gem: Already up to date with git source!");
-                                } else {
-                                    let realMsg = ":ok_hand: Finished all updates, restarting bot.\n```bash\n" + stdout + "\n"
-                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Updating npm packages...").then(() => {
-                                        exec("npm update", (err, out, ster) => {
-                                            realMsg = realMsg + out + "\n```"
-                                            gitMessage.edit(realMsg).then(() => {
-                                                shutdown.shutdown(client)
-                                                setTimeout(function () {
-                                                process.exit(1)
-                                                }, 2000)
-                                            })
-                                        })
-                                    })
-                                }
-                            }
-                        });
-                    });
-                }
-            }).catch(function () {
-                message.reply(":x: Permission check failed, try again later.");
-            });
-        }
-    },
-    {
-        name: "ping",
-        description: "Pings the servers that calypso depends on.",
-        parameters: [],
-        handle: function(message, params, client) {
-            ping.ping(message, message.channel);
-        }
-    },
-    {
         name: "8ball",
         description: "It's a magic ball, what do you expect it to do?",
         parameters: ["question"],
@@ -211,38 +162,6 @@ let commands = [
                     message.reply(":dog: " + url);
                 }
             })
-        }
-    },
-    {
-        name: "stats",
-        description: "Shows the statistics for Calypso.",
-        parameters: [],
-        handle: async function (message, params, client) {
-            let guilds = await client.shard.broadcastEval('this.guilds.size');
-            guilds = guilds.reduce((prev, val) => prev + val, 0);
-            let channels = await client.shard.broadcastEval('this.channels.size');
-            channels = channels.reduce((prev, val) => prev + val, 0);
-            let users = await client.shard.broadcastEval('this.users.size');
-            users = users.reduce((prev, val) => prev + val, 0);
-            let mem = await client.shard.broadcastEval('process.memoryUsage().heapUsed');
-            mem = mem.reduce((prev, next) => prev + next / 1024 / 1024, 0).toFixed(2);
-
-            let embed = new Discord.RichEmbed();
-            embed.setTitle(":pencil: Statistics").setColor("#259c28");
-            embed.addField("> Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
-            embed.addField("> General Stats", "• Guild Count: " + guilds + "\n• Users: " + users, true);
-            embed.addField("> Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: v1.5", true);
-            embed.addField("> Usage", "• Ram Usage: " + mem + "MB", true);
-            embed.setTimestamp();
-            message.channel.sendEmbed(embed);
-        }
-    },
-    {
-        name: "coin",
-        description: "Flips a coin, this is usually used to break a tie.",
-        parameters: [],
-        handle: function(message, params, client) {
-            coin.flip(message);
         }
     },
     {
