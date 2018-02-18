@@ -294,7 +294,7 @@ let commands = [
 
 handler.findCommand = function(command) {
     for (let i = 0; i < commands.length; i++) {
-        if (newCommands[i].name === command.toLowerCase()) {
+        if (newCommands[i] !== undefined && newCommands[i].name === command.toLowerCase()) {
             return newCommands[i];
         }
     }
