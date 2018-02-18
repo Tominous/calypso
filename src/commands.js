@@ -20,6 +20,8 @@ Object.keys(com).forEach(function(key) {
     console.log(value)
     console.log(typeof value)
     newCommands[value.name] = value
+
+    console.log(value[Object.keys(value)[0]])
 })
 
 //console.log(newCommands)
