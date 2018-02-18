@@ -14,9 +14,9 @@ const Discord = require('discord.js'),
 //let commands = []
 let com = requireDir(module, './commands')
 
-com.forEach(c => {
+for (var c in com) {
     console.log(c)
-})
+}
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
