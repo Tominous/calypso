@@ -150,7 +150,7 @@ module.exports = {
                 client.voiceDispatchers[channel.guild.id] = dispatcher;
                 appendMethod(dispatcher, channel, client);
             } catch (exception) {
-                channel.send(":x: Failed to query. Contact @Erik#9933");
+                channel.send(":x: Failed to query. Contact @erik#0001");
                 console.log(exception);
             }
         });

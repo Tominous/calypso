@@ -10,7 +10,6 @@ module.exports = {
             } else {
                 params.shift()
                 let script = params.join(" ")
-                console.log(script)
                 message.reply(":satellite_orbital: Evaluating `" + script + "`").then((reply) => {
                     try {
                         let ran = eval(script)
