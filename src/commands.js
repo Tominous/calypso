@@ -13,7 +13,7 @@ const Discord = require('discord.js'),
 
 let newCommands = []
 let com = requireDir(module, './commands')
-console.log(Object.keys(com))
+console.log(typeof com)
 for (var c in com) {
     for (var cmd in com[c]) {
         newCommands[cmd] = com[c]
