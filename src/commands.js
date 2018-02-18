@@ -11,12 +11,13 @@ const Discord = require('discord.js'),
     coin = require('./commands/fun/flipcoin'),
     requireDir = require('require-directory');
 
-//let commands = []
+let newCommands = []
 let com = requireDir(module, './commands')
 console.log(com)
 for (var c in com) {
     for (var cmd in com[c]) {
-        console.log(cmd)
+        newCommands[cmd] = com[c]
+        console.log(Object.keys(cmd))
     }
 }
 
