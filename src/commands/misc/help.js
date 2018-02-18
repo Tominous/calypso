@@ -1,4 +1,4 @@
-const commands = require('../../../commands')
+const commands = require('../../commands')
 
 console.log(commands)
 
