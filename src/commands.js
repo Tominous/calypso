@@ -160,8 +160,10 @@ handler.handleCommand = function(message, text, client) {
             let c = newCommands[k];
             response += "\n~" + c.name;
 
-            for (let j = 0; j < c.parameters.length; j++) {
-                response += " <" + c.parameters[j] + ">";
+            if (c.parameters) {
+                for (let j = 0; j < c.parameters.length; j++) {
+                    response += " <" + c.parameters[j] + ">";
+                }
             }
 
             response += " :: " + c.description;
