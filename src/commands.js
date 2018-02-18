@@ -14,6 +14,8 @@ const Discord = require('discord.js'),
 let newCommands = []
 let com = requireDir(module, './commands')
 
+console.log(com)
+
 // register commands
 Object.keys(com).forEach(function(key) {
     let value = com[key]
