@@ -11,7 +11,7 @@ const Discord = require('discord.js'),
     coin = require('./commands/fun/flipcoin'),
     requireDir = require('require-directory');
 
-let commands = []
+//let commands = []
 let com = requireDir(module, './commands')
 
 com.forEach(c => {
