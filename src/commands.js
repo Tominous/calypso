@@ -140,14 +140,17 @@ let commands = [
                                 if (stdout.toString().indexOf("Already up-to-date.") > -1) {
                                     gitMessage.edit(":gem: Already up to date with git source!");
                                 } else {
-                                    let realMsg = ":white_check_mark: Downloaded latest version! Updating npm packages...\n```" + stdout + "\n```"
-                                    gitMessage.edit(realMsg).then(() => {
-                                        //exec("npm update", (err, out, ster) => {
-                                        //})
-                                        shutdown.shutdown(client)
-                                        setTimeout(function () {
-                                            process.exit(1)
-                                        }, 2000)
+                                    let realMsg = ":ok_hand: Finished all updates, restarting bot.\n```bash\n" + stdout + "\n"
+                                    gitMessage.edit(":white_check_mark: Downloaded latest version! Updating npm packages...").then(() => {
+                                        exec("npm update", (err, out, ster) => {
+                                            realMsg = realMsg + out + "\n```"
+                                            gitMessage.edit(realMsg).then(() => {
+                                                shutdown.shutdown(client)
+                                                setTimeout(function () {
+                                                process.exit(1)
+                                                }, 2000)
+                                            })
+                                        })
                                     })
                                 }
                             }
