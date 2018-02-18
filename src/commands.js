@@ -50,7 +50,7 @@ let commands = [
                 response += " :: " + c.description;
             }
 
-            response += "\n```\nFor more head to http://calypsobot.com/\nMake sure to join our discord for announcements and more: https://discord.gg/y5AUk3E";
+            response += "\n```\nFor more head to http://calypsobot.com/";
             message.author.send(response);
             if (message.channel instanceof Discord.TextChannel) {
                 message.reply("Commands have been sent to your DMs");
