@@ -29,7 +29,7 @@ client.on("ready", () => {
             client.guildQueues = {};
 
             console.log("Bot started on Shard #" + (client.shard.id + 1) + "/" + client.shard.count + " with " + client.guilds.size + " guilds.");
-            client.user.setActivity("~help | Shard " + (client.shard.id + 1) + "/" + client.shard.count);
+            client.user.setActivity("~help");
 
             client.on("message", message => {
                 if (!message.content.startsWith(starter)) {
