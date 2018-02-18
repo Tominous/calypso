@@ -19,6 +19,7 @@ console.log(com)
 // register commands
 Object.keys(com).forEach(function(key) {
     let value = com[key]
+    console.log(Object.keys(value))
     let cmd = value[Object.keys(value)[0]]
     newCommands[cmd.name.toLowerCase()] = cmd
 })
