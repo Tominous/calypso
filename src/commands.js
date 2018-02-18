@@ -20,13 +20,13 @@ Object.keys(com).forEach(function(key) {
     console.log(typeof value)
 })
 
-for (var c in com) {
+//for (var c in com) {
 
-    for (var cmd in com[c]) {
-        newCommands[cmd] = com[c]
-        console.log(typeof cmd)
-    }
-}
+   // for (var cmd in com[c]) {
+     //   newCommands[cmd] = com[c]
+      //  console.log(typeof cmd)
+  //  }
+//}
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");
