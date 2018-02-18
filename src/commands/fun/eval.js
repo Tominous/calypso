@@ -14,6 +14,7 @@ module.exports = {
                 }
             } catch (e) {
                 reply.edit("Failed to evaluate. `" + e.message + "`")
+                console.error(e)
             }
         })
     }
