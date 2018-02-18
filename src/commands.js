@@ -11,8 +11,12 @@ const Discord = require('discord.js'),
     coin = require('./commands/fun/flipcoin'),
     requireDir = require('require-directory');
 
+let commands = []
 let com = requireDir(module, './commands')
-console.log(com)
+
+com.forEach(c => {
+    console.log(c)
+})
 
 let errorUsage = function (usage, callback) {
     let embed = new Discord.RichEmbed().setColor("#ff0008");

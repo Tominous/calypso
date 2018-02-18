@@ -1,5 +1,5 @@
 module.exports = {
-    flip: function(message) {
+    handle: function(message, client) {
         message.reply("Flipping coin...").then(flip => {
             let bool = Math.random() >= 0.5;
             setTimeout(function() {
@@ -11,4 +11,4 @@ module.exports = {
             }, 1000);
         });
     }
-};
+}
