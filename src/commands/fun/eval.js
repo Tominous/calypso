@@ -1,6 +1,7 @@
 module.exports = {
     name: "eval",
     description: "Evaluate JavaScript and run it",
+    parameters: ["script"],
     handle: function(message, params, client) {
         let script = params.join(" ")
         message.reply(":satellite_orbital: Evaluating `" + script + "`").then((reply) => {
