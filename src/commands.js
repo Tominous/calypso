@@ -15,7 +15,8 @@ let newCommands = []
 let com = requireDir(module, './commands')
 
 Object.keys(com).forEach(function(key) {
-    var value = com[key]
+    let value = com[key]
+    let actual = value[Object.keys(com)[0]]
     console.log(value)
     newCommands[value.name] = value
 })
