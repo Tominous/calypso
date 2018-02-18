@@ -16,9 +16,10 @@ let com = requireDir(module, './commands')
 
 Object.keys(com).forEach(function(key) {
     var value = com[key]
-    console.log(value)
-    console.log(typeof value)
+    newCommands[value.name] = value
 })
+
+console.log(newCommands)
 
 //for (var c in com) {
 
