@@ -26,10 +26,11 @@ module.exports = {
             message.reply("The chat is no longer yoda :(")
             state = false
         } else {
+            message.reply("The chat is now yoda mode!!!!!!")
+
             prepareClient(client)
 
             state = true
-            message.reply("The chat is now yoda mode!!!!!!")
         }
     }
 }
