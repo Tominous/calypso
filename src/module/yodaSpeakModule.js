@@ -6,5 +6,8 @@ module.exports = {
     },
     disable: function(client) {
 
+    },
+    onChat: function(message) {
+        console.log(message.content)
     }
 }

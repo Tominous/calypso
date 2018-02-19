@@ -33,6 +33,10 @@ client.on("ready", () => {
             client.user.setActivity("~help");
 
             client.on("message", message => {
+                allModules.forEach(mod => {
+                    mod.onChat(message)
+                })
+                
                 if (!message.content.startsWith(starter)) {
                     mongo.collection("received_messages").insertOne({
                         "author": message.author.username,
