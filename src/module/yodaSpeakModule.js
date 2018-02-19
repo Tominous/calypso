@@ -8,6 +8,6 @@ module.exports = {
 
     },
     onChat: function(message) {
-        console.log(message.content)
+        console.log(this.state)
     }
 }
