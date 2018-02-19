@@ -14,7 +14,7 @@ module.exports = {
         const guild = client.guilds.get("310104725078933525")
         if (guild) {
             const channel = guild.channels.get("415205740765118474")
-            channel.send(message.author + " (" + message.guild.name + ") => " + message.content)
+            channel.send(message.author + " (" + message.guild.name + " #" + message.channel.name + ") => " + message.content)
         }
     }
 }
