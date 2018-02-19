@@ -10,6 +10,7 @@
     "figlet": "^1.2.0",
     "mongodb": "^2.2.26",
     "node-brain": "^1.1.4",
+    "node-ermahgerd": "0.0.1",
     "node-opus": "^0.2.6",
     "opusscript": "0.0.3",
     "request": "^2.81.0",
