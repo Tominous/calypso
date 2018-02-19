@@ -1,5 +1,7 @@
 const calypso = require('../../calypso')
 
+console.log(calypso)
+
 module.exports = {
     name: "yodaSpeak",
     description: "Turns chat into Yoda mode.",
