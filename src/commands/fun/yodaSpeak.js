@@ -7,6 +7,12 @@ module.exports = {
     handle: function(message, params, client) {
         params.shift()
         let text = params.join(" ")
-        message.reply("`" + yoda.convert(text) + "`")
+        yoda.convert(text, function(err, result) {
+            if (!err) {
+                message.reply("`" + result + "`")
+            } else {
+                message.reply("To talk like yoda failed!")
+            }
+        })
     }
 }
