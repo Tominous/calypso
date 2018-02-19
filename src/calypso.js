@@ -184,7 +184,7 @@ String.prototype.toHHMMSS = function () {
 
 client.login(token);
 
-Calypso.prototype.fetchModule = function(moduleId) {
+Discord.prototype.fetchModule = function(moduleId) {
     return new Promise((resolve, reject) => {
         allModules.forEach((mod) => {
             if (mod.name.toLowerCase() === moduleId.toLowerCase()) {
