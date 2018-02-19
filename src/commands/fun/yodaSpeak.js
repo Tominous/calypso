@@ -22,16 +22,14 @@ module.exports = {
     name: "yodaSpeak",
     description: "Turns chat into Yoda mode.",
     handle: function(message, params, client) {
-        calypso.fetchModule("yodaSpeak").then((mod) => {
-            if (state) {
-                message.reply("The chat is no longer yoda :(")
-                state = false
-            } else {
-                prepareClient(client)
+        if (state) {
+            message.reply("The chat is no longer yoda :(")
+            state = false
+        } else {
+            prepareClient(client)
 
-                state = true
-                message.reply("The chat is now yoda mode!!!!!!")
-            }
-        })
+            state = true
+            message.reply("The chat is now yoda mode!!!!!!")
+        }
     }
 }
