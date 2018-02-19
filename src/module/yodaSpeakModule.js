@@ -1,9 +1,3 @@
-try {
-    const calypso = require("../calypso")
-} catch (e) {
-    console.err(e)
-}
-
 module.exports = {
     name: "yodaSpeak",
     defaultState: false,
@@ -14,11 +8,6 @@ module.exports = {
 
     },
     onChat: function(message) {
-        console.log(calypso)
-        fetchModule("yodaSpeak").then((mod) => {
-            console.log(mod)
-        }).catch((err) => {
-            console.log(err)
-        })
+        
     }
 }
