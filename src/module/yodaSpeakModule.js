@@ -1,5 +1,8 @@
-const calypso = require("../calypso")
-console.log(typeof calypso.fetchModule)
+try {
+    const calypso = require("../calypso")
+} catch (e) {
+    console.err(e)
+}
 
 module.exports = {
     name: "yodaSpeak",
