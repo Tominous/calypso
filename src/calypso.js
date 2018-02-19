@@ -145,12 +145,21 @@ client.on("ready", () => {
     });
 });
 
+let allModules = []
 let modules = requireDir(module, './module')
 
 // register modules
 Object.keys(modules).forEach(function(key) {
-    let value = modules[key]
-    console.log(value)
+    let mod = modules[key]
+    if (mod.defaultState) {
+        mod.enable(client)
+        mod.state = true // enabled
+        console.log("Enabled module " + mod.name)
+    } else {
+        mod.state = false // disabled
+    }
+
+    allModules.push(mod)
 })
 
 String.prototype.toHHMMSS = function () {
@@ -174,3 +183,17 @@ String.prototype.toHHMMSS = function () {
 };
 
 client.login(token);
+
+module.exports = {
+    fetchModule: function(moduleId) {
+        return new Promise((resolve, reject) => {
+            allModules.forEach((mod) => {
+                if (mod.name.toLowerCase() === moduleId.toLowerCase()) {
+                    return resolve(mod)
+                }
+            })
+
+            reject("No module found")
+        })
+    }
+}
