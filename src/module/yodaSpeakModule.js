@@ -14,6 +14,7 @@ module.exports = {
 
     },
     onChat: function(message) {
+        console.log(calypso)
         fetchModule("yodaSpeak").then((mod) => {
             console.log(mod)
         }).catch((err) => {
