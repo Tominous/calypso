@@ -98,6 +98,23 @@ let commands = [
     }
 ];
 
+let executeCommand = function(command, params, message, client) {
+    if (command.parameters && params.length - 1 < command.parameters.length) {
+        let usage = "~" + command.name + " ";
+        for (let i = 0; i < command.parameters.length; i++) {
+            let param = command.parameters[i];
+            param = "<" + param + ">";
+            usage += param + " ";
+        }
+
+        errorUsage(usage, function(embed) {
+            message.channel.sendEmbed(embed);
+        });
+    } else {
+        command.handle(message, params, client);
+    }
+}
+
 handler.handleCommand = function(message, text, client) {
     const params = text.split(" ")
     if (params[0].toLowerCase() === "help") {
@@ -141,22 +158,5 @@ handler.handleCommand = function(message, text, client) {
         message.reply("Unknown command. Try ~help.");
     }
 };
-
-handler.executeCommand = function(command, params, message, client) {
-    if (command.parameters && params.length - 1 < command.parameters.length) {
-        let usage = "~" + command.name + " ";
-        for (let i = 0; i < command.parameters.length; i++) {
-            let param = command.parameters[i];
-            param = "<" + param + ">";
-            usage += param + " ";
-        }
-
-        errorUsage(usage, function(embed) {
-            message.channel.sendEmbed(embed);
-        });
-    } else {
-        command.handle(message, params, client);
-    }
-}
 
 module.exports = handler;
