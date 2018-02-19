@@ -6,7 +6,7 @@ module.exports = {
     params: ["text"],
     ownerOnly: true,
     handle: async function(message, params, client) {
-        message.reply("Sending announcement...").then(reply => {
+        message.reply("Sending announcement...").then(async reply => {
             params.shift()
             let text = params.join(" ")
             const guilds = client.guilds.array()
