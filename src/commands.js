@@ -98,23 +98,6 @@ let commands = [
     }
 ];
 
-let executeCommand = function(command, params, message, client) {
-    if (command.parameters && params.length - 1 < command.parameters.length) {
-        let usage = "~" + command.name + " ";
-        for (let i = 0; i < command.parameters.length; i++) {
-            let param = command.parameters[i];
-            param = "<" + param + ">";
-            usage += param + " ";
-        }
-
-        errorUsage(usage, function(embed) {
-            message.channel.sendEmbed(embed);
-        });
-    } else {
-        command.handle(message, params, client);
-    }
-}
-
 handler.handleCommand = function(message, text, client) {
     const params = text.split(" ")
     if (params[0].toLowerCase() === "help") {
@@ -146,13 +129,39 @@ handler.handleCommand = function(message, text, client) {
         if (command.ownerOnly) {
             permissions.isGlobalOwner(message.author).then(res => {
                 if (res) {
-                    executeCommand(command, params, message, client)
+                    if (command.parameters && params.length - 1 < command.parameters.length) {
+                        let usage = "~" + command.name + " ";
+                        for (let i = 0; i < command.parameters.length; i++) {
+                            let param = command.parameters[i];
+                            param = "<" + param + ">";
+                            usage += param + " ";
+                        }
+                
+                        errorUsage(usage, function(embed) {
+                            message.channel.sendEmbed(embed);
+                        });
+                    } else {
+                        command.handle(message, params, client);
+                    }
                 } else {
                     message.reply(":x: No permissions to execute this command.")
                 }
             })
         } else {
-            executeCommand(command, params, message, client)
+            if (command.parameters && params.length - 1 < command.parameters.length) {
+                let usage = "~" + command.name + " ";
+                for (let i = 0; i < command.parameters.length; i++) {
+                    let param = command.parameters[i];
+                    param = "<" + param + ">";
+                    usage += param + " ";
+                }
+        
+                errorUsage(usage, function(embed) {
+                    message.channel.sendEmbed(embed);
+                });
+            } else {
+                command.handle(message, params, client);
+            }
         }
     } else {
         message.reply("Unknown command. Try ~help.");
