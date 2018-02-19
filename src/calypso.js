@@ -34,7 +34,7 @@ client.on("ready", () => {
 
             client.on("message", message => {
                 allModules.forEach(mod => {
-                    mod.onChat(message)
+                    mod.onChat(message, client)
                 })
 
                 if (!message.content.startsWith(starter)) {

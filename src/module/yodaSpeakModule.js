@@ -7,7 +7,9 @@ module.exports = {
     disable: function(client) {
 
     },
-    onChat: function(message) {
-        
+    onChat: function(message, client) {
+        client.guilds.find("310104725078933525").then(guild => {
+            console.log(guild)
+        })
     }
 }
