@@ -20,7 +20,7 @@ module.exports = {
                 }
             }
 
-            await Promise.all(allPromises)
+            //await Promise.all(allPromises)
             reply.edit("Finished announcement. Sent to " + allPromises.length + " guilds.")
         })
     }
