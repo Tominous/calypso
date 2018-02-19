@@ -4,7 +4,8 @@ const Discord = require('discord.js'),
     config = require("./config.json"),
     toobusy = require("toobusy-js"),
     MongoClient = require("mongodb").MongoClient,
-    permissions = require("./permissions/permissions");
+    permissions = require("./permissions/permissions").
+    requireDir = require('require-directory');
 
 const token = config.bot.token;
 let mongo = undefined;
@@ -143,6 +144,17 @@ client.on("ready", () => {
         }
     });
 });
+
+let modules = requireDir(module, './module')
+
+// register modules
+Object.keys(modules).forEach(function(key) {
+    let value = com[key]
+    Object.keys(value).forEach(function(k) {
+        let mod = value[k]
+        console.log(mod)
+    })
+})
 
 String.prototype.toHHMMSS = function () {
     let sec_num = parseInt(this, 10); // don't forget the second param
