@@ -4,7 +4,7 @@ const Discord = require('discord.js'),
     config = require("./config.json"),
     toobusy = require("toobusy-js"),
     MongoClient = require("mongodb").MongoClient,
-    permissions = require("./permissions/permissions").
+    permissions = require("./permissions/permissions"),
     requireDir = require('require-directory');
 
 const token = config.bot.token;
