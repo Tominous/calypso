@@ -17,10 +17,11 @@ module.exports = {
                 let guild = guilds[i]
                 let channel = getDefaultChannel(guild)
                 if (channel) {
-                    channel.sendMessage(":rocket: Announcement! " + text)
+                    allPromises.push(channel.sendMessage(":rocket: Announcement! " + text))
                 }
             }
-            
+
+            await Promise.all(allPromises)
             reply.edit("Finished announcement. Sent to " + allPromises.length + " guilds.")
         })
     }
