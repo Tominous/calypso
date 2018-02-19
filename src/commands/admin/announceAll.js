@@ -1,3 +1,5 @@
+const guildUtil = require("../../util/guildUtil")
+
 module.exports = {
     name: "announceAll",
     description: "Announces to all servers",
@@ -13,14 +15,12 @@ module.exports = {
 
             for (let i = 0; i < guilds.length; i++) {
                 let guild = guilds[i]
-                let channel = guild.defaultChannel
+                let channel = getDefaultChannel(guild)
                 if (channel) {
-                    let sendMessagePromise = channel.sendMessage(":rocket: Announcement! " + text)
-                    allPromises.push(sendMessagePromise)
+                    channel.sendMessage(":rocket: Announcement! " + text)
                 }
             }
-
-            //await Promise.all(allPromises)
+            
             reply.edit("Finished announcement. Sent to " + allPromises.length + " guilds.")
         })
     }
