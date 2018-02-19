@@ -5,8 +5,9 @@ module.exports = {
     description: "Translates your text into ermagherd",
     params: ["text"],
     handle: function(message, params, client) {
-        let text = params.shift()
-        text = text.join(" ")
+        params.shift()
+        let text = params.join(" ")
+
         let translation = ermagherd.translate(text)
         message.reply(translation)
     }
