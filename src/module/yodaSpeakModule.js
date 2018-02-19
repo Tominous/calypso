@@ -1,3 +1,5 @@
+import {fetchModule} from "../calypso"
+
 module.exports = {
     name: "yodaSpeak",
     defaultState: false,
@@ -8,6 +10,10 @@ module.exports = {
 
     },
     onChat: function(message) {
-        console.log(this.state)
+        fetchModule("yodaSpeak").then((mod) => {
+            console.log(mod)
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 }
