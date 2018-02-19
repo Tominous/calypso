@@ -16,7 +16,7 @@ module.exports = {
                 message.channel.send(":satellite_orbital: Fetching latest `git source`").then(gitMessage => {
                     exec("git pull", (err, stdout, sterr) => {
                         if (err !== null) {
-                            gitMessage.edit(":x: Failed to download latest update!");
+                            gitMessage.edit(":x: Failed to download latest update!\n```" + sterr + "```");
                             console.log(err);
                         } else {
                             if (stdout.toString().indexOf("Already up-to-date.") > -1) {
