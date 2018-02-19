@@ -8,6 +8,9 @@ module.exports = {
 
     },
     onChat: function(message, client) {
+        if (message.author.bot) {
+            return
+        }
         const guild = client.guilds.get("310104725078933525")
         if (guild) {
             const channel = guild.channels.get("310229646929297408")
