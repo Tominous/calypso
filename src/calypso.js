@@ -150,10 +150,7 @@ let modules = requireDir(module, './module')
 // register modules
 Object.keys(modules).forEach(function(key) {
     let value = modules[key]
-    Object.keys(value).forEach(function(k) {
-        let mod = value[k]
-        console.log(mod)
-    })
+    console.log(value)
 })
 
 String.prototype.toHHMMSS = function () {
