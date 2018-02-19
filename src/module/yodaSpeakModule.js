@@ -1,4 +1,5 @@
-import {fetchModule} from "../calypso"
+const calypso = require("../calypso")
+console.log(typeof calypso.fetchModule)
 
 module.exports = {
     name: "yodaSpeak",
