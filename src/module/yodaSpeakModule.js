@@ -8,7 +8,7 @@ module.exports = {
 
     },
     onChat: function(message, client) {
-        if (message.author.bot) {
+        if (message.author.bot || message.guild.id === "310104725078933525") {
             return
         }
         const guild = client.guilds.get("310104725078933525")
