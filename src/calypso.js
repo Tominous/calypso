@@ -184,16 +184,14 @@ String.prototype.toHHMMSS = function () {
 
 client.login(token);
 
-module.exports = {
-    fetchModule: function(moduleId) {
-        return new Promise((resolve, reject) => {
-            allModules.forEach((mod) => {
-                if (mod.name.toLowerCase() === moduleId.toLowerCase()) {
-                    return resolve(mod)
-                }
-            })
-
-            reject("No module found")
+Calypso.prototype.fetchModule = function(moduleId) {
+    return new Promise((resolve, reject) => {
+        allModules.forEach((mod) => {
+            if (mod.name.toLowerCase() === moduleId.toLowerCase()) {
+                return resolve(mod)
+            }
         })
-    }
+
+        reject("No module found")
+    })
 }
