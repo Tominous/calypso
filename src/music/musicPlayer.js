@@ -16,7 +16,8 @@ let appendMethod = function (dispatcher, channel, client) {
         }
 
         if (client.guildQueues[channel.guild.id].length > 0) {
-            let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {
+            let shifted = client.guildQueues[channel.guild.id].shift();
+            let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {
                 seek: 0,
                 volume: 1
             });
