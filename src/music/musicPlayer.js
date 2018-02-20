@@ -22,7 +22,8 @@ let appendMethod = function (dispatcher, channel, client) {
                 volume: 1
             });
 
-            let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
+            let embed = new Discord.RichEmbed().setColor("#69d5ea");
+            embed.setDescription(":musical_note: Music")
             embed.addField("Now Playing", result.title, false);
             embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
             embed.addField("Posted By", result.channelTitle, true)
@@ -128,7 +129,7 @@ module.exports = {
                 let result = results[0];
                 let videoId = result.id;
                 let fetchResult = await fetchInfo(videoId);
-                let {duration} = fetchResult;
+                let { duration } = fetchResult;
                 result.duration = duration;
 
                 if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
@@ -144,8 +145,9 @@ module.exports = {
                         volume: 1
                     });
 
-                    let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
-                    embed.addField("Now Playing", result.title, false);
+                    let embed = new Discord.RichEmbed().setColor("#69d5ea");
+                    embed.setDescription(":musical_note: Music")
+                    embed.addField("Now Playing", result.title, false)
                     embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
                     embed.addField("Posted By", result.channelTitle, true)
                     if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
