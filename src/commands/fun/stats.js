@@ -18,7 +18,7 @@ module.exports = {
         embed.setTitle(":pencil: Statistics").setColor("#259c28");
         embed.addField("> Uptime", "• Client: " + (process.uptime() + "").toHHMMSS() + "\n• Host: " + (require('os').uptime() + "").toHHMMSS(), true);
         embed.addField("> General Stats", "• Guild Count: " + guilds + "\n• Users: " + users, true);
-        embed.addField("> Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: v1.7", true);
+        embed.addField("> Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: v" + require("../../../package.json").version, true);
         embed.addField("> Usage", "• Ram Usage: " + mem + "MB", true);
         embed.setTimestamp();
         message.channel.sendEmbed(embed);

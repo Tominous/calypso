@@ -189,15 +189,5 @@ String.prototype.toHHMMSS = function () {
 client.login(token);
 
 module.exports = {
-    fetchModule: function(moduleId) {
-        return new Promise((resolve, reject) => {
-            allModules.forEach(mod => {
-                if (mod.name === moduleId) {
-                    return resolve(mod)
-                }
-    
-                reject("no module by that id")
-            })
-        })
-    }
+    version: require("../package.json").version
 }
