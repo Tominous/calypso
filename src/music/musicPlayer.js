@@ -186,16 +186,22 @@ module.exports = {
         }
 
         if (client.guildQueues[channel.guild.id].length > 0) {
-            let msg = "```\n";
+            let embed = new Discord.RichEmbed()
+            embed.setAuthor(message.author.username, message.author.avatarURL)
+                .setColor("green")
+                .setTitle("Player Queue")
+            let msg = "Music Player Queue\n";
             let counter = 0;
             for (let que in client.guildQueues[channel.guild.id]) {
                 counter++;
                 let m = client.guildQueues[channel.guild.id][que];
-                let actualMessage = "#" + counter + " " + m.title;
-                msg += actualMessage + "\n";
+                let actualMessage = "#" + counter + " `" + m.title + "`";
+                msg += actualMessage;
             }
-            msg += "```";
-            channel.send(msg);
+            embed.setDescription(msg)
+            channel.send(embed).catch(e => {
+                message.reply("Failed to send queue: " + e)
+            })
         } else {
             message.reply("Nothing on the queue! Do ~play to add some music to the queue!");
         }
