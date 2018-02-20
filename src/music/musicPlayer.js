@@ -110,7 +110,7 @@ module.exports = {
 
         let text = message.content.split(" ");
         let search = text.slice(1).join(" ");
-        ytSearch(search, ytOpts, function (err, results) {
+        ytSearch(search, ytOpts, async function (err, results) {
             if (err !== null) {
                 console.log(err);
                 message.reply("There was an error! Please contact @Erik#9933 about this issue.");
