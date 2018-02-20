@@ -125,7 +125,8 @@ module.exports = {
             let result = results[0];
             let videoId = result.id;
             let fetchResult = await fetchInfo(videoId);
-            console.log(fetchResult)
+            let {duration} = fetchResult;
+            result.duration = duration;
 
             if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
                 client.guildQueues[channel.guild.id].push(result);
@@ -141,7 +142,8 @@ module.exports = {
                 });
 
                 let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
-                embed.addField("Now Playing", result.title);
+                embed.addField("Now Playing", result.title, false);
+                embed.addField("Duration", result.duration.toString().toHHMMSS())
                 if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                     embed.setThumbnail(result.thumbnails['high'].url);
                 }
