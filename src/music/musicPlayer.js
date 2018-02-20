@@ -16,20 +16,22 @@ let appendMethod = function (dispatcher, channel, client) {
         }
 
         if (client.guildQueues[channel.guild.id].length > 0) {
-            let shifted = client.guildQueues[channel.guild.id].shift();
-            let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(shifted.link, {filter: 'audioonly'}), {
+            let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {
                 seek: 0,
                 volume: 1
             });
-            let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
-            embed.addField("Now Playing", shifted.title);
-            if (shifted.thumbnails['high'] !== null || shifted.thumbnails['high'] !== undefined) {
-                embed.setThumbnail(shifted.thumbnails['high'].url);
-            }
-            embed.setFooter("Enjoy your music!");
 
-            channel.sendEmbed(embed).catch(function () {
-                channel.send(":musical_note: Now playing: " + shifted.title);
+            let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
+            embed.addField("Now Playing", result.title, false);
+            embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
+            embed.addField("Posted By", result.channelTitle, true)
+            if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
+                embed.setThumbnail(result.thumbnails['high'].url);
+            }
+            embed.setFooter("Requested by " + message.author.username, message.author.avatarURL);
+
+            reply.edit(embed).catch(function () {
+                reply.edit(":musical_note: Now playing: " + result.title);
             });
 
             client.voiceDispatchers[channel.guild.id] = dispatcher;
@@ -141,8 +143,6 @@ module.exports = {
                         seek: 0,
                         volume: 1
                     });
-
-                    console.log(result)
 
                     let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
                     embed.addField("Now Playing", result.title, false);
