@@ -30,8 +30,8 @@ let appendMethod = function (dispatcher, channel, client) {
                 embed.setThumbnail(result.thumbnails['high'].url);
             }
 
-            reply.edit(embed).catch(function () {
-                reply.edit(":musical_note: Now playing: " + result.title);
+            channel.send(embed).catch(function () {
+                reply.send(":musical_note: Now playing: " + result.title);
             });
 
             client.voiceDispatchers[channel.guild.id] = dispatcher;
