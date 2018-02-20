@@ -206,7 +206,7 @@ module.exports = {
             for (let que in client.guildQueues[channel.guild.id]) {
                 counter++;
                 let m = client.guildQueues[channel.guild.id][que];
-                let actualMessage = counter + ". " + m.title + "\n";
+                let actualMessage = counter + ". " + m.title + " (" + m.duration.toString().toHHMMSS() + ").\n";
                 msg += actualMessage;
             }
             embed.setDescription(msg)
