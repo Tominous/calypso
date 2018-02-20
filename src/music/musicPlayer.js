@@ -29,7 +29,6 @@ let appendMethod = function (dispatcher, channel, client) {
             if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                 embed.setThumbnail(result.thumbnails['high'].url);
             }
-            embed.setFooter("Requested by " + message.author.username, message.author.avatarURL);
 
             reply.edit(embed).catch(function () {
                 reply.edit(":musical_note: Now playing: " + result.title);
