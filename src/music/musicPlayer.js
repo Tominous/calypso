@@ -190,12 +190,12 @@ module.exports = {
             embed.setColor("#42f4b0")
                 .setTitle("Player Queue")
                 .setFooter("Requested by " + message.author.username, message.author.avatarURL)
-            let msg = "Music Player Queue\n";
+            let msg = "**Music Player Queue**\n";
             let counter = 0;
             for (let que in client.guildQueues[channel.guild.id]) {
                 counter++;
                 let m = client.guildQueues[channel.guild.id][que];
-                let actualMessage = counter + "1. " + m.title + "\n";
+                let actualMessage = counter + ". " + m.title + "\n";
                 msg += actualMessage;
             }
             embed.setDescription(msg)
