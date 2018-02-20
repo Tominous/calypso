@@ -1,7 +1,8 @@
 const Discord = require('discord.js'),
     ytdl = require("ytdl-core"),
     ytSearch = require("youtube-search"),
-    config = require("../config.json");
+    config = require("../config.json"),
+    fetchInfo = require("youtube-info");
 
 let ytOpts = {
     maxResults: 1,
@@ -96,7 +97,7 @@ module.exports = {
         client.voiceConnections[channel.guild.id] = undefined;
         client.guildQueues[channel.guild.id] = undefined;
     },
-    play: function(message, channel, client) {
+    play: async function(message, channel, client) {
         if (channel instanceof Discord.DMChannel) {
             message.reply("This action can ony be performed in text channels.");
             return;
@@ -122,7 +123,9 @@ module.exports = {
             }
 
             let result = results[0];
-            console.log(result)
+            let videoId = result.id;
+            let fetchResult = await fetchInfo(videoId);
+            console.log(fetchResult)
 
             if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
                 client.guildQueues[channel.guild.id].push(result);
