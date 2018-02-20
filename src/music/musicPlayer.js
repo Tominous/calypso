@@ -143,7 +143,8 @@ module.exports = {
 
                 let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
                 embed.addField("Now Playing", result.title, false);
-                embed.addField("Duration", result.duration.toString().toHHMMSS())
+                embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
+                embed.addField("Channel", result.channel)
                 if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                     embed.setThumbnail(result.thumbnails['high'].url);
                 }
