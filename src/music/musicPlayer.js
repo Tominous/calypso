@@ -122,6 +122,7 @@ module.exports = {
             }
 
             let result = results[0];
+            console.log(result)
 
             if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
                 client.guildQueues[channel.guild.id].push(result);
