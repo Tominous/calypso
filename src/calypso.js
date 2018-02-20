@@ -48,19 +48,7 @@ client.on("ready", () => {
                             console.log(err);
                         }
                     });
-
-                    if (message.channel.type === "text" && message.guild.id === "310104725078933525") {
-                        let ct = message.content.toLowerCase()
-                        if (ct.indexOf("ckamps") >= 0) {
-                            message.delete().then(() => {
-                                message.channel.send("_You have mentioned he who must not be named_. " + message.author + "\nhttps://i.imgur.com/YXI0tMy.gif")
-                            })
-                        } else if (ct.indexOf("turq") >= 0 || ct.indexOf("t u r q") >= 0) {
-                            message.delete().then(() => {
-                                message.channel.send("Cross eyed people are **not** allowed in this Discord. " + message.author + "\nhttps://media.giphy.com/media/26xBG9lQdU5YTRnJS/giphy.gif")
-                            })
-                        }
-                    }
+                    
                     return;
                 }
 

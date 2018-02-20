@@ -1,5 +1,5 @@
 module.exports = {
-    name: "yodaSpeak",
+    name: "testModule",
     defaultState: false,
     enable: function(client) {
         

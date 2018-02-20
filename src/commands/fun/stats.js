@@ -21,6 +21,6 @@ module.exports = {
         embed.addField("> Other Data", "• Node Version: " + (process.version) + "\n• Discord.JS: v" + require('discord.js').version + "\n• Calypso: v" + require("../../../package.json").version, true);
         embed.addField("> Usage", "• Ram Usage: " + mem + "MB", true);
         embed.setTimestamp();
-        message.channel.sendEmbed(embed);
+        message.channel.send(embed);
     }
 }
