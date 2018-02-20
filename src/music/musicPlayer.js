@@ -141,6 +141,8 @@ module.exports = {
                     volume: 1
                 });
 
+                console.log(result)
+
                 let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
                 embed.addField("Now Playing", result.title, false);
                 embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
@@ -148,7 +150,7 @@ module.exports = {
                 if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
                     embed.setThumbnail(result.thumbnails['high'].url);
                 }
-                embed.setFooter("Enjoy your music!");
+                embed.setFooter("Requested by " + message.author.username, message.author.avatarURL);
 
                 channel.sendEmbed(embed).catch(function () {
                     channel.send(":musical_note: Now playing: " + result.title);
