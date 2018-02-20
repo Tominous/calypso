@@ -108,61 +108,63 @@ module.exports = {
             return;
         }
 
-        let text = message.content.split(" ");
-        let search = text.slice(1).join(" ");
-        ytSearch(search, ytOpts, async function (err, results) {
-            if (err !== null) {
-                console.log(err);
-                message.reply("There was an error! Please contact @Erik#9933 about this issue.");
-                return;
-            }
-
-            if (results.length <= 0) {
-                message.reply("No videos found! Try a different query?");
-                return;
-            }
-
-            let result = results[0];
-            let videoId = result.id;
-            let fetchResult = await fetchInfo(videoId);
-            let {duration} = fetchResult;
-            result.duration = duration;
-
-            if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
-                client.guildQueues[channel.guild.id].push(result);
-
-                message.reply(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): " + result.title);
-                return;
-            }
-
-            try {
-                let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {
-                    seek: 0,
-                    volume: 1
-                });
-
-                console.log(result)
-
-                let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
-                embed.addField("Now Playing", result.title, false);
-                embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
-                embed.addField("Channel", result.channel)
-                if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
-                    embed.setThumbnail(result.thumbnails['high'].url);
+        message.reply(":satellite_orbital: Executing request...").then(reply => {
+            let text = message.content.split(" ");
+            let search = text.slice(1).join(" ");
+            ytSearch(search, ytOpts, async function (err, results) {
+                if (err !== null) {
+                    console.log(err);
+                    message.reply("There was an error! Please contact @Erik#9933 about this issue.");
+                    return;
                 }
-                embed.setFooter("Requested by " + message.author.username, message.author.avatarURL);
 
-                channel.sendEmbed(embed).catch(function () {
-                    channel.send(":musical_note: Now playing: " + result.title);
-                });
+                if (results.length <= 0) {
+                    message.reply("No videos found! Try a different query?");
+                    return;
+                }
 
-                client.voiceDispatchers[channel.guild.id] = dispatcher;
-                appendMethod(dispatcher, channel, client);
-            } catch (exception) {
-                channel.send(":x: Failed to query. Contact @erik#0001");
-                console.log(exception);
-            }
-        });
+                let result = results[0];
+                let videoId = result.id;
+                let fetchResult = await fetchInfo(videoId);
+                let {duration} = fetchResult;
+                result.duration = duration;
+
+                if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
+                    client.guildQueues[channel.guild.id].push(result);
+
+                    message.edit(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): " + result.title);
+                    return;
+                }
+
+                try {
+                    let dispatcher = client.voiceConnections[channel.guild.id].playStream(ytdl(result.link, {filter: 'audioonly'}), {
+                        seek: 0,
+                        volume: 1
+                    });
+
+                    console.log(result)
+
+                    let embed = new Discord.RichEmbed().setTitle(":musical_note: Music").setColor("#69d5ea");
+                    embed.addField("Now Playing", result.title, false);
+                    embed.addField("Duration", result.duration.toString().toHHMMSS(), true)
+                    embed.addField("Posted By", result.channelTitle, true)
+                    if (result.thumbnails['high'] !== null || result.thumbnails['high'] !== undefined) {
+                        embed.setThumbnail(result.thumbnails['high'].url);
+                    }
+                    embed.setFooter("Requested by " + message.author.username, message.author.avatarURL);
+
+                    reply.edit(embed).catch(function () {
+                        reply.edit(":musical_note: Now playing: " + result.title);
+                    });
+
+                    client.voiceDispatchers[channel.guild.id] = dispatcher;
+                    appendMethod(dispatcher, channel, client);
+                } catch (exception) {
+                    reply.edit(":x: Failed to query. Contact @erik#0001");
+                    console.log(exception);
+                }
+            });
+        })
     },
     skip: function(message, channel, client) {
         if (channel instanceof Discord.DMChannel) {
