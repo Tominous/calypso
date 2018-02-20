@@ -114,12 +114,12 @@ module.exports = {
             ytSearch(search, ytOpts, async function (err, results) {
                 if (err !== null) {
                     console.log(err);
-                    message.reply("There was an error! Please contact @Erik#9933 about this issue.");
+                    reply.edit("There was an error! Please contact @Erik#9933 about this issue.");
                     return;
                 }
 
                 if (results.length <= 0) {
-                    message.reply("No videos found! Try a different query?");
+                    reply.edit("No videos found! Try a different query?");
                     return;
                 }
 
@@ -132,7 +132,7 @@ module.exports = {
                 if (client.guildQueues[channel.guild.id].length > 0 || client.voiceDispatchers[channel.guild.id] !== undefined) {
                     client.guildQueues[channel.guild.id].push(result);
 
-                    message.edit(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): " + result.title);
+                    reply.edit(":notes: Queued (" + client.guildQueues[channel.guild.id].length + "): " + result.title);
                     return;
                 }
 
