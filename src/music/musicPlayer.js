@@ -79,7 +79,9 @@ module.exports = {
                 "region": message.guild.region,
                 "joined_at": new Date().getTime()
             });
-        });
+        }).catch(e => {
+            message.reply(":x: Failed to join " + voiceChannel.name + ". No permissions.");
+        })
         return true;
     },
     leave: function(message, channel, client) {

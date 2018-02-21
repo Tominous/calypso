@@ -117,10 +117,13 @@ handler.handleCommand = function(message, text, client) {
         })
 
         response += "\n```\nFor more head to http://calypsobot.com/";
-        message.author.send(response);
-        if (message.channel instanceof Discord.TextChannel) {
-            message.reply("Commands have been sent to your DMs");
-        }
+        message.author.send(response).then(() => {
+            if (message.channel instanceof Discord.TextChannel) {
+                message.reply("Commands have been sent to your DMs");
+            }
+        }).catch(() => {
+            message.reply(response)
+        });
         return;
     }
     const command = newCommands[params[0].toLowerCase()]
