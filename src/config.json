@@ -3,9 +3,9 @@
     "token": ""
   },
   "apis": {
-    "youtube": "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE" // cba this was already public
+    "youtube": "AIzaSyAKjDQOtjKq0NMkD31P07TohtcsrFCLkrE"
   },
   "database": {
-    "url": "mongodb://localhost:27017/calypso" // example on how it connects to mongo through uri.
+    "url": "mongodb://localhost:27017/calypso"
   }
 }
