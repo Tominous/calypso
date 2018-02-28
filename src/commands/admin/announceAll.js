@@ -16,7 +16,7 @@ module.exports = {
 
                 for (let i = 0; i < guilds.length; i++) {
                     let guild = guilds[i]
-                    let channel = guildUtil.getDefaultChannel(guild)
+                    let channel = await guildUtil.getDefaultChannel(guild)
                     if (channel) {
                         allPromises.push(channel.sendMessage(":rocket: Announcement! " + text))
                     }
