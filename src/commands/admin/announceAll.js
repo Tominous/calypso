@@ -7,22 +7,26 @@ module.exports = {
     ownerOnly: true,
     handle: async function(message, params, client) {
         message.reply("Sending announcement...").then(async reply => {
-            params.shift()
-            let text = params.join(" ")
-            const guilds = client.guilds.array()
+            try {
+                params.shift()
+                let text = params.join(" ")
+                const guilds = client.guilds.array()
 
-            let allPromises = []
+                let allPromises = []
 
-            for (let i = 0; i < guilds.length; i++) {
-                let guild = guilds[i]
-                let channel = getDefaultChannel(guild)
-                if (channel) {
-                    allPromises.push(channel.sendMessage(":rocket: Announcement! " + text))
+                for (let i = 0; i < guilds.length; i++) {
+                    let guild = guilds[i]
+                    let channel = guildUtil.getDefaultChannel(guild)
+                    if (channel) {
+                        allPromises.push(channel.sendMessage(":rocket: Announcement! " + text))
+                    }
                 }
-            }
 
-            await Promise.all(allPromises)
-            reply.edit("Finished announcement. Sent to " + allPromises.length + " guilds.")
+                await Promise.all(allPromises)
+                reply.edit("Finished announcement. Sent to " + allPromises.length + " guilds.")
+            } catch (e) {
+                message.reply(e.message)
+            }
         })
     }
 }
